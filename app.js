@@ -18,11 +18,12 @@ function quote(hall, mode, duration) {
 function galleryMarkup(hall) {
   const photos = GALLERIES[hall.id].photos, p = photos[0];
   return `<figure class="gallery" data-gallery="${hall.id}">
-    <p class="gallery-hint">${photos.length} echte Pistenfotos · Pfeile am Bild oder nach links / rechts wischen</p>
+    <p class="gallery-hint">${photos.length} echte Pistenfotos · Pfeile / Wischen · zum Vergrößern Bild antippen</p>
     <div class="gallery-frame" tabindex="0" role="group" aria-label="Pistenbilder ${escapeHTML(hall.name)}. Mit Pfeiltasten blättern.">
       <img class="gallery-image" src="${escapeHTML(p.src)}" alt="${escapeHTML(p.caption)}" width="${p.width}" height="${p.height}" loading="${hall.id === 'landgraaf' ? 'eager' : 'lazy'}" ${hall.id === 'landgraaf' ? 'fetchpriority="high"' : ''} draggable="false">
       <button type="button" class="gallery-arrow prev" data-step="-1" aria-label="${escapeHTML(hall.name)}: vorheriges Bild">‹</button>
       <button type="button" class="gallery-arrow next" data-step="1" aria-label="${escapeHTML(hall.name)}: nächstes Bild">›</button>
+      <button type="button" class="photo-enlarge gallery-enlarge" aria-label="Pistenfoto von ${escapeHTML(hall.name)} vergrößern">⤢ Vergrößern</button>
       <span class="gallery-counter" aria-live="polite" aria-atomic="true">1 / ${photos.length}</span>
     </div>
     <figcaption><div class="gallery-caption"><div><strong class="gallery-title">${escapeHTML(p.title)}</strong><p class="gallery-description">${escapeHTML(p.caption)}</p></div><div class="gallery-dots" role="group" aria-label="Foto auswählen">${photos.map((photo, i) => `<button type="button" class="gallery-dot" data-photo="${i}" aria-label="Bild ${i + 1}: ${escapeHTML(photo.title)}" aria-pressed="${i === 0}"></button>`).join("")}</div></div><p class="gallery-credit">${escapeHTML(p.credit)} · ${link(p.source, "Bildquelle")}</p></figcaption>
@@ -31,7 +32,7 @@ function galleryMarkup(hall) {
 function pistesMarkup(hall) {
   const gallery = GALLERIES[hall.id], colors = {red:"var(--red)", blue:"var(--blue)", green:"var(--green)"};
   return `<section class="pistes-section" aria-labelledby="pistes-${hall.id}"><h3 id="pistes-${hall.id}">Pisten & Platz zum Fahren</h3><p class="small-note">${escapeHTML(hall.areas)} · gemeinsame 400-m-Skala</p><ul class="piste-list">${hall.pistes.map(p => `<li class="piste-item" style="--piste-color:${colors[p.color]}"><div class="piste-label"><span class="piste-dot" aria-hidden="true"></span>${escapeHTML(p.name)}<strong>${p.length === null ? 'Länge offen' : p.length + ' m'}</strong></div>${p.length === null ? '' : `<div class="piste-track"><span style="--length:${p.length / 4}%"></span></div>`}</li>`).join("")}</ul><p class="piste-notes">${escapeHTML(hall.terrainNote)}</p><div class="inline-links">${link(hall.source, "Pisten beim Betreiber")}</div>
-    <section class="piste-map"><h4>Aufteilung in der Halle</h4>${gallery.map ? `<img src="${escapeHTML(gallery.map.src)}" alt="${escapeHTML(gallery.map.caption)}" width="${gallery.map.width}" height="${gallery.map.height}" loading="lazy"><p>${escapeHTML(gallery.map.credit)} · ${link(gallery.map.source, "Planquelle")} · ${link(gallery.map.src, "Plan in voller Größe")}</p>` : '<p class="piste-notes">Kein belastbarer offizieller Pistenplan gefunden. Die Längenbalken vergleichen die Größe und bilden keinen Grundriss ab.</p>'}</section>
+    <section class="piste-map"><h4>Aufteilung in der Halle</h4>${gallery.map ? `<button type="button" class="map-enlarge" data-enlarge-map="${hall.id}" aria-label="Hallenplan von ${escapeHTML(hall.name)} vergrößern"><img src="${escapeHTML(gallery.map.src)}" alt="${escapeHTML(gallery.map.caption)}" width="${gallery.map.width}" height="${gallery.map.height}" loading="lazy"><span class="photo-enlarge">⤢ Plan vergrößern</span></button><p>${escapeHTML(gallery.map.credit)} · ${link(gallery.map.source, "Planquelle")}</p>` : '<p class="piste-notes">Kein belastbarer offizieller Pistenplan gefunden. Die Längenbalken vergleichen die Größe und bilden keinen Grundriss ab.</p>'}</section>
     <section class="coverage-notes"><h4>Welche Pisten zeigen die Fotos?</h4><ul>${gallery.photos.map(p => `<li><strong>${escapeHTML(p.title)}:</strong> ${escapeHTML(p.piste)}. ${escapeHTML(p.currentness)} ${link(p.source, "Quelle")}</li>`).join("")}</ul>${gallery.gaps.map(g => `<p>${escapeHTML(g)}</p>`).join("")}</section>
   </section>`;
 }
@@ -70,7 +71,7 @@ function coffeeMarkup(hall) {
 function areaMarkup(hall) {
   const r = REGIONS[hall.id];
   return `<section class="area-section" aria-labelledby="area-${hall.id}"><h3 id="area-${hall.id}">Spa, Stadt, Meer & Ausflüge</h3><div class="region-intro"><h4>${escapeHTML(r.headline)}</h4><p>${escapeHTML(r.summary)}</p><p class="tradeoff"><strong>Für euch abwägen:</strong> ${escapeHTML(r.tradeoff)}</p></div><p class="small-note">Zeiten ab Skihalle mit dem Auto, ohne Verkehr. Ausflüge sind Vorschläge; Öffnungstage und Eintritt beim jeweiligen Betreiber prüfen.</p>
-    ${r.places.map(p => `<article class="place-row"><div><span class="place-kind">${escapeHTML(p.kind)}</span><h4>${escapeHTML(p.title)}</h4></div><span class="place-time">${escapeHTML(p.time)}${p.time.startsWith('ca.') ? '<small>Schätzung</small>' : ''}</span><p>${escapeHTML(p.description)}</p><div class="inline-links">${p.url ? link(p.url, "Betreiber / Infos") : ''}${p.destination ? link(route(r.address, p.destination), "Route ab Skihalle") : ''}</div></article>`).join("")}
+    ${[...r.places, ...TRAVEL[hall.id].activities].map(p => `<article class="place-row"><div><span class="place-kind">${escapeHTML(p.kind)}</span><h4>${escapeHTML(p.title)}</h4></div><span class="place-time">${escapeHTML(p.time)}${p.time.startsWith('ca.') ? '<small>Schätzung</small>' : ''}</span><p>${escapeHTML(p.description)}</p><div class="inline-links">${p.url ? link(p.url, "Betreiber / Infos") : ''}${p.destination ? link(route(r.address, p.destination), "Route ab Skihalle") : ''}</div></article>`).join("")}
   </section>`;
 }
 function travelMarkup(hall) {
@@ -78,8 +79,42 @@ function travelMarkup(hall) {
   return `<section class="travel" aria-labelledby="travel-${hall.id}"><h3 id="travel-${hall.id}">Anreise, Parken & Übernachten</h3><div class="travel-intro"><p><strong>Adresse:</strong> ${escapeHTML(r.address)}</p><p>${escapeHTML(r.arrival)}</p><div class="inline-links">${link(route("Löningen, Deutschland", r.address), "Auto ab Löningen")}${link(route("Löningen, Deutschland", r.address, "transit"), "Bahn / Bus ab Löningen")}</div></div>
     <section class="travel-section"><h4>Parken</h4><p>${escapeHTML(t.parking)}</p>${t.extraUrl ? `<div class="inline-links">${link(t.extraUrl, "Tunnel: aktuelle Regeln")}</div>` : ''}</section>
     <section class="travel-section"><h4>Bus & Bahn vor Ort · ${escapeHTML(t.name)}</h4><p class="transport-price">${escapeHTML(t.price)}</p><p>${escapeHTML(t.description)}</p><p class="small-note">Kein kostenloses allgemeines Touristenticket bestätigt. Für zwei verdoppeln sich die Personentarife. Gästeticket oder Hotel-Shuttle nur einrechnen, wenn die Unterkunft es ausdrücklich anbietet.</p><div class="inline-links">${link(t.url, "Tarif & Gültigkeit")}</div></section>
-    <section class="travel-section"><h4>${escapeHTML(r.stay.title)}</h4><p>${escapeHTML(r.stay.description)}</p><p class="small-note">Für drei Nächte Zimmer + Parkplatz + Pflichtgebühren vergleichen. Euer Gesamtbudget: 1.000 € für zwei inklusive Fahrt, Ski, Spa und Essen. Keine neue Hotelreservierung.</p><div class="inline-links">${link("https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(r.stay.destination), "Hotels im Gebiet")}</div></section>
+    <section class="travel-section"><h4>Übernachten: drei Nächte zu zweit</h4><p>Die ${TRAVEL[hall.id].hotels.length} Unterkunftsvorschläge stehen direkt unten, mit Zimmerpreis, Parken, Wegen zu Ski und Spa sowie Reisebudget. Suchdatum: 06.10.2026 für 11.–14.10.2026.</p><p class="small-note">Euer Gesamtbudget: 1.000 € für zwei. Pflichtgebühren, Tarifbedingungen und Frühstück vor der Buchung im ausgewählten Angebot prüfen.</p></section>
     ${hall.id === 'montana' ? '<section class="travel-section"><h4>Center Parcs: Ferienpark</h4><p>De Kempervennen ist ein Ferienpark mit Ferienhäusern, Schwimmbad und Freizeitangeboten. Für Montana braucht ihr keine Unterkunft im Park. Aqua Mundo gehört nicht zum Skipass; es ist kein großer Achterbahn-Freizeitpark.</p><div class="inline-links">' + link("https://www.centerparcs.de/de-de/niederlande/fp_KV_ferienpark-de-kempervennen", "De Kempervennen") + '</div></section>' : ''}
+  </section>`;
+}
+function mapPoint(point) {
+  return {x:36 + (point.lon - 2.8) * 112, y:32 + (53.65 - point.lat) * 190};
+}
+function countryMapMarkup(hall) {
+  const origin = mapPoint(COUNTRY_MAP.origin);
+  return `<svg class="country-map" viewBox="0 0 730 675" role="img" aria-labelledby="map-title-${hall.id} map-description-${hall.id}"><title id="map-title-${hall.id}">Lage von ${escapeHTML(hall.name)} in den Niederlanden</title><desc id="map-description-${hall.id}">${escapeHTML(TRAVEL[hall.id].province)}. Der große grüne Punkt zeigt diese Halle; kleine Punkte zeigen die übrigen Hallen. Löningen liegt östlich in Deutschland.</desc><rect width="730" height="675" fill="#edf3f2"/>${COUNTRY_MAP.paths.map(p => `<path d="${p.path}" class="map-land ${p.country === 'Netherlands' ? 'map-netherlands' : ''}"/>`).join('')}<text x="114" y="210" class="map-water-label">Nordsee</text><text x="327" y="269" class="map-country-label">Niederlande</text><text x="557" y="444" class="map-country-label">Deutschland</text><text x="245" y="625" class="map-country-label">Belgien</text>${halls.map((h, i) => {const p = mapPoint(TRAVEL[h.id].coordinates); return `<g class="map-hall ${h.id === hall.id ? 'map-active' : ''}"><circle cx="${p.x}" cy="${p.y}" r="${h.id === hall.id ? 19 : 11}"/><text x="${p.x}" y="${p.y + 1}">${i + 1}</text></g>`;}).join('')}<circle cx="${origin.x}" cy="${origin.y}" r="7" fill="#a77932"/><text x="${origin.x - 6}" y="${origin.y - 16}" text-anchor="end" class="map-origin">Start: Löningen</text><path d="M655 82v-36m0 0-7 14m7-14 7 14" fill="none" stroke="#66746f" stroke-width="2"/><text x="655" y="37" text-anchor="middle" class="map-north">N</text></svg>`;
+}
+function driveTime(way) {
+  if (!way) return 'Nicht gemessen';
+  if (way.minutes < 5) return 'ca. 5 Min.';
+  const low = Math.floor(way.minutes / 5) * 5, high = low + 5;
+  return `ca. ${low}–${high} Min.`;
+}
+function regionVisualsMarkup(hall) {
+  const r = TRAVEL[hall.id], arrival = r.arrival;
+  const hours = Math.floor(arrival.minutes / 60), minutes = arrival.minutes % 60;
+  return `<section class="region-visuals" aria-labelledby="location-${hall.id}"><div class="section-heading"><div><p class="eyebrow">Stadt & Landschaft</p><h3 id="location-${hall.id}">So sieht das Gebiet aus — und hier liegt es</h3></div><span>Alle Bilder zum Vergrößern antippen</span></div><div class="region-layout"><div class="region-map-column">${countryMapMarkup(hall)}<p class="map-legend"><span class="map-selected-dot" aria-hidden="true"></span>Großer Punkt: ${escapeHTML(shortNames[hall.id])}<br>Kleine Punkte: die anderen Skihallen</p><h4>${escapeHTML(r.province)}</h4><p class="geo-context">${escapeHTML(r.context)}</p><p class="geo-arrival"><strong>Ab Löningen:</strong> rund ${Math.round(arrival.km)} km · ${hours} Std. ${minutes} Min. reine Fahrzeit</p><p class="small-note">OSRM-Routencheck 06.10. · ohne Verkehr und Pausen. Karte: Natural Earth / OSM.</p><div class="inline-links">${link(route('Löningen, Deutschland', REGIONS[hall.id].address), 'Anfahrtsroute')}</div></div><div class="region-photo-column"><p class="region-character">${escapeHTML(r.character)}</p><div class="region-photo-grid ${r.photos.length === 3 ? 'three-photos' : ''}">${r.photos.map((p, i) => `<figure class="region-photo"><button type="button" class="region-photo-open" data-region-photo="${hall.id}" data-region-index="${i}" aria-label="Foto von ${escapeHTML(p.title)} vergrößern"><img src="${escapeHTML(p.src)}" alt="${escapeHTML(p.caption)}" width="${p.width}" height="${p.height}" loading="lazy" draggable="false"><span class="photo-enlarge">⤢ Vergrößern</span></button><figcaption><span class="place-kind">${escapeHTML(p.kind)} · ${escapeHTML(p.time)}${p.time.startsWith('ca.') ? ' ab Halle · Schätzung' : ''}</span><h4>${escapeHTML(p.title)}</h4><p>${escapeHTML(p.caption)}</p><p class="region-credit">${escapeHTML(p.credit)} · ${link(p.source, 'Bildquelle')}${p.licenseUrl ? ' · '+link(p.licenseUrl, 'Lizenz') : ''}</p></figcaption></figure>`).join('')}</div><p class="small-note photo-archive-note">Echte Archivaufnahmen, keine Live-Bilder. Wetter und Jahreszeit können abweichen. Die folgenden Ausflugsinfos stehen vollständig auf der Seite.</p></div></div></section>`;
+}
+function tripBudget(hall, hotel) {
+  const ski = hall.id === 'uithof' ? 92 : quote(hall, 'direct', 6).pair;
+  const allowance = TRIP_ALLOWANCES.spa + TRIP_ALLOWANCES.car + TRIP_ALLOWANCES.food;
+  const pair = Math.round((hotel.price + hotel.parking + ski + allowance) * 100) / 100;
+  const perPerson = Math.round(pair * 50) / 100;
+  return {ski, allowance, pair, perPerson, remaining:Math.round((TRIP_ALLOWANCES.budgetPerPerson - perPerson) * 100) / 100};
+}
+function hotelsMarkup(hall) {
+  const r = TRAVEL[hall.id], spa = REGIONS[hall.id].places.find(p => p.kind === 'Spa');
+  return `<section class="hotel-section" aria-labelledby="hotels-${hall.id}"><div class="section-heading"><div><p class="eyebrow">11.–14. Oktober · 3 Nächte · 2 Erwachsene · 1 Zimmer</p><h3 id="hotels-${hall.id}">${r.hotels.length} Unterkünfte & euer Reisebudget</h3></div><span>Budget: 500 € pro Person</span></div><p class="hotel-intro">Angezeigte Aufenthaltspreise aus der Booking-Suche am <strong>06.10.2026</strong>. Keine Reservierung; Preise und freie Zimmer können sich ändern. B&Bs sind als solche benannt. Frühstück nur enthalten, wenn euer ausgewählter Tarif es ausdrücklich nennt.</p>
+    <div class="budget-basis"><strong>Rechnung für euch beide</strong><p>3 Nächte + Hotelparken + ${hall.id === 'uithof' ? 'bestätigter 2-Stunden-Skipass' : 'ein Skitag mit 6 Stunden'} inkl. Ski, Schuhe & Hallenparken + <strong>140 € Spa</strong> + <strong>130 € Fahrt</strong> + <strong>160 € Essen</strong>.</p><p class="small-note">Spa, Fahrt und Essen sind geschätzte Planungsansätze. Fahrbudget für euer eigenes Auto; keine Miete oder Fahrzeugabschreibung. Zusätzliche Pflichtabgaben, Stadtparkplätze und andere Eintritte können den Restpuffer verbrauchen.${hall.id === 'uithof' ? ' Kein bestätigter 4-/6-Stunden-Pass; daher hier nur 2 Stunden in der Budgetrechnung.' : ''}</p></div>
+    <div class="hotel-rows">${r.hotels.map(hotel => {const b = tripBudget(hall, hotel), tight = b.remaining < 25; return `<article class="hotel-row" data-hotel-id="${hotel.id}"><div class="hotel-description"><span class="place-kind">${escapeHTML(hotel.kind)} · ${escapeHTML(hotel.address)}</span><h4>${escapeHTML(hotel.name)}</h4>${hotel.rating?.review_score ? `<p class="hotel-rating"><strong>${String(hotel.rating.review_score).replace('.', ',')} / 10</strong> · ${hotel.rating.number_of_reviews} Bewertungen bei Booking</p>` : ''}<p>${escapeHTML(hotel.note)}</p><div class="inline-links">${link(hotel.source, 'Angebot für 11.–14.10.')}${link('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(hotel.name+' '+hotel.address), 'Hotel auf der Karte')}</div></div><div class="hotel-costs"><span class="hotel-label">Zimmer für 2 · alle 3 Nächte</span><strong class="hotel-stay-price">${euro(hotel.price)}</strong><p>${euro(hotel.price / 2)} pro Person</p><span class="hotel-label">Hotelparkplatz · 3 Nächte</span><strong>${hotel.parking === 0 ? 'Kostenlos' : euro(hotel.parking)}</strong><p class="small-note">${escapeHTML(hotel.parkingText)}</p><p class="hotel-with-parking">Zimmer + Parken: <strong>${euro(hotel.price + hotel.parking)}</strong></p></div><div class="hotel-routes"><span class="hotel-label">Hotel → Skihalle</span><strong>${hotel.id === 11947 ? 'Direkt an der Halle' : driveTime(hotel.skiRoute)}</strong><p class="small-note">${hotel.id === 11947 ? 'Kein täglicher Auto-Skiweg nötig' : (hotel.skiRoute?.km ?? '—')+' km · Auto'}</p><span class="hotel-label">Hotel → ${escapeHTML(spa.title)}</span><strong>${hotel.spaRoute ? driveTime(hotel.spaRoute) : escapeHTML(hotel.spaEstimate)}</strong><p class="small-note">${hotel.spaRoute ? hotel.spaRoute.km+' km · Auto · Routencheck' : 'Nicht als Hotelroute gemessen'}</p></div><div class="hotel-budget ${tight ? 'tight' : ''}"><span class="hotel-label">Gesamte Reise · Planungswert</span><strong class="hotel-trip-price">ca. ${euro(b.perPerson)}</strong><p>pro Person · ${euro(b.pair)} für zwei</p><div class="budget-track" aria-hidden="true"><span style="width:${Math.min(100, b.perPerson / 5)}%"></span></div><p class="budget-rest">${tight ? 'Knapp: ' : ''}${euro(b.remaining)} p. P. Restpuffer</p><p class="budget-formula">${euro(hotel.price)} Zimmer + ${euro(hotel.parking)} Parken + ${euro(b.ski)} Ski + ${euro(b.allowance)} Spa/Fahrt/Essen</p><p class="small-note">Zzgl. ggf. separat erhobener Pflichtgebühren.${tight ? ' Diese können das 500-€-Budget überschreiten.' : ''}</p></div></article>`;}).join('')}</div><p class="small-note hotel-route-note">Hotelwege: OSRM-Schätzung 06.10.2026, auf 5-Minuten-Spannen gerundet, ohne Verkehr. Kostenloses Parken gilt nach Unterkunftsangabe; keine Stellplatzreservierung. Besonders knappe Vorschläge brauchen einen abschließenden Gebührencheck.</p>
+    ${hall.id === 'terneuzen' ? '<p class="hotel-area-note"><strong>Für euch abwägen:</strong> In Terneuzen selbst lagen die geprüften Hotels deutlich höher: City Hotel 492,90 € und Churchill 594,96 € nur für drei Nächte zu zweit. Die zwei günstigeren Vorschläge liegen deshalb in Middelburg; der längere Skiweg ist oben sichtbar.</p>' : ''}
+    ${hall.id === 'montana' ? '<p class="hotel-area-note"><strong>Parken im Preisvergleich:</strong> de Statie + 36 € Parkreserve = 272 €; van Dinter mit Gratisparkplatz = 390 €. Die Unterkunft mit Parkgebühr spart hier 118 € für euch beide.</p>' : ''}
   </section>`;
 }
 function hallMarkup(hall, index) {
@@ -87,7 +122,9 @@ function hallMarkup(hall, index) {
   return `<article class="hall-section" id="${hall.id}" aria-labelledby="title-${hall.id}"><header class="hall-heading"><div><p class="eyebrow">${String(index + 1).padStart(2, '0')} · ${escapeHTML(hall.region)}</p><h2 id="title-${hall.id}">${escapeHTML(hall.name)}</h2><span class="hall-badge ${hall.badgeType}">${escapeHTML(hall.badge)}</span></div><div class="hall-heading-copy"><p>${escapeHTML(hall.detail)}</p></div></header>
     <div class="hall-summary"><div class="summary-fact"><span>Längste Abfahrt</span><strong>${escapeHTML(hall.lengthLabel)}</strong><small>${escapeHTML(hall.areas)}</small></div><div class="summary-fact"><span>Spa in der Nähe</span><strong>${escapeHTML(spa.title)}</strong><small>${escapeHTML(spa.time)} ab Halle · Schätzung</small></div><div class="summary-fact"><span>Coffeeshop-Option</span><strong>${escapeHTML(shop.name)} · ${escapeHTML(shop.city)}</strong><small>${escapeHTML(shop.address)}</small><small>${escapeHTML(shop.time)} · ${escapeHTML(shop.access)}</small></div><div class="summary-fact"><span>Parken an der Halle</span><strong>${hall.parking ? euro(hall.parking) + ' / Auto' : 'Kostenlos'}</strong><small>${hall.parking ? '8 € online · vor Ort bis 9 €' : 'Hotel / Stadt separat prüfen'}</small></div></div>
     <div class="hall-main"><div>${galleryMarkup(hall)}${pistesMarkup(hall)}</div><div>${pricesMarkup(hall)}${coffeeMarkup(hall)}</div></div>
+    ${regionVisualsMarkup(hall)}
     <div class="hall-lower">${areaMarkup(hall)}${travelMarkup(hall)}</div>
+    ${hotelsMarkup(hall)}
     <section class="four-day-plan" aria-labelledby="plan-${hall.id}"><h3 id="plan-${hall.id}">Vier Tage in diesem Gebiet</h3><ol class="plan-days">${r.plan.map((p, i) => `<li><span>Tag ${i + 1}</span>${escapeHTML(p)}</li>`).join("")}</ol><p class="small-note">Freizeitpark optional statt eines anderen Ausflugs. Ski, Spa und Hotel für dieselben Reisetage abstimmen.</p></section>
   </article>`;
 }
@@ -96,7 +133,7 @@ function renderOverview() {
 }
 function bindGallery(gallery) {
   const photos = GALLERIES[gallery.dataset.gallery].photos, frame = gallery.querySelector('.gallery-frame'), image = gallery.querySelector('.gallery-image');
-  let index = 0, gesture = null;
+  let index = 0, gesture = null, ignoreClickUntil = 0;
   function show(requested) {
     index = (requested + photos.length) % photos.length;
     const p = photos[index];
@@ -109,9 +146,16 @@ function bindGallery(gallery) {
   }
   gallery.querySelectorAll('[data-step]').forEach(b => b.addEventListener('click', () => show(index + Number(b.dataset.step))));
   gallery.querySelectorAll('[data-photo]').forEach(b => b.addEventListener('click', () => show(Number(b.dataset.photo))));
+  const enlarge = gallery.querySelector('.gallery-enlarge');
+  enlarge.addEventListener('click', () => openPhotoViewer(photos, index, enlarge));
+  frame.addEventListener('click', event => {
+    if (event.target.closest('button') || Date.now() < ignoreClickUntil) return;
+    openPhotoViewer(photos, index, frame);
+  });
   frame.addEventListener('keydown', event => {
     if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {event.preventDefault(); show(index + (event.key === 'ArrowRight' ? 1 : -1));}
     if (event.key === 'Home' || event.key === 'End') {event.preventDefault(); show(event.key === 'Home' ? 0 : photos.length - 1);}
+    if ((event.key === 'Enter' || event.key === ' ') && event.target === frame) {event.preventDefault(); openPhotoViewer(photos, index, frame);}
   });
   frame.addEventListener('pointerdown', event => {
     if (event.target.closest('button') || !event.isPrimary || event.button !== 0) return;
@@ -128,6 +172,7 @@ function bindGallery(gallery) {
   function endGesture(event) {
     if (!gesture || event.pointerId !== gesture.pointer) return;
     const dx = event.clientX - gesture.x, dy = event.clientY - gesture.y;
+    if (Math.abs(dx) > 10 || Math.abs(dy) > 10) ignoreClickUntil = Date.now() + 450;
     if (event.type === 'pointerup' && Math.abs(dx) >= 40 && Math.abs(dx) > Math.abs(dy)) show(index + (dx < 0 ? 1 : -1));
     if (frame.hasPointerCapture(event.pointerId)) frame.releasePointerCapture(event.pointerId);
     gesture = null; frame.classList.remove('dragging'); image.style.transform = '';
@@ -136,10 +181,96 @@ function bindGallery(gallery) {
   window.addEventListener('pointercancel', endGesture);
   frame.addEventListener('lostpointercapture', () => {gesture = null; frame.classList.remove('dragging'); image.style.transform = '';});
 }
+const photoViewer = document.querySelector('#image-viewer');
+const viewerImage = document.querySelector('#viewer-image');
+const viewerStage = document.querySelector('#viewer-stage');
+let viewerPhotos = [], viewerIndex = 0, viewerZoom = 1, viewerReturnFocus = null, viewerGesture = null, viewerIgnoreClickUntil = 0;
+function fitViewerImage(center=false) {
+  if (!photoViewer.open) return;
+  const p = viewerPhotos[viewerIndex];
+  const width = viewerImage.naturalWidth || p.width, height = viewerImage.naturalHeight || p.height;
+  const fitWidth = Math.min(viewerStage.clientWidth - 24, (viewerStage.clientHeight - 24) * width / height);
+  viewerImage.style.width = `${Math.max(1, fitWidth * viewerZoom)}px`;
+  photoViewer.classList.toggle('viewer-zoomed', viewerZoom > 1);
+  document.querySelector('#viewer-zoom-label').textContent = `${Math.round(viewerZoom * 100)} %`;
+  document.querySelector('#viewer-minus').disabled = viewerZoom <= 1;
+  document.querySelector('#viewer-plus').disabled = viewerZoom >= 4;
+  if (center) {
+    viewerStage.scrollLeft = (viewerStage.scrollWidth - viewerStage.clientWidth) / 2;
+    viewerStage.scrollTop = (viewerStage.scrollHeight - viewerStage.clientHeight) / 2;
+  }
+}
+function setViewerZoom(zoom) {
+  viewerZoom = Math.max(1, Math.min(4, zoom));
+  fitViewerImage(true);
+}
+function showViewerPhoto(requested) {
+  viewerIndex = (requested + viewerPhotos.length) % viewerPhotos.length;
+  viewerZoom = 1;
+  const p = viewerPhotos[viewerIndex];
+  viewerImage.src = p.src; viewerImage.alt = p.caption;
+  viewerImage.width = p.width; viewerImage.height = p.height;
+  document.querySelector('#viewer-title').textContent = p.title || 'Hallenplan';
+  document.querySelector('#viewer-caption').textContent = p.caption;
+  document.querySelector('#viewer-counter').textContent = `· ${viewerIndex + 1} / ${viewerPhotos.length}`;
+  document.querySelector('#viewer-credit').innerHTML = `${escapeHTML(p.credit)} · ${link(p.source, 'Bildquelle')}`;
+  document.querySelector('#viewer-prev').disabled = viewerPhotos.length < 2;
+  document.querySelector('#viewer-next').disabled = viewerPhotos.length < 2;
+  viewerStage.scrollTop = 0; viewerStage.scrollLeft = 0;
+  fitViewerImage();
+}
+function openPhotoViewer(photos, index=0, trigger=null) {
+  viewerReturnFocus = trigger || document.activeElement;
+  viewerPhotos = photos;
+  photoViewer.showModal();
+  document.body.classList.add('photo-viewer-open');
+  showViewerPhoto(index);
+  document.querySelector('#viewer-close').focus();
+}
+viewerImage.addEventListener('load', () => fitViewerImage(true));
+document.querySelector('#viewer-close').addEventListener('click', () => photoViewer.close());
+photoViewer.addEventListener('close', () => {
+  document.body.classList.remove('photo-viewer-open');
+  viewerGesture = null;
+  viewerReturnFocus?.focus({preventScroll:true});
+});
+document.querySelector('#viewer-prev').addEventListener('click', () => showViewerPhoto(viewerIndex - 1));
+document.querySelector('#viewer-next').addEventListener('click', () => showViewerPhoto(viewerIndex + 1));
+document.querySelector('#viewer-minus').addEventListener('click', () => setViewerZoom(viewerZoom - .5));
+document.querySelector('#viewer-plus').addEventListener('click', () => setViewerZoom(viewerZoom + .5));
+document.querySelector('#viewer-fit').addEventListener('click', () => setViewerZoom(1));
+viewerImage.addEventListener('click', () => {if (Date.now() >= viewerIgnoreClickUntil) setViewerZoom(viewerZoom === 1 ? 2 : 1);});
+photoViewer.addEventListener('keydown', event => {
+  if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {event.preventDefault(); showViewerPhoto(viewerIndex + (event.key === 'ArrowRight' ? 1 : -1));}
+  if (event.key === '+' || event.key === '=') {event.preventDefault(); setViewerZoom(viewerZoom + .5);}
+  if (event.key === '-') {event.preventDefault(); setViewerZoom(viewerZoom - .5);}
+  if (event.key === '0') {event.preventDefault(); setViewerZoom(1);}
+});
+viewerStage.addEventListener('pointerdown', event => {
+  if (viewerZoom !== 1 || !event.isPrimary || event.button !== 0) return;
+  viewerGesture = {x:event.clientX, y:event.clientY, pointer:event.pointerId};
+  if (event.pointerType !== 'mouse') viewerStage.setPointerCapture(event.pointerId);
+});
+function endViewerGesture(event) {
+  if (!viewerGesture || event.pointerId !== viewerGesture.pointer) return;
+  const dx = event.clientX - viewerGesture.x, dy = event.clientY - viewerGesture.y;
+  if (Math.abs(dx) > 10 || Math.abs(dy) > 10) viewerIgnoreClickUntil = Date.now() + 450;
+  if (event.type === 'pointerup' && Math.abs(dx) >= 45 && Math.abs(dx) > Math.abs(dy)) showViewerPhoto(viewerIndex + (dx < 0 ? 1 : -1));
+  if (viewerStage.hasPointerCapture(event.pointerId)) viewerStage.releasePointerCapture(event.pointerId);
+  viewerGesture = null;
+}
+window.addEventListener('pointerup', endViewerGesture);
+window.addEventListener('pointercancel', endViewerGesture);
+window.addEventListener('resize', () => fitViewerImage());
 renderOverview();
 document.querySelector('#hall-nav').innerHTML = halls.map(h => `<a href="#${h.id}">${escapeHTML(shortNames[h.id])}</a>`).join("");
 document.querySelector('#hall-list').innerHTML = halls.map(hallMarkup).join("");
 document.querySelectorAll('[data-gallery]').forEach(bindGallery);
+document.querySelectorAll('[data-region-photo]').forEach(button => button.addEventListener('click', () => openPhotoViewer(TRAVEL[button.dataset.regionPhoto].photos, Number(button.dataset.regionIndex), button)));
+document.querySelectorAll('[data-enlarge-map]').forEach(button => button.addEventListener('click', () => {
+  const hall = halls.find(h => h.id === button.dataset.enlargeMap), map = GALLERIES[hall.id].map;
+  openPhotoViewer([{...map, title:`Hallenplan · ${hall.name}`}], 0, button);
+}));
 document.querySelector('#share-app').addEventListener('click', async () => {
   const status = document.querySelector('#share-status');
   try {const url = new URL(location.href); url.hash = ''; await navigator.clipboard.writeText(url.href); status.textContent = 'Link kopiert – in Discord einfügen.';}
