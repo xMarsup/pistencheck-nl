@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#163e3b">
+  <meta name="description" content="Alle sieben Skihallen mit echtem Schnee in den Niederlanden: echte Pistenfotos, Pistenlängen und Preise für vier oder sechs Stunden inklusive Ski und Schuhen.">
+  <title>Pistencheck — Skihallen in den Niederlanden</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23163e3b'/%3E%3Cpath d='M7 23 15 8l5 10 3-5 4 10' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="regions.css">
+  <script defer src="halls.js"></script>
+  <script defer src="regions.js"></script>
+  <script defer src="gallery.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#hallen">Zum Vergleich</a>
+  <header class="site-header">
+    <a class="wordmark" href="#" aria-label="Pistencheck, zum Seitenanfang">
+      <svg class="brand-icon" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="currentColor"/><path d="M7 23 15 8l5 10 3-5 4 10" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Pistencheck<span class="brand-country">Niederlande</span>
+    </a>
+    <nav aria-label="Seitennavigation"><a class="nav-active" href="#hallen">Skihallen</a><a href="#regionen">Urlaubsregionen</a><a href="#preisgrundlage">Gutscheine</a></nav>
+  </header>
+  <main class="page-wrap">
+    <section class="intro" aria-labelledby="page-title">
+      <div><p class="eyebrow">Euer Herbsturlaub · 11.–18. Oktober 2026</p><h1 id="page-title">Ein Skitag. Ein kleiner Urlaub.</h1><p class="intro-copy">7 niederländische Skihallen · echte Fotos, faire Preise und die Umgebung dazu.</p></div>
+      <div class="checked"><span class="check-symbol" aria-hidden="true">✓</span><div>Recherche geprüft<small>6. Oktober 2026</small></div></div>
+    </section>
+    <div class="workspace">
+      <aside class="settings" aria-labelledby="settings-title">
+        <h2 id="settings-title">Dein Skitag</h2>
+        <div class="setting-block"><span class="control-label" id="duration-label">Fahrdauer</span><div class="segmented" role="group" aria-labelledby="duration-label"><button type="button" data-duration="4" aria-pressed="false">4 Stunden</button><button type="button" data-duration="6" aria-pressed="true">6 Stunden</button></div></div>
+        <div class="setting-block"><span class="control-label" id="price-label">Preisart</span><div class="segmented" role="group" aria-labelledby="price-label"><button type="button" data-mode="direct" aria-pressed="true">Direktpreis</button><button type="button" data-mode="voucher" aria-pressed="false">Gutschein</button></div><p id="mode-note" class="control-note">Online beim Betreiber.</p></div>
+        <p class="mobile-facts">13.10.2026 · Erwachsene · Ski & Schuhe inklusive</p>
+        <dl class="trip-facts"><div><dt>Vergleichstag</dt><dd>Di., 13. Oktober 2026</dd></div><div><dt>Im Preis dabei</dt><dd>Skipass, Ski & Skischuhe</dd></div><div><dt>Für wen?</dt><dd>Erwachsene, ohne Unterricht</dd></div></dl>
+        <div class="sidebar-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8v4m0 4h.01M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z"/></svg><p>Für 6 Stunden nutzt du bei SnowWorld den <strong>8-Stunden-Pass</strong>. Du kannst also länger bleiben.</p></div>
+        <a class="text-link" href="#preisgrundlage">So sind die Preise gerechnet</a>
+      </aside>
+      <section class="catalog" id="hallen" aria-labelledby="catalog-title">
+        <div class="catalog-top"><div><h2 id="catalog-title">Die 7 Hallen im Vergleich</h2><p>Nach längster Piste geordnet</p></div><span class="price-scope">Preis pro Person<span>inkl. Ski & Schuhen</span></span></div>
+        <div class="ruler-key"><span>Längste Abfahrt · gemeinsame 400-m-Skala</span><span>Inklusive Ski & Schuhe</span></div>
+        <div id="hall-list" class="hall-list"></div>
+        <p id="price-announcement" class="sr-only" role="status" aria-live="polite"></p>
+      </section>
+    </div>
+    <section class="region-section" id="regionen" aria-labelledby="region-title">
+      <div class="section-heading"><div><p class="eyebrow">Was ihr neben dem Skifahren bekommt</p><h2 id="region-title">Welches Gebiet passt zu euch?</h2></div><p>Fahrzeiten ab Skihalle, ohne Verkehr.<br>Richtwerte sind als Schätzung markiert.</p></div>
+      <div class="recommendation"><span>Unsere Auswahl</span><p><strong>Zoetermeer für die Mischung:</strong> lange Pisten, Elysium, Den Haag und Strand. <strong>Landgraaf für den Skitag:</strong> die längste Abfahrt, dazu Valkenburg und Thermae 2000.</p></div>
+      <div id="region-overview"></div>
+    </section>
+    <section class="price-method" id="preisgrundlage" aria-labelledby="method-title">
+      <div class="method-head"><p class="eyebrow">Damit du fair vergleichen kannst</p><h2 id="method-title">Was im Preis steckt.</h2></div>
+      <div class="method-grid">
+        <div><h3>Ein Skitag, dieselbe Rechnung</h3><p>Verglichen werden Erwachsene am <strong>13.10.2026</strong>. Der Gesamtpreis enthält Eintritt, Ski und Skischuhe. Der Stundenpreis teilt ihn durch deine gewählten 4 oder 6 Stunden. Kleidung, Schließfach, Essen und Unterricht sind nicht enthalten.</p><p>„Für euch beide“ bedeutet zwei Erwachsene mit einem Auto, inklusive der angegebenen Parkplatzkosten.</p></div>
+        <div><h3>Gutschein: Bedingungen bestätigt</h3><p>Der <a href="https://webwinkel.parool.nl/products/snowworld-ski" target="_blank" rel="noopener noreferrer">Parool-Gutschein</a> kostet 31,95 € für 4 Stunden oder 34,95 € für einen 8-Stunden-Tag. Dazu kommen 18,95 € für Ski & Schuhe. Er gilt in allen fünf niederländischen SnowWorld-Hallen.</p><p>Eure Oktoberwoche ist laut Bedingungen nicht ausgeschlossen. Die <a href="https://shop.snowworld.com/nl/voucher" target="_blank" rel="noopener noreferrer">offizielle Einlösung</a> wurde am 06.10. geöffnet: Ohne gekauften Code bleiben Termin und Material gesperrt. <strong>Einlösung und Gutscheinplätze sind damit nicht bestätigt.</strong></p></div>
+        <div><h3>Preisstand & Besonderheiten</h3><p>Ski-Direktpreise und reguläre Termine: <strong>05.10.2026</strong>. Gutscheinbedingungen, Shopprofile und neue Regionsinfos: <strong>06.10.2026</strong>. Andere Tage und spätere Buchungen können abweichen; der Betreiber-Shop entscheidet.</p><p>Montana: Tagespass mit Material. De Uithof: nur 1- und 2-Stunden-Einzelkarten bestätigt. Zusätzliche Kosten für Handschuhe, Helm, Kleidung oder Ausflüge sind nicht in den Ski-Preisen.</p></div>
+      </div>
+      <details class="source-details"><summary>Betreiber, Preise und Bildquellen</summary><div id="source-list" class="source-list"></div><p>Die Fotos stammen aus den jeweils verlinkten Bildquellen; die Rechte liegen bei den jeweiligen Urhebern. Sie zeigen die jeweilige Halle, sind aber keine Live-Aufnahmen. Pistenaufbau und Zustand können sich ändern. Die Längenbalken sind ein Größenvergleich, kein maßstabsgetreuer Pistenplan.</p></details>
+      <div class="center-parcs-note"><h3>Und Center Parcs?</h3><p>Center Parcs ist ein Ferienpark mit Ferienhäusern, Schwimmbad und Freizeitangeboten. Montana Snowcenter liegt beim Park De Kempervennen in Westerhoven bei Valkenswaard. Für den Skibesuch brauchst du dort keine Unterkunft. Die große Piste ist deutlich kürzer als in Landgraaf oder Zoetermeer.</p><a href="https://www.centerparcs.de/de-de/niederlande/fp_KV_ferienpark-de-kempervennen" target="_blank" rel="noopener noreferrer">De Kempervennen beim Betreiber</a></div>
+    </section>
+  </main>
+  <footer class="site-footer"><span>Pistencheck · Niederlande</span><button type="button" class="share-link" id="share-app">Link für Discord kopieren</button><span id="share-status" role="status" aria-live="polite"></span></footer>
+  <dialog id="hall-dialog" class="hall-dialog" aria-labelledby="detail-title"><button type="button" class="dialog-close" aria-label="Details schließen">×</button><div id="detail-content"></div></dialog>
+</body>
+</html>

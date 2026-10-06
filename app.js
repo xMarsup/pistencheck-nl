@@ -1,0 +1,144 @@
+"use strict";
+const state = {duration:6,mode:"direct",hall:null,tab:"pistes",photo:0};
+const euro = value => new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR"}).format(value);
+const escapeHTML = value => String(value ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+const parkIcon = '<svg viewBox="0 0 18 18" aria-hidden="true"><rect x="3" y="2" width="12" height="14" rx="2"/><path d="M7 13V5h3a2 2 0 0 1 0 4H7"/></svg>';
+const list = document.querySelector("#hall-list"), dialog = document.querySelector("#hall-dialog");
+const TABS = [{id:"pistes",label:"Pisten & Fotos"},{id:"prices",label:"Preise & Gutscheine"},{id:"coffee",label:"Coffeeshops"},{id:"area",label:"Umgebung"},{id:"travel",label:"Anreise & Parken"}];
+let galleryFrame=0, galleryResize=null, dialogTrigger=null;
+function link(url,label,className="") {
+  return `<a class="${className}" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(label)}<span class="sr-only"> (neuer Tab)</span></a>`;
+}
+function route(origin,destination,mode="driving") {
+  return "https://www.google.com/maps/dir/?api=1&origin="+encodeURIComponent(origin)+"&destination="+encodeURIComponent(destination)+"&travelmode="+mode;
+}
+function quote(hall,mode=state.mode,duration=state.duration) {
+  if(hall.direct[duration] === null) return null;
+  const voucher = mode === "voucher" && hall.id !== "montana";
+  const entry = voucher ? (duration===4?31.95:34.95) : hall.direct[duration];
+  const total = Math.round((entry+hall.gear)*100)/100;
+  return {entry,gear:hall.gear,total,rate:total/duration,pair:Math.round((total*2+hall.parking)*100)/100,voucher,pass:hall.id==="montana"?"Tagespass inkl. Material":duration===4?"4-Stunden-Pass":"8-Stunden-Pass"};
+}
+function imageMarkup(hall) {
+  const p=PHOTO_DATA[hall.id];
+  return `<img src="${escapeHTML(p.src)}" alt="${escapeHTML(p.alt)}" width="${p.width}" height="${p.height}" loading="${hall.id==="landgraaf"?"eager":"lazy"}" ${hall.id==="landgraaf"?'fetchpriority="high"':''}>`;
+}
+function row(hall,index) {
+  const q=quote(hall), region=REGIONS[hall.id], count=GALLERIES[hall.id].photos.length;
+  return `<article class="hall-row" data-hall="${hall.id}" style="animation-delay:${index*20}ms">
+    <figure class="hall-media"><button class="photo-open" type="button" data-detail="${hall.id}" aria-label="${count} Pistenfotos von ${escapeHTML(hall.name)} ansehen">${imageMarkup(hall)}</button><span class="photo-length">${escapeHTML(hall.lengthLabel)}</span><span class="photo-count">${count} Fotos${GALLERIES[hall.id].map?' + Plan':''}</span><span class="photo-credit">Foto: ${escapeHTML(PHOTO_DATA[hall.id].credit)}</span></figure>
+    <div class="hall-content"><p class="hall-region">${escapeHTML(hall.region)}</p><h3>${escapeHTML(hall.name)}</h3><span class="hall-badge ${hall.badgeType}">${escapeHTML(hall.badge)}</span><p class="hall-stats">${escapeHTML(hall.areas)}</p><div class="length-line" aria-label="Längste Piste ${escapeHTML(hall.lengthLabel)} auf einer Skala bis 400 Meter"><div class="length-track"><div class="length-fill" style="--length:${hall.length/4}%"></div></div><span class="length-number">${escapeHTML(hall.lengthLabel)}</span></div><p class="hall-note">${escapeHTML(hall.note)}</p><p class="region-teaser">${escapeHTML(region.headline)}</p><div class="row-bottom"><span class="parking-label">${parkIcon}${escapeHTML(hall.parkingText)}</span><button class="detail-link" type="button" data-detail="${hall.id}">Gebiet ansehen <span aria-hidden="true">↗</span></button></div></div>
+    <div class="hall-price">${q?`<span class="price-context">${q.voucher?'Mit Gutschein':'Pro Person'}</span><div class="price-main">${euro(q.total).replace(' €',' <small>€</small>')}</div><div class="price-rate">${euro(q.rate)} / Stunde</div><span class="pass-label">${q.pass}</span><div class="pair-total">Für euch beide + Parken<strong>${euro(q.pair)}</strong></div>${q.voucher?'<p class="voucher-warning">Einlösung mit Code noch offen</p>':''}`:`<span class="price-context">Für ${state.duration} Stunden</span><p class="no-pass">Kein Pass bestätigt</p><p class="alternate-price">2 Stunden inkl. Material: <strong>${euro(46)}</strong></p><span class="pass-label">1 oder 2 Stunden im Shop</span>`}</div></article>`;
+}
+function render() {
+  list.innerHTML=halls.map(row).join("");
+  document.querySelectorAll("[data-duration]").forEach(b=>b.setAttribute("aria-pressed",String(Number(b.dataset.duration)===state.duration)));
+  document.querySelectorAll("[data-mode]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.mode===state.mode)));
+  document.querySelector("#mode-note").textContent=state.mode==="voucher"?"5 SnowWorld-Hallen. Bedingungen bestätigt; Einlösung mit Code noch offen.":"Betreiberpreis, geprüft am 05.10.2026.";
+  document.querySelector("#price-announcement").textContent=`${state.duration} Stunden, ${state.mode==='voucher'?'Gutscheinpreise':'Direktpreise'}, einschließlich Ski und Schuhen.`;
+}
+function galleryMarkup(hall) {
+  const gallery=GALLERIES[hall.id];
+  return `<div class="gallery" aria-label="Fotogalerie ${escapeHTML(hall.name)}"><div class="gallery-heading"><h3>Echte Blicke auf die Pisten</h3><span>Wischen oder Pfeile nutzen</span></div>
+    <div class="gallery-viewport" tabindex="0" aria-label="Pistenbilder. Mit Pfeiltasten blättern.">${gallery.photos.map((p,i)=>`<figure class="gallery-slide" role="group" aria-label="Bild ${i+1} von ${gallery.photos.length}"><div class="gallery-image"><img src="${escapeHTML(p.src)}" alt="${escapeHTML(p.caption)}" width="${p.width}" height="${p.height}" ${i?'loading="lazy"':'loading="eager"'} draggable="false"></div><figcaption><strong>${escapeHTML(p.title)}</strong><p>${escapeHTML(p.caption)}</p><div class="gallery-credit">${escapeHTML(p.credit)} · ${link(p.source,"Bildquelle")}</div></figcaption></figure>`).join("")}</div>
+    <div class="gallery-toolbar"><button class="gallery-arrow" type="button" data-gallery-step="-1" aria-label="Vorheriges Bild">←</button><span id="gallery-count" aria-live="polite">1 / ${gallery.photos.length}</span><button class="gallery-arrow" type="button" data-gallery-step="1" aria-label="Nächstes Bild">→</button></div>
+    <div class="gallery-thumbs" role="group" aria-label="Bild auswählen">${gallery.photos.map((p,i)=>`<button type="button" data-photo="${i}" aria-label="Bild ${i+1}: ${escapeHTML(p.title)}" aria-pressed="${i===0}"><img src="${escapeHTML(p.src)}" alt="" loading="lazy" width="90" height="60"><span>${escapeHTML(p.title)}</span></button>`).join("")}</div>
+    <p class="photo-timing">Archiv- und Betreiberfotos, keine Live-Aufnahmen. Aufnahmedatum meist unbekannt; ältere Bilder können frühere Parkelemente zeigen. Für euren Vergleich werden Funparks nicht als Vorteil gewertet.</p></div>`;
+}
+function pistesMarkup(hall) {
+  const gallery=GALLERIES[hall.id], colors={red:"var(--red)",blue:"var(--blue)",green:"var(--green)"};
+  return `${galleryMarkup(hall)}<div class="pistes-layout"><section><h3>Pisten & Länge</h3><p class="small-note">Gemeinsame Skala: 400 Meter</p><ul class="piste-list">${hall.pistes.map(p=>`<li class="piste-item" style="--piste-color:${colors[p.color]}"><div class="piste-label"><span class="piste-dot" aria-hidden="true"></span>${escapeHTML(p.name)}<strong>${p.length===null?'Länge offen':p.length+' m'}</strong></div>${p.length===null?'':`<div class="piste-track"><span style="--length:${p.length/4}%"></span></div>`}</li>`).join("")}</ul><p class="piste-footnote">${escapeHTML(hall.terrainNote)}</p>${link(hall.source,"Pisten beim Betreiber","text-link")}</section><section class="piste-map"><h3>Aufteilung in der Halle</h3>${gallery.map?`<a href="${escapeHTML(gallery.map.src)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHTML(gallery.map.title)} in voller Größe öffnen"><img src="${escapeHTML(gallery.map.src)}" alt="${escapeHTML(gallery.map.caption)}" width="${gallery.map.width}" height="${gallery.map.height}" loading="lazy"></a><p>${escapeHTML(gallery.map.credit)} · ${link(gallery.map.source,"Betreiberquelle")} · Plan zum Vergrößern antippen.</p>`:'<p class="map-gap">Kein belastbarer offizieller Pistenplan gefunden. Die Längenbalken dienen als Größenvergleich und bilden keinen Grundriss ab.</p>'}</section></div>
+    <details class="coverage-note"><summary>Welche Pisten sind auf den Fotos belegt?</summary><ul>${gallery.photos.map(p=>`<li><strong>${escapeHTML(p.title)}:</strong> ${escapeHTML(p.piste)}</li>`).join("")}</ul>${gallery.gaps.map(g=>`<p>${escapeHTML(g)}</p>`).join("")}</details>
+    <div class="detail-alert"><strong>Aktueller Betrieb:</strong> ${escapeHTML(hall.warning)}<p>${escapeHTML(hall.availability)} Regulärer Ticketcheck: 05.10.2026, keine Platzgarantie.</p></div>`;
+}
+function pricesMarkup(hall) {
+  const hasVoucher=!["montana","uithof"].includes(hall.id);
+  return `<div class="panel-intro"><p class="eyebrow">${state.duration} Stunden auf der Piste</p><h3>Eintritt + Ski + Schuhe.</h3><p>Erwachsene am 13.10.2026, ohne Unterricht. Direktpreise wurden am 05.10. geprüft, Gutscheinbedingungen am 06.10.</p></div>
+    <div class="price-comparison">${["direct",...(hasVoucher?["voucher"]:[])].map(mode=>{const c=quote(hall,mode);return `<section><h4>${mode==='voucher'?'Parool-Gutschein':'Direkt beim Betreiber'}</h4>${c?`<dl class="cost-breakdown"><div><dt>${c.pass}</dt><dd>${euro(c.entry)}</dd></div><div><dt>Ski & Schuhe</dt><dd>${c.gear?euro(c.gear):'inklusive'}</dd></div><div class="cost-sum"><dt>Pro Person</dt><dd>${euro(c.total)}</dd></div></dl><p class="hourly">${euro(c.rate)} je geplanter Stunde</p><p>Für zwei + ein Auto: <strong>${euro(c.pair)}</strong></p>`:'<p><strong>4-/6-Stunden-Pass nicht bestätigt.</strong></p><p>2 h: 31,50 € Eintritt + 8,50 € Ski + 6 € Schuhe = <strong>46 € p. P.</strong></p>'}</section>`;}).join("")}</div>
+    ${hasVoucher?`<div class="voucher-check"><h3>Was wurde wirklich geprüft?</h3><ol class="check-list"><li><span class="check-status confirmed">Bestätigt</span><div><strong>Angebot & Preis</strong><p>4 h 31,95 €, Tagespass 34,95 €, Material extra. Alle fünf niederländischen SnowWorld-Hallen sind genannt.</p></div></li><li><span class="check-status confirmed">Bestätigt</span><div><strong>Eure Oktoberwoche passt zu den Bedingungen</strong><p>11.–18.10. ist nicht ausgeschlossen. Ausgenommen ist 19.12.2026–03.01.2027. Gültigkeit bis Ende März 2027; Bedingungen und FAQ unterscheiden sich um einen Tag.</p></div></li><li><span class="check-status confirmed">Geöffnet</span><div><strong>Offizielle Einlösemaske</strong><p>Am 06.10. aufgerufen. Erst ein gültiger gekaufter Code schaltet Material- und Terminauswahl frei.</p></div></li><li><span class="check-status pending">Noch offen</span><div><strong>Tatsächliche Einlösung & Gutscheinplätze am 13.10.</strong><p>Ohne echten Code nicht testbar. Ein regulär buchbarer Termin beweist kein freies Gutscheinkontingent.</p></div></li></ol><p>Ein Gutschein pro Person und Besuch, kein Aufteilen auf mehrere Tage, nicht mit anderen Rabatten kombinierbar. Die Zahlungsbestätigung ist kein Skipass. Laut Angebot keine Rückerstattung nach Kauf; deshalb Bedingungen vor dem Bezahlen lesen.</p><div class="detail-links">${link(VOUCHER_URL,"Angebot & Bedingungen","primary-link")}${link("https://shop.snowworld.com/nl/voucher","Code beim Betreiber einlösen","secondary-link")}</div></div>`:`<div class="detail-alert"><strong>${hall.id==='montana'?'Kein zusätzlicher bestätigter Gutschein':'Parool gilt hier nicht.'}</strong><p>${hall.id==='montana'?'Der reguläre Tagespass kostet bereits 37,50 € einschließlich Ski und Schuhen. Ein weiterer aktuell einlösbarer Rabatt wurde nicht bestätigt.':'De Uithof ist keine der fünf niederländischen SnowWorld-Hallen. Ein anderer aktuell einlösbarer Gutschein für euren 4-/6-Stunden-Skitag wurde nicht bestätigt.'}</p></div>`}
+    ${hall.id==='montana'?`<p class="small-note">Montanas „Voucher“ ist ein Geschenkgutschein, kein bestätigter Rabatt. Der beworbene 17,50-€-Anschluss-Skipass gilt nur nach Unterricht am selben Tag und passt deshalb nicht zu eurem Plan ohne Unterricht. ${link("https://www.montana-snowcenter.nl/vouchers/","Voucher-Bedingungen")}</p>`:''}<p class="small-note">${escapeHTML(hall.hours)}. Helm und Handschuhe sind bei SnowWorld vorgeschrieben; deren Kosten, Kleidung, Schließfach und Essen sind in dieser Rechnung nicht ergänzt. Der Stundenpreis wird durch eure geplanten ${state.duration} Stunden geteilt.</p><div class="detail-links">${link(hall.booking,"Reguläre Tickets beim Betreiber","secondary-link")}</div>`;
+}
+function sourceLinks(sources) {
+  return `<details class="region-sources"><summary>Quellen & Prüfstand</summary><p>Geprüft am 06.10.2026. Regeln können sich ändern; verlinkte Betreiber- und Gemeindeinformationen haben Vorrang.</p><ul>${sources.map(s=>`<li>${link(s.url,s.label)}</li>`).join("")}</ul></details>`;
+}
+function coffeeMarkup(hall) {
+  const r=REGIONS[hall.id], c=r.coffee;
+  return `<div class="panel-intro"><span class="access-status ${c.tone}">${escapeHTML(c.status)}</span><h3>Kannst du als deutscher Tourist einkaufen?</h3><p>${escapeHTML(c.rule)}</p></div><div class="shop-list">${c.shops.map(s=>`<article class="shop-row"><div class="shop-title"><div><p class="hall-region">${escapeHTML(s.city)}</p><h4>${escapeHTML(s.name)}</h4><p>${escapeHTML(s.address)}</p></div>${s.rating?`<div class="shop-rating"><strong>${escapeHTML(s.rating)}</strong><span>${s.reviews} Bewertungen · Greenmeister</span></div>`:'<span class="no-rating">Keine vergleichbare Bewertung erhoben</span>'}</div><div class="shop-facts"><span>${escapeHTML(s.time)} ab Halle${s.measured?' · Routencheck 05.10.':' · Schätzung'}</span><span>${escapeHTML(s.access)}</span></div><p>${escapeHTML(s.note)}</p><div class="inline-links">${link(route(r.address,s.address),"Route ab Skihalle")}${s.profile?link(s.profile,"Shopprofil"):''}${s.website?link(s.website,"Betreiber"):''}</div></article>`).join("")}</div><p class="small-note">${GREENMEISTER_NOTE}</p>
+    <aside class="coffee-basics"><h4>Für euren Besuch</h4><p>Mindestens 18 Jahre und gültigen Personalausweis oder Reisepass mitnehmen. Maßgeblich ist der Wohnsitz, nicht die deutsche Staatsangehörigkeit. Cannabisverkauf wird unter Bedingungen geduldet; die kommunale Durchsetzung unterscheidet sich.</p><p>Der Fahrer bleibt nüchtern. Cannabis nicht über die deutsche Grenze mitnehmen. Auch auf einer Route innerhalb der Niederlande kann eine Navigation einen Schlenker über Deutschland vorschlagen.</p>${link("https://www.zoll.de/SharedDocs/Pressemitteilungen/DE/Rauschgift/2024/z51_kugeln_n.html","Zoll: Einfuhr bleibt verboten")}</aside>${sourceLinks(c.sources)}`;
+}
+function areaMarkup(hall) {
+  const r=REGIONS[hall.id];
+  return `<div class="panel-intro"><p class="eyebrow">${escapeHTML(r.bestFor)}</p><h3>${escapeHTML(r.headline)}</h3><p>${escapeHTML(r.summary)}</p><p class="tradeoff"><strong>Für euch abwägen:</strong> ${escapeHTML(r.tradeoff)}</p></div><p class="route-note">Alle Zeiten ab Skihalle sind grobe Autovergleichswerte ohne Verkehr. Mit „Route“ könnt ihr sie für euren Tag berechnen. Ausflüge sind Vorschläge, keine reservierten Termine.</p><div class="place-list">${r.places.map(p=>`<article class="place-row"><div class="place-label">${escapeHTML(p.kind)}</div><div><h4>${escapeHTML(p.title)}</h4><p>${escapeHTML(p.description)}</p><div class="inline-links">${p.url?link(p.url,"Infos & Öffnungstage"):''}${p.destination?link(route(r.address,p.destination),"Route ab Skihalle"):''}</div></div><span class="place-time">${escapeHTML(p.time)}${p.time.startsWith('ca.')?'<small>Schätzung</small>':''}</span></article>`).join("")}</div><section class="mini-plan"><h3>So passen vier Tage zusammen</h3><ol>${r.plan.map((p,i)=>`<li><span>Tag ${i+1}</span>${escapeHTML(p)}</li>`).join("")}</ol><p class="small-note">Freizeitpark optional statt eines anderen Ausflugs. Ski, Spa und Hotel vor der Buchung auf denselben Reisezeitraum abstimmen.</p></section>`;
+}
+function travelMarkup(hall) {
+  const r=REGIONS[hall.id], t=r.transport;
+  return `<div class="panel-intro"><p class="eyebrow">Auto oder öffentlicher Verkehr</p><h3>Kurze Wege & die volle Rechnung.</h3><p>${escapeHTML(r.arrival)}</p><div class="inline-links">${link(route("Löningen, Deutschland",r.address),"Auto ab Löningen")}${link(route("Löningen, Deutschland",r.address,"transit"),"Bahn / Bus ab Löningen")}</div></div><section class="transport-block"><div><p class="hall-region">Öffentlicher Verkehr vor Ort</p><h4>${escapeHTML(t.name)}</h4><p>${escapeHTML(t.description)}</p></div><div class="transport-price"><strong>${escapeHTML(t.price)}</strong><span>Ticketpreis 2026</span>${link(t.url,"Gültigkeit & Tarif")}</div></section><p class="transport-note"><strong>Kein kostenloses allgemeines Touristenticket bestätigt.</strong> Tageskarten lohnen sich erst bei mehreren Fahrten. Für zwei verdoppeln sich die angegebenen Personentarife; ein gemeinsam genutztes Auto kann dann günstiger sein. Ein Hotel-Shuttle oder Gästeticket nur einrechnen, wenn die Unterkunft es ausdrücklich anbietet.</p><section class="travel-section"><h4>Parken</h4><p>${escapeHTML(t.parking)}</p>${t.extraUrl?link(t.extraUrl,"Tunnel: aktuelle Regeln"):''}</section><section class="travel-section"><h4>${escapeHTML(r.stay.title)}</h4><p>${escapeHTML(r.stay.description)}</p><div class="inline-links">${link("https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(r.stay.destination),"Unterkunftsgebiet ansehen")}</div></section><aside class="hotel-math"><h4>Hotel mit oder ohne Parkgebühren?</h4><p>Für 3 Nächte zählt <strong>Zimmerpreis + 3 × Parkplatz pro Nacht + weitere Pflichtgebühren</strong>. Beispiel: 240 € Zimmer + 30 € Parken ist günstiger als 285 € mit Gratisparkplatz. Kostenloses Parken allein entscheidet nicht.</p><p>Euer Rahmen: 1.000 € für zwei. Zuerst Unterkunft, Ski und Spa abziehen; Fahrt, Essen und optionale Parktickets kommen danach. Hier sind keine neuen Hotelzimmer reserviert.</p></aside>`;
+}
+function detailMarkup(hall) {
+  const r=REGIONS[hall.id];
+  return `<header class="detail-header"><p class="hall-region">${escapeHTML(hall.region)}</p><h2 id="detail-title">${escapeHTML(hall.name)}</h2><p>${escapeHTML(hall.detail)}</p></header><div class="detail-tabs" role="tablist" aria-label="Gebietsdetails">${TABS.map(t=>`<button type="button" role="tab" id="tab-${t.id}" aria-controls="panel-${t.id}" aria-selected="${t.id===state.tab}" tabindex="${t.id===state.tab?0:-1}" data-tab="${t.id}">${t.label}</button>`).join("")}</div><div class="detail-panels">${TABS.map(t=>`<section role="tabpanel" id="panel-${t.id}" aria-labelledby="tab-${t.id}" ${state.tab===t.id?'':'hidden'}>${({pistes:pistesMarkup,prices:pricesMarkup,coffee:coffeeMarkup,area:areaMarkup,travel:travelMarkup})[t.id](hall)}</section>`).join("")}</div><div class="detail-bottom"><span>${escapeHTML(r.bestFor)}</span><button type="button" class="text-button" data-close>Zurück zum Vergleich</button></div>`;
+}
+function openDetail(id,tab="pistes") {
+  const hall=halls.find(h=>h.id===id); if(!hall) return;
+  dialogTrigger=document.activeElement;state.hall=id;state.tab=tab;state.photo=0;
+  if(galleryResize)galleryResize.disconnect();
+  document.querySelector("#detail-content").innerHTML=detailMarkup(hall);
+  if(!dialog.open)dialog.showModal();
+  document.body.style.overflow="hidden";dialog.scrollTop=0;bindGallery();
+  document.querySelector(".dialog-close").focus({preventScroll:true});
+}
+function selectTab(id,focus=false) {
+  if(!TABS.some(t=>t.id===id))return;
+  state.tab=id;
+  dialog.querySelectorAll("[data-tab]").forEach(t=>{t.setAttribute("aria-selected",String(t.dataset.tab===id));t.tabIndex=t.dataset.tab===id?0:-1;});
+  dialog.querySelectorAll('[role="tabpanel"]').forEach(p=>p.hidden=p.id!=="panel-"+id);
+  if(focus)dialog.querySelector(`[data-tab="${id}"]`).focus({preventScroll:true});
+  if(id==="pistes")requestAnimationFrame(()=>goToPhoto(state.photo,false));
+}
+function updateGallery(index) {
+  const photos=GALLERIES[state.hall]?.photos;if(!photos)return;
+  state.photo=Math.max(0,Math.min(photos.length-1,index));
+  const count=dialog.querySelector("#gallery-count");if(count)count.textContent=`${state.photo+1} / ${photos.length} · ${photos[state.photo].title}`;
+  dialog.querySelectorAll("[data-photo]").forEach(b=>b.setAttribute("aria-pressed",String(Number(b.dataset.photo)===state.photo)));
+  dialog.querySelectorAll("[data-gallery-step]").forEach(b=>{b.disabled=Number(b.dataset.galleryStep)<0?state.photo===0:state.photo===photos.length-1;});
+}
+function goToPhoto(index,smooth=true) {
+  const viewport=dialog.querySelector(".gallery-viewport");if(!viewport)return;
+  const n=Math.max(0,Math.min(GALLERIES[state.hall].photos.length-1,index));
+  viewport.scrollTo({left:n*viewport.clientWidth,behavior:smooth&&!matchMedia('(prefers-reduced-motion: reduce)').matches?'smooth':'instant'});updateGallery(n);
+}
+function bindGallery() {
+  const viewport=dialog.querySelector(".gallery-viewport");if(!viewport)return;
+  viewport.addEventListener("scroll",()=>{cancelAnimationFrame(galleryFrame);galleryFrame=requestAnimationFrame(()=>{if(viewport.clientWidth)updateGallery(Math.round(viewport.scrollLeft/viewport.clientWidth));});},{passive:true});
+  viewport.addEventListener("keydown",e=>{if(e.key==="ArrowRight"||e.key==="ArrowLeft"){e.preventDefault();goToPhoto(state.photo+(e.key==="ArrowRight"?1:-1));}if(e.key==="Home"||e.key==="End"){e.preventDefault();goToPhoto(e.key==="Home"?0:GALLERIES[state.hall].photos.length-1);}});
+  let drag=null;
+  viewport.addEventListener("pointerdown",e=>{if(e.pointerType!=="mouse"||e.button!==0||e.target.closest('a'))return;drag={x:e.clientX,left:viewport.scrollLeft,moved:false};viewport.setPointerCapture(e.pointerId);});
+  viewport.addEventListener("pointermove",e=>{if(!drag)return;const distance=e.clientX-drag.x;if(Math.abs(distance)>6)drag.moved=true;if(drag.moved){viewport.classList.add("dragging");viewport.scrollLeft=drag.left-distance;}});
+  function endDrag(){if(!drag)return;const moved=drag.moved;drag=null;viewport.classList.remove("dragging");if(moved)goToPhoto(Math.round(viewport.scrollLeft/viewport.clientWidth));}
+  viewport.addEventListener("pointerup",endDrag);viewport.addEventListener("pointercancel",endDrag);
+  galleryResize=new ResizeObserver(()=>{if(!viewport.clientWidth)return;goToPhoto(state.photo,false);});galleryResize.observe(viewport);updateGallery(0);
+}
+function renderRegions() {
+  document.querySelector("#region-overview").innerHTML=`<div class="region-table" role="table" aria-label="Urlaubsregionen vergleichen"><div class="region-table-head" role="row"><span role="columnheader">Skihalle & Charakter</span><span role="columnheader">Spa & Umgebung</span><span role="columnheader">Coffeeshop-Zugang</span><span role="columnheader">Parken an der Halle</span></div>${halls.map(h=>{const r=REGIONS[h.id],spa=r.places.find(p=>p.kind==='Spa'),sea=r.places.find(p=>p.kind==='Meer');return `<div class="region-table-row" role="row"><div role="cell"><button class="region-name" type="button" data-detail="${h.id}" data-detail-tab="area">${escapeHTML(h.name)}</button><p>${escapeHTML(r.bestFor)}</p></div><div role="cell"><strong>${escapeHTML(spa.title)}</strong><p>${escapeHTML(spa.time)} · Schätzung</p><span class="sea-label">${escapeHTML(sea.title)}</span></div><div role="cell"><button class="access-link ${r.coffee.tone}" type="button" data-detail="${h.id}" data-detail-tab="coffee">${escapeHTML(r.coffee.status)} <span aria-hidden="true">↗</span></button><p>${escapeHTML(r.coffee.shops[0].name)} · ${escapeHTML(r.coffee.shops[0].time)}</p></div><div role="cell"><strong>${h.parking?euro(h.parking)+' / Auto':'Kostenlos'}</strong><button type="button" class="detail-link" data-detail="${h.id}" data-detail-tab="travel">Anreise & Hotel</button></div></div>`;}).join("")}</div>`;
+}
+function renderSources() {
+  document.querySelector("#source-list").innerHTML=halls.map(h=>`<div class="source-row"><strong>${escapeHTML(h.name)}</strong>${link(h.source,"Pisteninfos")}${link(h.booking,"Ticketpreise")}<button type="button" class="text-button" data-detail="${h.id}">Alle Fotoquellen</button></div>`).join("")+`<div class="source-row"><strong>Gutschein & Regeln</strong>${link(VOUCHER_URL,"Parool-Bedingungen")}${link("https://shop.snowworld.com/nl/voucher","Offizielle Einlösung")}${link(CCV_RULES,"Kommunale Shopregeln")}</div><p>Neue Galeriequellen stehen bei jedem Bild. Fotos und Pläne sind keine Live-Ansichten; Rechte bleiben bei den Urhebern. Der genaue Pistenaufbau kann sich seit der Aufnahme verändert haben.</p>`;
+}
+document.querySelectorAll("[data-duration]").forEach(b=>b.addEventListener("click",()=>{state.duration=Number(b.dataset.duration);render();}));
+document.querySelectorAll("[data-mode]").forEach(b=>b.addEventListener("click",()=>{state.mode=b.dataset.mode;render();}));
+document.addEventListener("click",e=>{const b=e.target.closest("[data-detail]");if(b)openDetail(b.dataset.detail,b.dataset.detailTab||"pistes");});
+dialog.addEventListener("click",e=>{const t=e.target.closest("[data-tab]");if(t)selectTab(t.dataset.tab);const photo=e.target.closest("[data-photo]");if(photo)goToPhoto(Number(photo.dataset.photo));const step=e.target.closest("[data-gallery-step]");if(step)goToPhoto(state.photo+Number(step.dataset.galleryStep));if(e.target.closest('[data-close],.dialog-close'))dialog.close();if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}});
+dialog.addEventListener("keydown",e=>{if(!e.target.matches('[role="tab"]'))return;let index=TABS.findIndex(t=>t.id===state.tab);if(e.key==='ArrowRight')index=(index+1)%TABS.length;else if(e.key==='ArrowLeft')index=(index+TABS.length-1)%TABS.length;else if(e.key==='Home')index=0;else if(e.key==='End')index=TABS.length-1;else return;e.preventDefault();selectTab(TABS[index].id,true);});
+dialog.addEventListener("close",()=>{document.body.style.overflow="";cancelAnimationFrame(galleryFrame);galleryResize?.disconnect();dialogTrigger?.focus({preventScroll:true});});
+document.querySelector("#share-app").addEventListener("click",async()=>{const status=document.querySelector("#share-status");try{const url=new URL(location.href);url.hash="";await navigator.clipboard.writeText(url.href);status.textContent="Link kopiert – in Discord einfügen.";}catch{status.textContent="Zum Teilen die Adresse aus der Browserleiste kopieren.";}});
+render();renderRegions();renderSources();
+function comparisonSnapshot() {
+  return {date:"2026-10-13",pricesChecked:"2026-10-05",regionAndVoucherConditionsChecked:"2026-10-06",duration:state.duration,priceMode:state.mode,currency:"EUR",includes:["skipass","ski","ski-boots"],halls:halls.map(h=>{const q=quote(h),r=REGIONS[h.id];return {id:h.id,name:h.name,longestPisteMetres:h.length,pricePerPerson:q?.total??null,effectivePricePerHour:q?Math.round(q.rate*100)/100:null,twoAdultsOneCar:q?.pair??null,ticket:q?.pass??"No confirmed 4/6-hour pass",voucherRedemptionVerified:false,voucherConditionsVerified:!["uithof","montana"].includes(h.id),photoCount:GALLERIES[h.id].photos.length,coffeeAccess:r.coffee.status,regionSummary:r.summary};})};
+}
+if(document.modelContext?.registerTool) {
+  const lifecycle=new AbortController(),context=document.modelContext;
+  const schemas={type:"object",properties:{duration:{type:"integer",enum:[4,6]},priceMode:{type:"string",enum:["direct","voucher"]}},required:["duration","priceMode"],additionalProperties:false};
+  const tools=[{name:"get_ski_comparison",title:"Skihallenvergleich lesen",description:"Read the seven-hall adult ski comparison, ski/boots-inclusive prices, gallery counts, region access caveats and check dates. Voucher redemption is unverified. No purchase or reservation.",inputSchema:{type:"object",properties:{},additionalProperties:false},annotations:{readOnlyHint:true,untrustedContentHint:false},execute:()=>comparisonSnapshot()},{name:"configure_ski_comparison",title:"Fahrdauer und Preisart wählen",description:"Set the displayed four/six-hour and direct/voucher comparison. Only changes page display; no booking.",inputSchema:schemas,annotations:{readOnlyHint:false,untrustedContentHint:false},execute:input=>{if(!input||typeof input!=="object"||![4,6].includes(input.duration)||!["direct","voucher"].includes(input.priceMode)||Object.keys(input).some(k=>!["duration","priceMode"].includes(k)))throw new Error("Choose duration 4 or 6 and priceMode direct or voucher.");state.duration=input.duration;state.mode=input.priceMode;render();return comparisonSnapshot();}}];
+  for(const tool of tools){try{void Promise.resolve(context.registerTool(tool,{signal:lifecycle.signal})).catch(()=>{});}catch{}}
+  window.addEventListener("pagehide",()=>lifecycle.abort(),{once:true});
+}
