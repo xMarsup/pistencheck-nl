@@ -119,13 +119,14 @@ function hotelsMarkup(hall) {
 }
 function hallMarkup(hall, index) {
   const r = REGIONS[hall.id], spa = r.places.find(p => p.kind === 'Spa'), shop = r.coffee.shops[0];
+  const plan = [r.plan[0], r.plan[2], r.plan[1], r.plan[3]], dates = ['So. 11.10.', 'Mo. 12.10.', 'Di. 13.10.', 'Mi. 14.10.'];
   return `<article class="hall-section" id="${hall.id}" aria-labelledby="title-${hall.id}"><header class="hall-heading"><div><p class="eyebrow">${String(index + 1).padStart(2, '0')} · ${escapeHTML(hall.region)}</p><h2 id="title-${hall.id}">${escapeHTML(hall.name)}</h2><span class="hall-badge ${hall.badgeType}">${escapeHTML(hall.badge)}</span></div><div class="hall-heading-copy"><p>${escapeHTML(hall.detail)}</p></div></header>
     <div class="hall-summary"><div class="summary-fact"><span>Längste Abfahrt</span><strong>${escapeHTML(hall.lengthLabel)}</strong><small>${escapeHTML(hall.areas)}</small></div><div class="summary-fact"><span>Spa in der Nähe</span><strong>${escapeHTML(spa.title)}</strong><small>${escapeHTML(spa.time)} ab Halle · Schätzung</small></div><div class="summary-fact"><span>Coffeeshop-Option</span><strong>${escapeHTML(shop.name)} · ${escapeHTML(shop.city)}</strong><small>${escapeHTML(shop.address)}</small><small>${escapeHTML(shop.time)} · ${escapeHTML(shop.access)}</small></div><div class="summary-fact"><span>Parken an der Halle</span><strong>${hall.parking ? euro(hall.parking) + ' / Auto' : 'Kostenlos'}</strong><small>${hall.parking ? '8 € online · vor Ort bis 9 €' : 'Hotel / Stadt separat prüfen'}</small></div></div>
     <div class="hall-main"><div>${galleryMarkup(hall)}${pistesMarkup(hall)}</div><div>${pricesMarkup(hall)}${coffeeMarkup(hall)}</div></div>
     ${regionVisualsMarkup(hall)}
     <div class="hall-lower">${areaMarkup(hall)}${travelMarkup(hall)}</div>
     ${hotelsMarkup(hall)}
-    <section class="four-day-plan" aria-labelledby="plan-${hall.id}"><h3 id="plan-${hall.id}">Vier Tage in diesem Gebiet</h3><ol class="plan-days">${r.plan.map((p, i) => `<li><span>Tag ${i + 1}</span>${escapeHTML(p)}</li>`).join("")}</ol><p class="small-note">Freizeitpark optional statt eines anderen Ausflugs. Ski, Spa und Hotel für dieselben Reisetage abstimmen.</p></section>
+    <section class="four-day-plan" aria-labelledby="plan-${hall.id}"><h3 id="plan-${hall.id}">Vier Tage in diesem Gebiet · 11.–14.10.</h3><ol class="plan-days">${plan.map((p, i) => `<li><span>Tag ${i + 1} · ${dates[i]}</span>${escapeHTML(p)}</li>`).join("")}</ol><p class="small-note">Skifahren am Dienstag, passend zum Preischeck. Freizeitpark optional statt eines anderen Ausflugs. Öffnung und Textiltage des Spas für Montag prüfen.</p></section>
   </article>`;
 }
 function renderOverview() {
