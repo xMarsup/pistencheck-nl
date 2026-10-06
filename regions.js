@@ -1,123 +1,308 @@
 "use strict";
-
-const CCV_RULES = "https://hetccv.nl/themas/georganiseerde-criminaliteit-en-ondermijning/drugstoerisme/ervaringen-ingezetenencriterium/";
-const BCD_RULES = "https://coffeeshopbond.nl/publicaties/factsheet-i-criterium";
-const HTM_TICKETS = "https://www.htm.nl/reisproducten/producten-tarieven/";
-const BRABANT_TICKETS = "https://www.hermes.nl/nl/shop/kaartjes/dalurendagkaart-brabant";
 const GREENMEISTER_NOTE = "Greenmeister, am 06.10.2026 im Browser geprüft. Bewertungen stammen von Nutzern; außer Cremers sind die hier genannten Profile nicht vom Betreiber verifiziert. Zugangshinweise sind keine persönliche Einlassgarantie.";
-const CREMERS = {name:"Cremers",city:"Den Haag",address:"Prinsestraat 84, Den Haag",rating:"4,4 / 5",reviews:85,profile:"https://greenmeister.com/coffeeshop/caf-cremers-den-haag",website:"https://cafecremers.nl/pages/club-cremers",access:"Touristen im Shopprofil zugelassen",note:"Shop täglich 09:00–01:00. Die separate Club-Lounge ist montags und dienstags geschlossen. An anderen Tagen für Gäste ohne Gold Card reservieren."};
-const DENHAAG_RULE = "Den Haag setzt die Wohnsitzbeschränkung in der Praxis nicht aktiv durch. Deutsche Touristen ab 18 mit gültigem Ausweis werden bedient. Galaxy bestätigt ausländischen Gästen ausdrücklich den Zugang mit EU-Ausweis oder Reisepass; Cremers kennzeichnet Touristen als zugelassen.";
-
 const REGIONS = {
-  landgraaf:{
-    headline:"Lange Abfahrten & das hügelige Limburg",summary:"400-m-Hang, Valkenburg und Thermae 2000. Ein Coffeeshop ist in Kerkrade nah, das Meer liegt weit weg.",bestFor:"Euer stärkster Skitag",tradeoff:"Kostenpflichtiger Hallenparkplatz; keine Küste in der Nähe.",address:"SnowWorld Landgraaf, Witte Wereld 1, Landgraaf",
-    arrival:"Ab Löningen zum Hotel in Valkenburg: 320 km / 3 h 21 min laut Routencheck vom 05.10. Die Halle liegt etwa 17 Autominuten vom Hotel De Heek entfernt.",
-    coffee:{status:"Nah: Kerkrade",tone:"good",rule:"Landgraaf selbst hat keine Coffeeshops. In Kerkrade werden Nichtansässige nach den geprüften Hinweisen bedient. Down Under kennzeichnet Touristen als zugelassen. Für Heerlen und Maastricht gilt dagegen die Wohnsitzpflicht: Ein deutscher Ausweis allein reicht dort nicht.",shops:[{name:"Down Under",city:"Kerkrade",address:"Hammolenweg 15, Kerkrade",time:"5,6 km · 9 Min.",measured:true,rating:"1,9 / 5",reviews:18,profile:"https://greenmeister.com/coffeeshop/down-under-kerkrade",website:"https://www.coffeeshopdownunder.nl/",access:"Touristen laut Shopprofil zugelassen",note:"Mo–Fr 16:00–23:00; Sa–So 13:00–23:00. Sehr nah, aber schwache Nutzerbewertung. Die Nähe allein ist kein Grund, dafür dieses Gebiet zu wählen."}],sources:[{label:"Landgraaf: Null-Politik",url:"https://landgraaf.bestuurlijkeinformatie.nl/Document/View/0ade9e37-0f13-447b-958f-e040e0831161"},{label:"Heerlen: Zugang in Kerkrade",url:"https://heerlen.bestuurlijkeinformatie.nl/Document/View/c15797aa-7b4f-4fbe-a021-a2e474e9e93b"},{label:"Aktive Wohnsitzpflicht: CCV",url:CCV_RULES}]},
-    places:[
-      {kind:"Spa",title:"Thermae 2000 · Valkenburg",time:"ca. 20–25 Min.",description:"Große Therme am Cauberg. Ein Hotel in Valkenburg bringt euch näher ans Spa: De Heek → Thermae wurde mit 7 Minuten geprüft. Badebekleidungs- und textilfreie Tage im Kalender beachten.",url:"https://www.thermae2000.de/ueber-thermae/preise/",destination:"Thermae 2000, Valkenburg"},
-      {kind:"Stadt",title:"Valkenburg & das Geuldal",time:"ca. 20–25 Min.",description:"Kleines Zentrum, Burgruine und hügelige Wege entlang der Geul. Für einen 4-Tage-Urlaub zu zweit die schönere Hotelbasis als ein reiner Gewerbestandort.",url:"https://www.visitzuidlimburg.nl/te-doen-in-zuid-limburg/routes-in-zuid-limburg/detail/kastelen-in-het-geuldal-valkenburg-aan-de-geul/59841/",destination:"Valkenburg aan de Geul"},
-      {kind:"Spazieren",title:"Brunssummerheide",time:"ca. 10–15 Min.",description:"Heide, Wald und kleine Hügel. Der markierte rote Rundweg ist 5,6 km lang; ungefähr 1,5 Stunden entspannt gehen. Wandern ohne Eintritt.",url:"https://www.natuurmonumenten.nl/natuurgebieden/brunssummerheide/route/wandelroute-brunssummerheide-over-heuvels-en-heide-rood",destination:"Brunssummerheide, Toeristenweg, Landgraaf"},
-      {kind:"Freizeitpark",title:"Mondo Verde",time:"ca. 5–10 Min.",description:"Gärten, Tiere und Fahrgeschäfte in Landgraaf. Für einen ruhigen Ausflug passend; für große Achterbahnen ist es weniger stark als Efteling. Öffnungszeiten und Eintritt beim Betreiber.",url:"https://www.wereldtuinenmondoverde.nl/nl/prijzen-info/",destination:"Mondo Verde, Landgraaf"},
-      {kind:"Meer",title:"Keine Küste in der Nähe",time:"Kein kurzer Strandabstecher",description:"Limburg punktet mit Hügeln und Orten. Wenn Meer zu eurem Urlaub gehört, passen Zoetermeer, Den Haag oder Velsen besser."}
+  "zoetermeer": {
+    "headline": "Ski, Spa, Stadt & Strand",
+    "summary": "300-m-Piste, Elysium ganz nah und Den Haag als Ausflug. Der vielseitigste Kompromiss für euch.",
+    "bestFor": "Unsere Wahl für den ganzen Urlaub",
+    "tradeoff": "Die längste Piste ist steiler; Strand und gute Shop-Lounge brauchen eine kurze Autofahrt.",
+    "address": "SnowWorld Zoetermeer, Buytenparklaan 30, Zoetermeer",
+    "arrival": "Ab Löningen rund 278 km / 3 Std. 37 Min. reine Autofahrt. OSRM-Routencheck 06.10.2026; Verkehr, Pausen und Parkplatzsuche zusätzlich.",
+    "coffee": {
+      "status": "Touristen werden bedient",
+      "tone": "good",
+      "rule": "Zoetermeer sieht seit 2017 von aktiver Durchsetzung des Wohnsitzkriteriums ab. Casa ist die lokale Option. Für eine besser bewertete Shop-Erfahrung könnt ihr Den Haag mit eurem Stadtbesuch verbinden. Dort werden deutsche Touristen ebenfalls bedient.",
+      "shops": [
+        {
+          "name": "Casa",
+          "city": "Zoetermeer",
+          "address": "Amerikaweg 145, Zoetermeer",
+          "time": "ca. 5–10 Min.",
+          "rating": "2,7 / 5",
+          "reviews": 60,
+          "profile": "https://greenmeister.com/coffeeshop/casa-zoetermeer",
+          "access": "Touristen laut Shopprofil zugelassen",
+          "note": "Nahe Option ohne Fahrt nach Den Haag, aber deutlich schwächer bewertet als Cremers. Aktuelle Öffnungszeiten im Profil prüfen."
+        },
+        {
+          "name": "Cremers",
+          "city": "Den Haag",
+          "address": "Prinsestraat 84, Den Haag",
+          "rating": "4,4 / 5",
+          "reviews": 85,
+          "profile": "https://greenmeister.com/coffeeshop/caf-cremers-den-haag",
+          "website": "https://cafecremers.nl/pages/club-cremers",
+          "access": "Touristen im Shopprofil zugelassen",
+          "note": "Shop täglich 09:00–01:00. Die separate Club-Lounge ist montags und dienstags geschlossen. An anderen Tagen für Gäste ohne Gold Card reservieren.",
+          "time": "18,2 km · 22 Min.",
+          "measured": true
+        }
+      ],
+      "sources": [
+        {
+          "label": "Coffeeshopbeleid Zoetermeer",
+          "url": "https://lokaleregelgeving.overheid.nl/CVDR698659/"
+        },
+        {
+          "label": "Galaxy: Zugang für Touristen",
+          "url": "https://coffeeshopgalaxy.nl/en/information"
+        },
+        {
+          "label": "Kommunale Praxis: CCV",
+          "url": "https://hetccv.nl/themas/georganiseerde-criminaliteit-en-ondermijning/drugstoerisme/ervaringen-ingezetenencriterium/"
+        }
+      ]
+    },
+    "places": [
+      {
+        "kind": "Spa",
+        "title": "Elysium · Bleiswijk",
+        "time": "ca. 10–15 Min.",
+        "description": "Großes Wellnessresort in kurzer Reichweite. Ab Bastion Hotel wurden 9,2 km / 12 Minuten geprüft. Badebekleidungstage und Termin vor dem Kauf im Spa-Kalender wählen.",
+        "url": "https://elysium.nl/",
+        "destination": "Elysium, Bleiswijk"
+      },
+      {
+        "kind": "Stadt",
+        "title": "Den Haag",
+        "time": "ca. 20–30 Min.",
+        "description": "Altstadt, Binnenhof-Umgebung, Museen und Cafés. Stadtbesuch und Cremers passen in denselben Ausflug; die separate Lounge ist am Montag und Dienstag geschlossen.",
+        "url": "https://denhaag.com/de",
+        "destination": "Den Haag Centrum"
+      },
+      {
+        "kind": "Spazieren",
+        "title": "Buytenpark",
+        "time": "Direkt an der Halle",
+        "description": "Hügelige Parklandschaft für eine Runde vor oder nach dem Skifahren. Ein Spaziergang kostet keinen Eintritt.",
+        "url": "https://www.buytenpark.nl/over-het-buytenpark",
+        "destination": "Buytenpark, Zoetermeer"
+      },
+      {
+        "kind": "Meer",
+        "title": "Scheveningen & die Dünen",
+        "time": "ca. 25–40 Min.",
+        "description": "Breiter Nordseestrand für Wind, Wellen und Strandcafés. Im Oktober als Spaziergang planen. Strandparkplätze und Garagen kosten zusätzlich.",
+        "url": "https://denhaag.com/de/scheveningen",
+        "destination": "Scheveningen Strand"
+      },
+      {
+        "kind": "Freizeitpark",
+        "title": "Duinrell · Wassenaar",
+        "time": "ca. 25–35 Min.",
+        "description": "Fahrgeschäfte und optional Tikibad mit eigenem Ticket. Laut Betreiber täglich bis 08.11.2026 geöffnet. Am Dienstag 13.10. gibt es Rides by Lights bis 21 Uhr; passende Eintrittsart beachten.",
+        "url": "https://www.duinrell.nl/winter-avond",
+        "destination": "Duinrell, Wassenaar"
+      }
     ],
-    transport:{name:"Arriva Limburg",price:"8,70 € p. P. / Tag",description:"Bus-Tageskarte außerhalb der Hauptverkehrszeit. Bus ganztags: 11,70 €. Für Bus + Bahn in Zuid-Limburg kostet die Tageskarte außerhalb der Hauptverkehrszeit 15,95 €. Gültigkeit und Startzeit je Ticket beachten.",url:"https://www.arriva.nl/en/tickets-subscriptions/tickets/buy-a-day-ticket/?regio=Limburg",parking:"SnowWorld: 8 € pro Auto online, vor Ort bis zu 9 €. Für einen Skitag werden die 8 € bereits beim Paarpreis eingerechnet. Stadt- und Spa-Parkplätze separat prüfen."},
-    stay:{title:"Hotelbasis: Valkenburg",description:"De Heek / Motel Kuypers, Hekerweg 5: bisheriger Check 252,90 € für zwei, 3 Nächte 11.–14.10., kostenloses Parken. Preisstand 05.10., keine aktuelle Reservierung. Halle etwa 17 Min.; Thermae 2000 etwa 7 Min.",destination:"De Heek, Hekerweg 5, Valkenburg"},plan:["Ankommen, Valkenburg und Geuldal", "6–8 Stunden SnowWorld", "Thermae 2000 und kurzer Spaziergang", "Brunssummerheide, dann Rückfahrt"]
+    "transport": {
+      "name": "HTM · Den Haag & RandstadRail",
+      "price": "8,60 € p. P. / Tag",
+      "description": "HTM-Tageskarte für HTM-Busse und -Bahnen; 2 Stunden 4,85 €, 3 Tage 22 €. EBS-Busse und NS-Züge sind nicht automatisch dabei. Ein EBS-Bustagesticket für Haaglanden kostet 14,50 €. Für wenige Fahrten kann OVpay günstiger sein.",
+      "url": "https://www.htm.nl/reisproducten/producten-tarieven/",
+      "parking": "An SnowWorld kostenlos. Den Haag und Strand: häufig gebührenpflichtig. Für die gemeinsame Fahrt nach Bleiswijk und zum Strand ist das Auto flexibel; in der Innenstadt kann sich Tram statt Parkhaus lohnen."
+    },
+    "plan": [
+      "Ankommen und Buytenpark",
+      "6 Stunden SnowWorld, danach entspannt essen",
+      "Elysium und abends entspannt essen",
+      "Den Haag oder Strand, dann Rückfahrt"
+    ]
   },
-  zoetermeer:{
-    headline:"Ski, Spa, Stadt & Strand",summary:"300-m-Piste, Elysium ganz nah und Den Haag als Ausflug. Der vielseitigste Kompromiss für euch.",bestFor:"Unsere Wahl für den ganzen Urlaub",tradeoff:"Die längste Piste ist steiler; Strand und gute Shop-Lounge brauchen eine kurze Autofahrt.",address:"SnowWorld Zoetermeer, Buytenparklaan 30, Zoetermeer",
-    arrival:"Löningen → Bastion Hotel Zoetermeer: 272 km / 2 h 45 min im Routencheck vom 05.10. Das Hotel liegt etwa 10 Autominuten von SnowWorld entfernt.",
-    coffee:{status:"Touristen werden bedient",tone:"good",rule:"Zoetermeer sieht seit 2017 von aktiver Durchsetzung des Wohnsitzkriteriums ab. Casa ist die lokale Option. Für eine besser bewertete Shop-Erfahrung könnt ihr Den Haag mit eurem Stadtbesuch verbinden. Dort werden deutsche Touristen ebenfalls bedient.",shops:[{name:"Casa",city:"Zoetermeer",address:"Amerikaweg 145, Zoetermeer",time:"ca. 5–10 Min.",rating:"2,7 / 5",reviews:60,profile:"https://greenmeister.com/coffeeshop/casa-zoetermeer",access:"Touristen laut Shopprofil zugelassen",note:"Nahe Option ohne Fahrt nach Den Haag, aber deutlich schwächer bewertet als Cremers. Aktuelle Öffnungszeiten im Profil prüfen."},{...CREMERS,time:"18,2 km · 22 Min.",measured:true}],sources:[{label:"Coffeeshopbeleid Zoetermeer",url:"https://lokaleregelgeving.overheid.nl/CVDR698659/"},{label:"Galaxy: Zugang für Touristen",url:"https://coffeeshopgalaxy.nl/en/information"},{label:"Kommunale Praxis: CCV",url:CCV_RULES}]},
-    places:[
-      {kind:"Spa",title:"Elysium · Bleiswijk",time:"ca. 10–15 Min.",description:"Großes Wellnessresort in kurzer Reichweite. Ab Bastion Hotel wurden 9,2 km / 12 Minuten geprüft. Badebekleidungstage und Termin vor dem Kauf im Spa-Kalender wählen.",url:"https://elysium.nl/",destination:"Elysium, Bleiswijk"},
-      {kind:"Stadt",title:"Den Haag",time:"ca. 20–30 Min.",description:"Altstadt, Binnenhof-Umgebung, Museen und Cafés. Stadtbesuch und Cremers passen in denselben Ausflug; die separate Lounge ist am Montag und Dienstag geschlossen.",url:"https://denhaag.com/de",destination:"Den Haag Centrum"},
-      {kind:"Spazieren",title:"Buytenpark",time:"Direkt an der Halle",description:"Hügelige Parklandschaft für eine Runde vor oder nach dem Skifahren. Ein Spaziergang kostet keinen Eintritt.",url:"https://www.buytenpark.nl/over-het-buytenpark",destination:"Buytenpark, Zoetermeer"},
-      {kind:"Meer",title:"Scheveningen & die Dünen",time:"ca. 30–40 Min.",description:"Breiter Nordseestrand für Wind, Wellen und Strandcafés. Im Oktober als Spaziergang planen. Strandparkplätze und Garagen kosten zusätzlich.",url:"https://denhaag.com/de/scheveningen",destination:"Scheveningen Strand"},
-      {kind:"Freizeitpark",title:"Duinrell · Wassenaar",time:"ca. 25–35 Min.",description:"Fahrgeschäfte und optional Tikibad mit eigenem Ticket. Laut Betreiber täglich bis 08.11.2026 geöffnet. Am Dienstag 13.10. gibt es Rides by Lights bis 21 Uhr; passende Eintrittsart beachten.",url:"https://www.duinrell.nl/winter-avond",destination:"Duinrell, Wassenaar"},
-      {kind:"Freizeitpark",title:"Drievliet · Den Haag",time:"ca. 20–30 Min.",description:"Familienpark mit Fahrgeschäften. Halloween-Programm am 11. sowie 17./18.10. bestätigt. Für einen Besuch am 12.–16.10. den tatsächlichen Öffnungstag separat prüfen.",url:"https://www.drievliet.nl/duisteredagen",destination:"Drievliet, Den Haag"}
+  "landgraaf": {
+    "headline": "Lange Abfahrten & das hügelige Limburg",
+    "summary": "400-m-Hang, Valkenburg und Thermae 2000. Ein Coffeeshop ist in Kerkrade nah, das Meer liegt weit weg.",
+    "bestFor": "Euer stärkster Skitag",
+    "tradeoff": "Kostenpflichtiger Hallenparkplatz; keine Küste in der Nähe.",
+    "address": "SnowWorld Landgraaf, Witte Wereld 1, Landgraaf",
+    "arrival": "Ab Löningen rund 312 km / 3 Std. 19 Min. reine Autofahrt. OSRM-Routencheck 06.10.2026; Verkehr, Pausen und Parkplatzsuche zusätzlich.",
+    "coffee": {
+      "status": "Nah: Kerkrade",
+      "tone": "good",
+      "rule": "Landgraaf selbst hat keine Coffeeshops. In Kerkrade werden Nichtansässige nach den geprüften Hinweisen bedient. Down Under kennzeichnet Touristen als zugelassen. Für Heerlen und Maastricht gilt dagegen die Wohnsitzpflicht: Ein deutscher Ausweis allein reicht dort nicht.",
+      "shops": [
+        {
+          "name": "Down Under",
+          "city": "Kerkrade",
+          "address": "Hammolenweg 15, Kerkrade",
+          "time": "5,6 km · 9 Min.",
+          "measured": true,
+          "rating": "1,9 / 5",
+          "reviews": 18,
+          "profile": "https://greenmeister.com/coffeeshop/down-under-kerkrade",
+          "website": "https://www.coffeeshopdownunder.nl/",
+          "access": "Touristen laut Shopprofil zugelassen",
+          "note": "Mo–Fr 16:00–23:00; Sa–So 13:00–23:00. Sehr nah, aber schwache Nutzerbewertung. Die Nähe allein ist kein Grund, dafür dieses Gebiet zu wählen."
+        }
+      ],
+      "sources": [
+        {
+          "label": "Landgraaf: Null-Politik",
+          "url": "https://landgraaf.bestuurlijkeinformatie.nl/Document/View/0ade9e37-0f13-447b-958f-e040e0831161"
+        },
+        {
+          "label": "Heerlen: Zugang in Kerkrade",
+          "url": "https://heerlen.bestuurlijkeinformatie.nl/Document/View/c15797aa-7b4f-4fbe-a021-a2e474e9e93b"
+        },
+        {
+          "label": "Aktive Wohnsitzpflicht: CCV",
+          "url": "https://hetccv.nl/themas/georganiseerde-criminaliteit-en-ondermijning/drugstoerisme/ervaringen-ingezetenencriterium/"
+        }
+      ]
+    },
+    "places": [
+      {
+        "kind": "Spa",
+        "title": "Thermae 2000 · Valkenburg",
+        "time": "ca. 20–30 Min.",
+        "description": "Thermalbecken und Saunen am Cauberg bei Valkenburg. Ab Halle etwa 20–30 Minuten mit dem Auto. Badebekleidungs- und textilfreie Tage im Spa-Kalender beachten.",
+        "url": "https://www.thermae2000.de/ueber-thermae/preise/",
+        "destination": "Thermae 2000, Valkenburg"
+      },
+      {
+        "kind": "Stadt",
+        "title": "Valkenburg & das Geuldal",
+        "time": "ca. 20–30 Min.",
+        "description": "Historisches Zentrum mit Cafés, Burgruine, Höhlen und hügeligen Wegen entlang der Geul. Ein schöner Tagesausflug ab Landgraaf.",
+        "url": "https://www.visitzuidlimburg.nl/te-doen-in-zuid-limburg/routes-in-zuid-limburg/detail/kastelen-in-het-geuldal-valkenburg-aan-de-geul/59841/",
+        "destination": "Valkenburg aan de Geul"
+      },
+      {
+        "kind": "Spazieren",
+        "title": "Brunssummerheide",
+        "time": "ca. 10–15 Min.",
+        "description": "Heide, Wald und kleine Hügel. Der markierte rote Rundweg ist 5,6 km lang; ungefähr 1,5 Stunden entspannt gehen. Wandern ohne Eintritt.",
+        "url": "https://www.natuurmonumenten.nl/natuurgebieden/brunssummerheide/route/wandelroute-brunssummerheide-over-heuvels-en-heide-rood",
+        "destination": "Brunssummerheide, Toeristenweg, Landgraaf"
+      },
+      {
+        "kind": "Freizeitpark",
+        "title": "Mondo Verde",
+        "time": "ca. 5–10 Min.",
+        "description": "Gärten, Tiere und Fahrgeschäfte in Landgraaf. Für einen ruhigen Ausflug passend; für große Achterbahnen ist es weniger stark als Efteling. Öffnungszeiten und Eintritt beim Betreiber.",
+        "url": "https://www.wereldtuinenmondoverde.nl/nl/prijzen-info/",
+        "destination": "Mondo Verde, Landgraaf"
+      },
+      {
+        "kind": "Meer",
+        "title": "Keine Küste in der Nähe",
+        "time": "Kein kurzer Strandabstecher",
+        "description": "Limburg punktet mit Hügeln und Orten. Wenn Meer zu eurem Urlaub gehört, passen Zoetermeer, Den Haag oder Velsen besser."
+      }
     ],
-    transport:{name:"HTM · Den Haag & RandstadRail",price:"8,60 € p. P. / Tag",description:"HTM-Tageskarte für HTM-Busse und -Bahnen; 2 Stunden 4,85 €, 3 Tage 22 €. EBS-Busse und NS-Züge sind nicht automatisch dabei. Ein EBS-Bustagesticket für Haaglanden kostet 14,50 €. Für wenige Fahrten kann OVpay günstiger sein.",url:HTM_TICKETS,parking:"An SnowWorld kostenlos. Den Haag und Strand: häufig gebührenpflichtig. Für die gemeinsame Fahrt nach Bleiswijk und zum Strand ist das Auto flexibel; in der Innenstadt kann sich Tram statt Parkhaus lohnen."},
-    stay:{title:"Hotelbasis: Zoetermeer",description:"Bastion Hotel Zoetermeer: bisheriger Check 255,57 € für zwei, 3 Nächte 11.–14.10., inklusive damaliger Aktion und Abgaben; kostenloses Parken. Preisstand 05.10., Aktion und freie Zimmer heute nicht erneut bestätigt. Halle etwa 10 Min.; Elysium etwa 12 Min.",destination:"Bastion Hotel Zoetermeer"},plan:["Ankommen und Buytenpark", "6–8 Stunden SnowWorld", "Elysium und abends entspannt essen", "Den Haag oder Strand, dann Rückfahrt"]
+    "transport": {
+      "name": "Arriva Limburg",
+      "price": "8,70 € p. P. / Tag",
+      "description": "Bus-Tageskarte außerhalb der Hauptverkehrszeit. Bus ganztags: 11,70 €. Für Bus + Bahn in Zuid-Limburg kostet die Tageskarte außerhalb der Hauptverkehrszeit 15,95 €. Gültigkeit und Startzeit je Ticket beachten.",
+      "url": "https://www.arriva.nl/en/tickets-subscriptions/tickets/buy-a-day-ticket/?regio=Limburg",
+      "parking": "SnowWorld: 8 € pro Auto online, vor Ort bis zu 9 €. Für einen Skitag werden die 8 € bereits beim Paarpreis eingerechnet. Stadt- und Spa-Parkplätze separat prüfen."
+    },
+    "plan": [
+      "Ankommen, Valkenburg und Geuldal",
+      "6 Stunden SnowWorld, danach entspannt essen",
+      "Thermae 2000 und kurzer Spaziergang",
+      "Brunssummerheide, dann Rückfahrt"
+    ]
   },
-  uithof:{
-    headline:"Der kurze Weg ans Meer",summary:"Den Haag, Kijkduin und Dünen sehr nah. Die bestätigte 2-Stunden-Skikarte passt schlechter zu eurem langen Skitag.",bestFor:"Stadt & Küste vor Ski",tradeoff:"Kein bestätigter 4-/6-Stunden-Einzelpass.",address:"De Uithof, Jaap Edenweg 10, Den Haag",
-    arrival:"Die Halle liegt am südwestlichen Stadtrand von Den Haag. Den Weg ab Löningen und die letzte Verbindung zur Unterkunft in der Routenplanung vergleichen.",
-    coffee:{status:"Touristen werden bedient",tone:"good",rule:DENHAAG_RULE,shops:[{...CREMERS,time:"ca. 15–25 Min."},{name:"Galaxy",city:"Den Haag",address:"Weimarstraat 245, Den Haag",time:"ca. 10–20 Min.",access:"Ausländische Gäste ausdrücklich willkommen",website:"https://coffeeshopgalaxy.nl/en/information",note:"Der Betreiber verlangt ein Alter von mindestens 18 Jahren und einen gültigen EU-Ausweis oder Reisepass. Keine vergleichbare Shopbewertung in diesem Check erhoben."}],sources:[{label:"Galaxy: Ausweis & Touristen",url:"https://coffeeshopgalaxy.nl/en/information"},{label:"Kommunale Praxis: CCV",url:CCV_RULES}]},
-    places:[
-      {kind:"Meer",title:"Kijkduin",time:"ca. 10–15 Min.",description:"Nordseestrand in kurzer Entfernung zur Halle. Gute Wahl für einen Strandspaziergang ohne den Trubel von Scheveningen.",url:"https://denhaag.com/de/kijkduin",destination:"Kijkduin Strand, Den Haag"},
-      {kind:"Spazieren",title:"Westduinpark",time:"ca. 10–15 Min.",description:"Dünenwege zwischen Kijkduin und Scheveningen, direkt hinter dem Strand. Kostenlose Spaziergänge durch Dünen und Küstenlandschaft.",url:"https://denhaag.com/nl/westduinpark",destination:"Westduinpark, Den Haag"},
-      {kind:"Stadt",title:"Den Haag Zentrum",time:"ca. 15–25 Min.",description:"Schöne Straßen, Museen, Cafés und mehrere touristenzugängliche Coffeeshops. Tram und Bus ersparen euch teure Innenstadtparkplätze.",url:"https://denhaag.com/de",destination:"Den Haag Centrum"},
-      {kind:"Spa",title:"Cityspa Spavarin · Rijswijk",time:"ca. 15–25 Min.",description:"Auch Tagesgäste können Sauna, Pool, Whirlpool und Dampfbad nutzen. Reservierung erforderlich; ab 18, Badebekleidung vorgeschrieben. Tagesgäste täglich 10–18 Uhr.",url:"https://shop.spavarin.nl/",destination:"Cityspa Spavarin, Rijswijk"},
-      {kind:"Freizeitpark",title:"Drievliet",time:"ca. 15–25 Min.",description:"Familienpark am Rand von Den Haag. Halloween am 11. und 17./18.10.; den gewünschten Besuchstag im Betreiber-Kalender prüfen.",url:"https://www.drievliet.nl/duisteredagen",destination:"Drievliet, Den Haag"},
-      {kind:"Freizeitpark",title:"Duinrell",time:"ca. 25–40 Min.",description:"Für mehr Fahrgeschäfte die Alternative in Wassenaar. Betrieb täglich bis 08.11.2026 laut Betreiber; Tikibad und Abendveranstaltung haben eigene Ticketbedingungen.",url:"https://www.duinrell.com/access-regulations",destination:"Duinrell, Wassenaar"}
+  "amsterdam": {
+    "headline": "Amsterdam, Haarlem & Nordsee",
+    "summary": "Velsen-Zuid verbindet eine grüne Hotelbasis mit Küste, Haarlem und einem Amsterdam-Ausflug. Die Skihalle ist deutlich kleiner als eure anderen Favoriten.",
+    "bestFor": "Haarlem & Küste",
+    "tradeoff": "Umbau bis voraussichtlich Mitte Oktober 2026.",
+    "address": "SnowWorld Amsterdam, Heuvelweg 6-8, Velsen-Zuid",
+    "arrival": "Ab Löningen rund 262 km / 3 Std. 26 Min. reine Autofahrt. OSRM-Routencheck 06.10.2026; Verkehr, Pausen und Parkplatzsuche zusätzlich.",
+    "coffee": {
+      "status": "Option: Haarlem",
+      "tone": "caution",
+      "rule": "Velsen hat ein formales Wohnsitzkriterium im Coffeeshopbeleid. Für euch ist Haarlem mit Birdy die besser belegte nahe Option: Touristen laut Shopprofil zugelassen. Auch in Amsterdam werden Touristen laut aktueller Besucherinfo bedient; 18+ und Ausweis, individuelle Hausregeln beachten. Für touristischen Zugang müsst ihr also nicht zwingend Amsterdam wählen.",
+      "shops": [
+        {
+          "name": "Birdy",
+          "city": "Haarlem",
+          "address": "Schoterweg 19, Haarlem",
+          "time": "ca. 15–25 Min.",
+          "rating": "4,5 / 5",
+          "reviews": 16,
+          "profile": "https://greenmeister.com/coffeeshop/birdy-haarlem",
+          "website": "https://coffeeshopbirdy.com/",
+          "access": "Touristen laut Shopprofil zugelassen",
+          "note": "Mo–Mi und So 10:00–23:00; Do–Sa 10:00–24:00 laut Betreiber. Lounge-Option für einen Haarlem-Ausflug. Bewertung hat eine kleine Stichprobe."
+        }
+      ],
+      "sources": [
+        {
+          "label": "Velsen: Coffeeshopbeleid 2022",
+          "url": "https://lokaleregelgeving.overheid.nl/CVDR667228/"
+        },
+        {
+          "label": "Zugangspraxis: Branchenübersicht",
+          "url": "https://coffeeshopbond.nl/publicaties/factsheet-i-criterium"
+        },
+        {
+          "label": "Amsterdam: aktuelle Besucherinfo",
+          "url": "https://amsterdam.org/en/coffeeshops.php"
+        },
+        {
+          "label": "Ministerium: Praxis Amsterdam",
+          "url": "https://www.rijksoverheid.nl/binaries/rijksoverheid/documenten/kamerstukken/2023/07/05/tk-drugstoerisme/tk-drugstoerisme.pdf"
+        }
+      ]
+    },
+    "places": [
+      {
+        "kind": "Stadt",
+        "title": "Amsterdam · Grachten & Zentrum",
+        "time": "ca. 30–45 Min.",
+        "description": "Grachten, Gassen, Museen, Cafés und viel Großstadtleben. Die Routenmessung ab Halle ergibt ohne Verkehr ca. 25 Minuten; für den Stadtbesuch mehr Zeit plus Parken oder ÖPNV einplanen. Amsterdam ist ein eigener Ausflug ab Velsen.",
+        "url": "https://www.iamsterdam.com/en/explore",
+        "destination": "Amsterdam Centraal, Amsterdam"
+      },
+      {
+        "kind": "Stadt",
+        "title": "Haarlem",
+        "time": "ca. 15–25 Min.",
+        "description": "Historisches Zentrum, Grote Markt, Gassen und die Spaarne. Für euren kurzen Urlaub leichter mit Velsen zu verbinden als Amsterdam-Zentrum.",
+        "url": "https://www.snowworld.com/nl/amsterdam/omgeving",
+        "destination": "Grote Markt, Haarlem"
+      },
+      {
+        "kind": "Meer",
+        "title": "IJmuiden Strand",
+        "time": "ca. 10–20 Min.",
+        "description": "Nordsee, breiter Strand und Dünen. Ein passender Küstenausflug ab Velsen; aktuelle Strandparkgebühren vor Ort prüfen.",
+        "url": "https://www.snowworld.com/nl/amsterdam/omgeving",
+        "destination": "IJmuiden Strand"
+      },
+      {
+        "kind": "Spazieren",
+        "title": "Spaarnwoude",
+        "time": "Direkt im Gebiet",
+        "description": "Grüne Wege und Wasser rund um das Freizeitgebiet der Halle. Ihr müsst für eine kurze Runde nicht erst in die Stadt fahren.",
+        "url": "https://www.snowworld.com/nl/amsterdam/omgeving",
+        "destination": "Spaarnwoude, Velsen-Zuid"
+      },
+      {
+        "kind": "Spa",
+        "title": "Sauna van Egmond · Haarlem",
+        "time": "ca. 10–20 Min.",
+        "description": "Stadtsauna mit Pool und Themenräumen. Textilfrei, auch keine Badebekleidungstage. Kostenloses Parken in der umliegenden Wohngegend; reservieren. Betreiber-FAQ und Tarifseite nennen unterschiedliche Preise: erst bestätigen lassen.",
+        "url": "https://www.saunavanegmond.nl/faq",
+        "destination": "Sauna van Egmond, Haarlem"
+      }
     ],
-    transport:{name:"HTM · Bus & Tram",price:"8,60 € p. P. / Tag",description:"2-Stunden-Karte 4,85 €; 3 Tage 22 €. Tickets gelten für HTM, nicht pauschal für EBS und NS. Bei wenigen Fahrten Einzelabrechnung mit OVpay vergleichen.",url:HTM_TICKETS,parking:"De Uithof: kostenlos. Innenstadt und Strand kosten oft extra. Ein Hotel mit eigenem kostenfreien Stellplatz außerhalb des Zentrums kann die 3-Nächte-Summe senken."},
-    stay:{title:"Hotelbasis: Den Haag / Rijswijk",description:"Unterkunft nach Gesamtpreis mit Parkplatz auswählen. Rijswijk ist praktisch für Spavarin; Kijkduin für Strand und Dünen. Hier ist kein datumsgenauer Hotelpreis bestätigt.",destination:"Hotels Rijswijk Den Haag"},plan:["Ankommen und Kijkduin", "Skifahren mit bestätigtem 2-Stunden-Pass", "Spavarin und Den Haag", "Dünenrunde, dann Rückfahrt"]
-  },
-  amsterdam:{
-    headline:"Haarlem, Dünen & Nordsee",summary:"Die Halle liegt in Velsen-Zuid. Haarlem und Küste sind nah; Umbau und kürzere Piste sprechen im Oktober gegen die erste Wahl.",bestFor:"Haarlem & Küste",tradeoff:"Umbau bis voraussichtlich Mitte Oktober 2026.",address:"SnowWorld Amsterdam, Heuvelweg 6-8, Velsen-Zuid",
-    arrival:"Für die Routenplanung Velsen-Zuid eingeben, nicht Amsterdam-Zentrum. Hotel in Haarlem oder rund um Spaarnwoude wählen, wenn euch kurze Wege wichtiger sind als die Großstadt.",
-    coffee:{status:"Option: Haarlem",tone:"caution",rule:"Der Hallenname sagt nichts über die Coffeeshopregeln: Velsen hat ein formales Wohnsitzkriterium in seinem Coffeeshopbeleid. Für die Reise ist Haarlem die besser belegte Option; Birdy kennzeichnet Touristen als zugelassen. Das ist ein aktueller Praxishinweis aus dem Shopprofil, keine schriftliche individuelle Zusage des Betreibers.",shops:[{name:"Birdy",city:"Haarlem",address:"Schoterweg 19, Haarlem",time:"ca. 15–25 Min.",rating:"4,5 / 5",reviews:16,profile:"https://greenmeister.com/coffeeshop/birdy-haarlem",website:"https://coffeeshopbirdy.com/",access:"Touristen laut Shopprofil zugelassen",note:"Mo–Mi und So 10:00–23:00; Do–Sa 10:00–24:00 laut Betreiber. Lounge-Option für einen Haarlem-Ausflug. Bewertung hat eine kleine Stichprobe."}],sources:[{label:"Velsen: Coffeeshopbeleid 2022",url:"https://lokaleregelgeving.overheid.nl/CVDR667228/"},{label:"Zugangspraxis: Branchenübersicht",url:BCD_RULES}]},
-    places:[
-      {kind:"Stadt",title:"Haarlem",time:"ca. 15–25 Min.",description:"Historisches Zentrum, Grote Markt, Gassen und die Spaarne. Für euren kurzen Urlaub leichter mit Velsen zu verbinden als Amsterdam-Zentrum.",url:"https://www.snowworld.com/nl/amsterdam/omgeving",destination:"Grote Markt, Haarlem"},
-      {kind:"Meer",title:"IJmuiden Strand",time:"ca. 15–25 Min.",description:"Nordsee, breiter Strand und Dünen. Ein passender Küstenausflug ab Velsen; aktuelle Strandparkgebühren vor Ort prüfen.",url:"https://www.snowworld.com/nl/amsterdam/omgeving",destination:"IJmuiden Strand"},
-      {kind:"Spazieren",title:"Spaarnwoude",time:"Direkt im Gebiet",description:"Grüne Wege und Wasser rund um das Freizeitgebiet der Halle. Ihr müsst für eine kurze Runde nicht erst in die Stadt fahren.",url:"https://www.snowworld.com/nl/amsterdam/omgeving",destination:"Spaarnwoude, Velsen-Zuid"},
-      {kind:"Spa",title:"Sauna van Egmond · Haarlem",time:"ca. 10–20 Min.",description:"Stadtsauna mit Pool und Themenräumen. Textilfrei, auch keine Badebekleidungstage. Kostenloses Parken in der umliegenden Wohngegend; reservieren. Betreiber-FAQ und Tarifseite nennen unterschiedliche Preise: erst bestätigen lassen.",url:"https://www.saunavanegmond.nl/faq",destination:"Sauna van Egmond, Haarlem"},
-      {kind:"Freizeitpark",title:"Linnaeushof · Bennebroek",time:"ca. 25–35 Min.",description:"Großer Spiel- und Freizeitpark, vor allem für Familien mit Kindern. Saison bis 25.10.2026; im Oktober an Wochenenden und niederländischen Herbstferien. Für zwei Erwachsene weniger reizvoll als Duinrell oder Efteling.",url:"https://www.linnaeushof.nl/praktische-info/veel-gestelde-vragen/",destination:"Linnaeushof, Bennebroek"}
-    ],
-    transport:{name:"Connexxion · Haarlem–IJmond",price:"15,50 € p. P. / Tag",description:"Regionale Tageskarte nur auf den aufgeführten Linien, unter anderem 2–15, 71–84, 382 und 385. Keine pauschale Gültigkeit für Amsterdamer Trams oder NS. Für einen einzelnen Stadttrip kann OVpay günstiger sein.",url:"https://www.connexxion.nl/en/shop/e-tickets/day-ticket-haarlem-ijmond",parking:"Skihalle kostenlos. Haarlem-Zentrum, Amsterdam und Strandparkplätze können teuer sein. Hotelpreis immer mit 3 Tagen Parken vergleichen; kostenloses Hallenparken ersetzt keinen Hotelstellplatz."},
-    stay:{title:"Hotelbasis: Haarlem / Spaarnwoude",description:"Für den kurzen Weg zur Halle und Sauna lieber hier übernachten. Amsterdam-Zentrum bedeutet längere Wege und häufig zusätzliche Parkkosten. Kein datumsgenauer Hotelpreis bestätigt.",destination:"Hotels Spaarnwoude Haarlem"},plan:["Haarlem und Spaarne", "Skifahren nur nach Umbau-Check", "Sauna van Egmond", "IJmuiden-Strand und Rückfahrt"]
-  },
-  rucphen:{
-    headline:"Wald, Breda & ein günstigerer Skitag",summary:"Kurze Pisten, dafür günstigerer regulärer Tagespass. Breda und Wald sind nah; touristenzugängliche Coffeeshops brauchen mehr Weg.",bestFor:"Breda & ein günstiger SnowWorld-Tag",tradeoff:"Kurze Abfahrten; für den Coffeeshop ist Tilburg weiter entfernt.",address:"SnowWorld Rucphen-Breda, Baanvelden 13, Rucphen",
-    arrival:"Rucphen liegt westlich von Breda. Für drei Übernachtungen die Basis nach Spa und Stadt wählen: ein Hotel direkt in Breda spart Stadtwege, kann aber beim Parken teurer sein.",
-    coffee:{status:"Weiter: Tilburg",tone:"caution",rule:"Rucphen verfolgt eine Null-Politik, hat also keine lokalen Coffeeshops. Breda setzt die Wohnsitzpflicht durch und ist für deutsche Touristen keine Kaufoption. In Tilburg wird das I-Kriterium nicht aktiv durchgesetzt; Toermalijn kennzeichnet Touristen als zugelassen. Der Zugang in Etten-Leur wurde nicht zuverlässig bestätigt und wird hier nicht als sichere Alternative angeboten.",shops:[{name:"Toermalijn",city:"Tilburg",address:"Besterdring 187, Tilburg",time:"ca. 40–55 Min.",rating:"4,3 / 5",reviews:110,profile:"https://greenmeister.com/coffeeshop/toermalijn-tilburg",website:"https://www.toermalijn.com/",access:"Touristen laut Shopprofil zugelassen",note:"Täglich 10:00–23:00 laut Betreiber. Gute Bewertung, aber kein naher Abstecher ab Rucphen. Eher mit einem Tilburg-Ausflug verbinden."}],sources:[{label:"Rucphen: Null-Politik",url:"https://www.rucphen.nl/Beleidsregel-bestuurlijke-handhaving-van-artikel-13b-Opiumwet-Damoclesbeleid.html"},{label:"Breda: Wohnsitzpflicht im Experiment",url:"https://www.rijksoverheid.nl/themas/familie-zorg-en-gezondheid/experiment-gesloten-coffeeshopketen-wietexperiment/voorwaarden-coffeeshops-in-wietexperiment"},{label:"Kommunale Praxis: CCV",url:CCV_RULES}]},
-    places:[
-      {kind:"Spazieren",title:"Rucphense Bossen",time:"ca. 5–15 Min.",description:"Wald, Heide und Sanddünen zwischen Rucphen und Roosendaal. Kostenlose Spaziergänge und Fahrradrouten; ein ruhiger Gegenpol zum Skitag.",url:"https://www.visitbrabant.com/nl/locaties/2242975214/natuurgebied-rucphense-bossen",destination:"Rucphense Bossen, Postbaan, Rucphen"},
-      {kind:"Stadt",title:"Breda",time:"ca. 20–30 Min.",description:"Schönes Zentrum rund um Grote Markt und die Grote Kerk, Restaurants und Parkwege. Gute Basis für den Abend; Coffeeshopkauf für Touristen ausgeschlossen.",url:"https://www.snowworld.com/nl/rucphen-breda/omgeving",destination:"Grote Markt, Breda"},
-      {kind:"Spa",title:"Spa One · Oosterhout",time:"ca. 30–40 Min.",description:"Wellnessresort nördlich von Breda. Von Rucphen ist der Weg spürbar länger als Zoetermeer → Elysium. Wenn Spa ganz nah sein soll, ist dieses Gebiet für euch weniger stark.",url:"https://spaone.nl/",destination:"Spa One, Oosterhout"},
-      {kind:"Freizeitpark",title:"Efteling · Kaatsheuvel",time:"ca. 45–60 Min.",description:"Großer Freizeitpark mit Achterbahnen und Themenfahrten, ganzjährig geöffnet. Kein direkter Nachbar der Halle; einen eigenen Tag und zusätzliche Tickets einplanen.",url:"https://www.efteling.com/en/park/opening-hours",destination:"Efteling, Kaatsheuvel"},
-      {kind:"Meer",title:"Kein naher Nordseestrand",time:"Längerer Tagesausflug",description:"Rucphen passt zu Wald und Stadt. Für einen kurzen spontanen Strandbesuch ist eine Halle in Zuid- oder Noord-Holland praktischer."}
-    ],
-    transport:{name:"Arriva / Hermes · Brabant",price:"8,10 € p. P. / Tag",description:"Dalurendagkaart: Mo–Fr ab 09:00, Wochenende ganztags in den teilnehmenden Brabant-Bussen. Keine NS-Bahnkarte. Für Ausflüge ab Rucphen Umstiege und letzte Abendverbindung prüfen.",url:BRABANT_TICKETS,parking:"Skihalle kostenlos. Innenstadt Breda häufig bezahlt. Beim Hotel den Zimmerpreis plus drei Tage Stellplatzkosten vergleichen, nicht nur das Etikett „kostenloses Parken“."},
-    stay:{title:"Hotelbasis: Rucphen / Breda-Rand",description:"Rucphen verkürzt den Skiweg, der Breda-Rand bietet mehr Restaurants und oft leichteres Parken. Für euch ist die Entfernung zum Spa der größere Nachteil. Kein datumsgenauer Hotelpreis bestätigt.",destination:"Hotels Rucphen Breda"},plan:["Breda und entspannt essen", "4–6 Stunden SnowWorld", "Spa One mit eingeplanter Fahrt", "Rucphense Bossen oder extra Efteling-Tag"]
-  },
-  terneuzen:{
-    headline:"Zeeland & weite Wasserblicke",summary:"Zwei Pisten und die Westerschelde. Für richtige Strände, Spa und touristenzugängliche Shops braucht ihr meist 30–45 Minuten.",bestFor:"Wasser & Zeeland",tradeoff:"Spa und touristenzugänglicher Shop sind nicht direkt nebenan.",address:"SnowWorld Terneuzen, Zeelandlaan 3, Terneuzen",
-    arrival:"Terneuzen liegt südlich der Westerschelde. Fahrt nach Goes oder Middelburg durch den Westerscheldetunnel; dieser ist für Fahrzeuge unter 3 m Höhe inzwischen mautfrei.",
-    coffee:{status:"Nicht lokal · Goes als Option",tone:"caution",rule:"Terneuzen setzt die Wohnsitzpflicht durch: In der örtlichen Shopoption können deutsche Touristen ohne niederländischen Wohnsitz nicht einkaufen. Goes hat das 2026 geltende Regelwerk ausdrücklich angepasst und prüft den Wohnsitz nicht mehr aktiv. High Life begrüßt ausländische Gäste auf der eigenen Website.",shops:[{name:"High Life",city:"Goes",address:"Wijngaardstraat 60–62, Goes",time:"ca. 30–45 Min.",website:"https://highlife.net/en",access:"Ausländische Gäste vom Betreiber willkommen",note:"Täglich 09:00–23:59. Café und Lounge sind laut Betreiber derzeit geschlossen; der Shop ist geöffnet. Keine vergleichbare Greenmeister-Bewertung in diesem Check erhoben."}],sources:[{label:"Terneuzen: Coffeeshopbeleid",url:"https://lokaleregelgeving.overheid.nl/CVDR474246/1"},{label:"Goes: Regelwerk 2026",url:"https://lokaleregelgeving.overheid.nl/CVDR756252/1"},{label:"High Life: Zugang & Zeiten",url:"https://highlife.net/en"}]},
-    places:[
-      {kind:"Spazieren",title:"Westerschelde-Promenade",time:"ca. 5–15 Min.",description:"Weite Wasserblicke und Schiffe vor Terneuzen. Die Westerschelde ist ein Meeresarm; das ist kein klassischer Nordsee-Badestrand.",url:"https://www.snowworld.com/nl/terneuzen/omgeving",destination:"Scheldeboulevard, Terneuzen"},
-      {kind:"Meer",title:"Breskens & die Zeeland-Küste",time:"ca. 30–40 Min.",description:"Für echten Nordseestrand nach Breskens. Passt als eigener Küstenausflug, weniger als 10-Minuten-Spaziergang zwischen zwei Aktivitäten.",url:"https://www.zeeland.com/de-de/visit",destination:"Breskens Strand"},
-      {kind:"Stadt",title:"Goes / Middelburg",time:"ca. 30–45 Min.",description:"Goes verbindet Stadt, touristenzugänglichen Shop und Wellness. Middelburg bietet ein schönes historisches Zentrum; beide liegen nördlich des Tunnels.",url:"https://www.zeeland.com/de-de/visit",destination:"Goes Centrum"},
-      {kind:"Spa",title:"Vitae Wellnessresort Goes",time:"ca. 30–45 Min.",description:"Sauna- und Wellnessresort in Goes. Die Fahrt kann nah an eurer Schmerzgrenze von 45 Minuten liegen; darum schwächer als Elysium bei Zoetermeer. Termin, Preise und Badekleidungsregeln direkt prüfen.",url:"https://vitaewellnessresortgoes.nl/informatie/",destination:"Vitae Wellnessresort Goes"},
-      {kind:"Freizeitpark",title:"Mini Mundi · Middelburg",time:"ca. 35–50 Min.",description:"Kleiner Freizeit- und Miniaturpark mit Indoor-Spielbereich. Vor allem für Familien; keine große Achterbahn-Auswahl. Betreiber-Kalender für euren Besuchstag prüfen.",url:"https://minimundi.nl/agenda",destination:"Mini Mundi, Middelburg"}
-    ],
-    transport:{name:"Connexxion · Zeeland",price:"9,25 € p. P. / Tag",description:"Dal-Dagkaart: Mo–Fr ab 09:00, Wochenende ganztags auf den gültigen Zeeland-Linien. Nicht pauschal für Fahrten nach Belgien; Linie 395 ausgenommen. Eine ganztägige Variante kostet 12,75 €.",url:"https://www.connexxion.nl/nl/shop/e-tickets/dal-dagkaart-zeeland",parking:"SnowWorld kostenlos. Der Westerscheldetunnel kostet für Fahrzeuge unter 3 m Höhe keine Maut. Stadtparkplätze in Goes/Middelburg separat zahlen; nahe am Zentrum oft teurer.",extraUrl:"https://www.westerscheldetunnel.nl/nl/veelgestelde-vragen/"},
-    stay:{title:"Hotelbasis: Terneuzen oder Goes",description:"Terneuzen hält den Skiweg kurz. Goes bringt euch näher an Spa und Coffeeshop, verlängert aber den Weg zur Halle. Für diese Mischung ist das Auto meist bequemer. Kein datumsgenauer Hotelpreis bestätigt.",destination:"Hotels Terneuzen Goes"},plan:["Ankommen und Westerschelde", "4–6 Stunden SnowWorld", "Goes und Vitae Wellness", "Breskens-Strand, dann Rückfahrt"]
-  },
-  montana:{
-    headline:"Günstig Ski fahren & Natur in den Kempen",summary:"37,50 € mit Material, Wald und Heide rundherum. Für sechs Stunden ist die kleine Halle repetitiv; Eindhoven bietet die nächste gut belegte Shopoption.",bestFor:"Das kleinste Ski-Budget",tradeoff:"Nur etwa 140 m Hauptpiste; große Freizeitparks liegen weiter weg.",address:"Montana Snowcenter, Kempervennendreef 4, Westerhoven",
-    arrival:"Die Halle liegt beim Center Parcs De Kempervennen in Westerhoven, südlich von Eindhoven. Ein Skiticket erfordert dort keine Übernachtungsbuchung.",
-    coffee:{status:"Option: Eindhoven",tone:"good",rule:"In Eindhoven wird die Wohnsitzbeschränkung laut städtischem Coffeeshopbeleid nicht aktiv durchgesetzt. Deutsche Touristen ab 18 mit Ausweis werden in der Praxis bedient. The Pink kennzeichnet Touristen als zugelassen. Für Westerhoven selbst wird hier keine lokale touristenzugängliche Shopoption behauptet.",shops:[{name:"The Pink",city:"Eindhoven",address:"Willemstraat 35, Eindhoven",time:"ca. 25–35 Min.",rating:"3,6 / 5",reviews:99,profile:"https://greenmeister.com/coffeeshop/the-pink-eindhoven",access:"Touristen laut Shopprofil zugelassen",note:"Mit einem Stadtbesuch kombinieren. Für eine kurze, besonders gut bewertete Coffeeshop-Erfahrung ist Haarlem oder Den Haag im Vergleich stärker."}],sources:[{label:"Coffeeshopbeleid Eindhoven",url:"https://lokaleregelgeving.overheid.nl/CVDR640608"},{label:"Shopprofil The Pink",url:"https://greenmeister.com/coffeeshop/the-pink-eindhoven"}]},
-    places:[
-      {kind:"Spazieren",title:"De Malpie",time:"ca. 10–20 Min.",description:"Heide, Wald und kleine Seen bei Valkenswaard. Das passende Gebiet für einen ruhigen Spaziergang zu zweit; Naturwege ohne Eintritt.",url:"https://www.visitbrabant.com/nl/locaties/798455419/de-malpie-1",destination:"Malpie, Valkenswaard"},
-      {kind:"Stadt",title:"Eindhoven",time:"ca. 25–35 Min.",description:"Shopping, Restaurants und Strijp-S mit Industriekultur. Größerer Stadtausflug; Valkenswaard ist für einen kurzen Abend näher.",url:"https://www.thisiseindhoven.com/de",destination:"Eindhoven Centrum"},
-      {kind:"Spa",title:"SpaSense · Geldrop",time:"ca. 25–35 Min.",description:"Wellnessresort südöstlich von Eindhoven, täglich 10:00–22:30. Ausschließlich textilfrei, keine Badebekleidungstage. Für Gäste kostenloses Parken.",url:"https://spasense.nl/wellnessresort/praktische-informatie",destination:"SpaSense, Geldrop"},
-      {kind:"Freizeit",title:"Aqua Mundo · De Kempervennen",time:"Am Ferienpark",description:"Tropisches Schwimmbad statt Achterbahnpark. Separaten Tageszugang und Verfügbarkeit prüfen; der Montana-Skipass enthält keinen Schwimmbadeintritt.",url:"https://www.centerparcs.de/de-de/niederlande/fp_KV_ferienpark-de-kempervennen",destination:"Aqua Mundo De Kempervennen"},
-      {kind:"Freizeitpark",title:"Efteling",time:"ca. 50–65 Min.",description:"Großer ganzjähriger Freizeitpark, aber kein naher Nachbar. Für euch ein zusätzlicher Tagesausflug, der Fahrzeit und Budget deutlich erhöht.",url:"https://www.efteling.com/en/park/opening-hours",destination:"Efteling, Kaatsheuvel"},
-      {kind:"Meer",title:"Keine Küste in der Nähe",time:"Kein kurzer Strandabstecher",description:"Hier bekommt ihr Seen, Heide und Wald. Für Nordsee und lange Skipisten ist Zoetermeer der passendere Kompromiss."}
-    ],
-    transport:{name:"Hermes / Arriva · Brabant",price:"8,10 € p. P. / Tag",description:"Dalurendagkaart: Mo–Fr ab 09:00, Wochenende ganztags in den teilnehmenden Brabant-Bussen. NS-Züge sind nicht enthalten. Beim Weg zur Halle auch den Fußweg ab der Haltestelle berücksichtigen.",url:BRABANT_TICKETS,parking:"Montana: kostenloses Parken. SpaSense: für Gäste kostenlos. In Eindhoven-Zentrum meistens Gebühren; Hotelstellplatz separat prüfen."},
-    stay:{title:"Hotelbasis: Valkenswaard / Westerhoven",description:"Eine Unterkunft im Ort kann für zwei und drei Nächte günstiger sein als ein Ferienhaus im Center Parcs. Parkhaus, Endreinigung und mögliche Mindestnächte in die Gesamtsumme einrechnen. Kein datumsgenauer Hotelpreis bestätigt.",destination:"Hotels Valkenswaard Westerhoven"},plan:["Ankommen und Malpie", "4–6 Stunden Montana, dienstags möglich", "SpaSense", "Eindhoven und Rückfahrt"]
+    "transport": {
+      "name": "Connexxion · Haarlem–IJmond",
+      "price": "15,50 € p. P. / Tag",
+      "description": "Regionale Tageskarte nur auf den aufgeführten Linien, unter anderem 2–15, 71–84, 382 und 385. Keine pauschale Gültigkeit für Amsterdamer Trams oder NS. Für einen einzelnen Stadttrip kann OVpay günstiger sein.",
+      "url": "https://www.connexxion.nl/en/shop/e-tickets/day-ticket-haarlem-ijmond",
+      "parking": "Skihalle und beide ausgewählten Hotels: kostenlos. Für Amsterdam-Zentrum P+R Sloterdijk erwägen: 6 € / 24 h ab 10 Uhr, vorher 13 € für die ersten 24 h. ÖPNV extra; Rückfahrt aus dem definierten Zentrumgebiet und die P+R-Zahlungsbedingungen sind Voraussetzung. Keine Stellplatzreservierung.",
+      "parkingUrl": "https://www.amsterdam.nl/parkeren/parkeren-reizen/plaatsen-binnen-stad/pr-sloterdijk/"
+    },
+    "plan": [
+      "Ankommen, Haarlem oder Amsterdam-Ausflug",
+      "Skifahren nach bestätigtem Umbau-Check; kürzere Piste einplanen",
+      "Sauna van Egmond und ruhiger Abend",
+      "IJmuiden-Strand, dann Rückfahrt"
+    ]
   }
 };
-
-// Für diesen Urlaub werden Funparks nicht als Vorteil gewertet.
-halls.find(h=>h.id==="landgraaf").note="Zwei lange Varianten derselben Abfahrt, dazu kurze Übungshänge und ein Sessellift.";
-halls.find(h=>h.id==="landgraaf").detail="Die längste Abfahrt im Vergleich und ein 6er-Sessellift. Für euren 4–6-Stunden-Skitag ist Landgraaf die stärkste Wahl; die kurzen Bereiche ergänzen den Haupthang.";
-halls.find(h=>h.id==="zoetermeer").note="Langer, steiler Haupthang plus zwei blaue 140-m-Pisten. Gute Abwechslung ohne Parkelemente.";
-halls.find(h=>h.id==="zoetermeer").warning="Ältere Fotos können frühere Parkelemente zeigen. Entscheidend für euch sind die lange rote und die beiden blauen Pisten.";
-halls.find(h=>h.id==="uithof").detail="211-m-Hauptpiste mit separatem Kinderbereich. Der online bestätigte 2-Stunden-Pass ist für euren gewünschten langen Skitag weniger passend.";
-halls.find(h=>h.id==="terneuzen").warning="Am Wochenende 17./18.10. kostet der Pass 2 € mehr. Rund um den Umbau ab 13.10. kann sich die Flächenaufteilung ändern; aktuelle Pistenfreigabe prüfen.";
-Object.assign(halls.find(h=>h.id==="rucphen"),{badge:"Günstigerer Tagespass",note:"Zwei kurze Hauptabfahrten und ein Übungshang. Regulär preiswerter als die größten SnowWorld-Hallen.",detail:"Für normale Skiabfahrten deutlich kürzer als Landgraaf und Zoetermeer. Der reguläre Tagespass ist günstiger, bei sechs Stunden wiederholen sich die kurzen Hänge häufiger.",terrainNote:"Die beiden ca. 160-m-Angaben verwenden unterschiedliche Auslaufgrenzen. Acht Lifte; Aufbau und verfügbare Fläche können wechseln.",warning:"Am 11.10. kostet der Pass 2 € mehr, am 17./18.10. 5 € mehr als am Vergleichstag."});
-for (const hall of halls) if(hall.booking==="https://tickets.snowworld.com") hall.booking="https://shop.snowworld.com/nl";

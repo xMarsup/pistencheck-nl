@@ -1,22 +1,167 @@
 "use strict";
-
 const PHOTO_DATA = {
-  landgraaf:{src:"assets/landgraaf-piste.jpg",width:952,height:700,alt:"Blick über die breite Hauptabfahrt von SnowWorld Landgraaf unter dem hohen Hallendach.",credit:"Skiresort",source:"https://www.skiresort.de/skigebiet/snowworld-landgraaf/pistenangebot/"},
-  zoetermeer:{src:"assets/zoetermeer-piste.webp",width:2000,height:1500,alt:"Die lange, steile Hauptpiste von SnowWorld Zoetermeer mit Skifahrern und SnowWorld-Bannern.",credit:"Snowplaza",source:"https://www.snowplaza.nl/skihallen/snowworld-zoetermeer/"},
-  uithof:{src:"assets/uithof-piste.jpg",width:2560,height:1704,alt:"Überblick über die Schneepiste von De Uithof in Den Haag mit Skifahrern und Snowboardern.",credit:"De Uithof",source:"https://deuithof.nl/sneeuwbaan/skien-snowboarden/"},
-  terneuzen:{src:"assets/terneuzen-piste.jpg",width:578,height:430,alt:"Die Hauptpiste von SnowWorld Terneuzen, eine breite Schneefläche unter weißen Stahlträgern.",credit:"Skiresort",source:"https://www.skiresort.de/skigebiet/snowworld-terneuzen/pistenangebot/"},
-  amsterdam:{src:"assets/amsterdam-piste.jpg",width:2000,height:1333,alt:"Die zwei Pisten von SnowWorld Amsterdam in Velsen-Zuid, mit Bergpanoramen an den Hallenwänden.",credit:"Visit Haarlemmermeer",source:"https://visithaarlemmermeer.nl/zien-doen/actief-natuur/snowworld-amsterdam-wintersportplezier-dicht-bij-haarlemmermeer"},
-  rucphen:{src:"assets/rucphen-piste.jpg",width:933,height:700,alt:"Blick durch die Schneepiste von SnowWorld Rucphen mit Freestyle-Elementen und blau gepolsterten Stützen.",credit:"Skiresort",source:"https://www.skiresort.info/ski-resort/snowworld-rucphen/test-result/slope-offering/"},
-  montana:{src:"assets/montana-piste.jpg",width:933,height:700,alt:"Blick den kompakten Haupthang von Montana Snowcenter hinunter, mit Skifahrern auf der breiten Schneepiste.",credit:"Skiresort",source:"https://www.skiresort.de/skigebiet/montana-snowcenter/pistenangebot/"}
+  "zoetermeer": {
+    "src": "assets/zoetermeer-piste.webp",
+    "width": 2000,
+    "height": 1500,
+    "alt": "Die lange, steile Hauptpiste von SnowWorld Zoetermeer mit Skifahrern und SnowWorld-Bannern.",
+    "credit": "Snowplaza",
+    "source": "https://www.snowplaza.nl/skihallen/snowworld-zoetermeer/"
+  },
+  "landgraaf": {
+    "src": "assets/landgraaf-piste.jpg",
+    "width": 952,
+    "height": 700,
+    "alt": "Blick über die breite Hauptabfahrt von SnowWorld Landgraaf unter dem hohen Hallendach.",
+    "credit": "Skiresort",
+    "source": "https://www.skiresort.de/skigebiet/snowworld-landgraaf/pistenangebot/"
+  },
+  "amsterdam": {
+    "src": "assets/amsterdam-piste.jpg",
+    "width": 2000,
+    "height": 1333,
+    "alt": "Die zwei Pisten von SnowWorld Amsterdam in Velsen-Zuid, mit Bergpanoramen an den Hallenwänden.",
+    "credit": "Visit Haarlemmermeer",
+    "source": "https://visithaarlemmermeer.nl/zien-doen/actief-natuur/snowworld-amsterdam-wintersportplezier-dicht-bij-haarlemmermeer"
+  }
 };
 const SNOWWORLD = "https://www.snowworld.com/nl/";
 const VOUCHER_URL = "https://webwinkel.parool.nl/products/snowworld-ski";
 const halls = [
-  {id:"landgraaf",name:"SnowWorld Landgraaf",region:"Zuid-Limburg · Landgraaf",length:400,lengthLabel:"400 m",badge:"Für einen langen Skitag",badgeType:"",areas:"5 Pistenbereiche · Sessellift",note:"Zwei lange Varianten, dazu kurze Übungshänge und ein großer Funpark.",direct:{4:49.95,6:61.95},gear:18.95,parking:8,parkingText:"Parken 8 € / Auto",source:SNOWWORLD+"landgraaf/skien-snowboarden",booking:"https://tickets.snowworld.com",pistes:[{name:"Rote Variante",length:400,color:"red"},{name:"Blaue Variante",length:400,color:"blue"},{name:"Übungshang",length:60,color:"green"},{name:"Kurze blaue Piste",length:50,color:"blue"},{name:"Kinderpiste",length:20,color:"green"}],terrainNote:"Die beiden 400-m-Varianten teilen dieselbe lange Abfahrt. Die Zahl bezeichnet fünf Pistenbereiche, nicht fünf unabhängige lange Pisten.",detail:"Die längste Abfahrt im Vergleich, ein 6er-Sessellift und ein Funpark mit fünf Lines. Für 4–6 Stunden bietet Landgraaf am meisten Platz und Abwechslung.",warning:"Parken: 8 € vorab online, vor Ort bis zu 9 € pro Tag. Die Rechnung für euch beide nutzt 8 € für ein Auto.",hours:"Am Vergleichstag 09:00–22:00 Uhr",availability:"4-Stunden- und Tagespass für den 13.10. im Betreiber-Shop geprüft."},
-  {id:"zoetermeer",name:"SnowWorld Zoetermeer",region:"Zuid-Holland · Zoetermeer",length:300,lengthLabel:"300 m",badge:"Gute zweite Wahl",badgeType:"",areas:"4 Pisten · 2 × 140 m zusätzlich",note:"Langer, steiler Hang plus zwei blaue Pisten. Seit Juni 2026 kein Funpark.",direct:{4:56.95,6:61.95},gear:18.95,parking:0,parkingText:"Parken kostenlos",source:SNOWWORLD+"zoetermeer/skien-snowboarden",booking:"https://tickets.snowworld.com",pistes:[{name:"Lange rote Piste",length:300,color:"red"},{name:"Blaue Piste 1",length:140,color:"blue"},{name:"Blaue Piste 2",length:140,color:"blue"},{name:"Kinderpiste",length:30,color:"green"}],terrainNote:"Die lange Piste ist mit über 20° relativ steil. Die zwei blauen 140-m-Pisten geben euch weitere Möglichkeiten zum Fahren.",detail:"Eine gute Mischung aus einer langen roten Abfahrt und zwei blauen Pisten. Für mehrere Stunden wesentlich abwechslungsreicher als Montana.",warning:"Der Funpark ist seit dem 01.06.2026 geschlossen. Ältere Fotos und Beschreibungen können ihn noch zeigen.",hours:"Am Vergleichstag 09:00–22:00 Uhr",availability:"4-Stunden- und 8-Stunden-Pass für den 13.10. im Betreiber-Shop geprüft."},
-  {id:"uithof",name:"De Uithof",region:"Zuid-Holland · Den Haag",length:211,lengthLabel:"211 m",badge:"Kein 4-/6-Stunden-Pass",badgeType:"warn",areas:"Hauptpiste + Kinderbereich · 4 Lifte",note:"Die Piste ist mittelgroß. Im Shop sind nur 1- und 2-Stunden-Einzelkarten bestätigt.",direct:{4:null,6:null},gear:14.50,parking:0,parkingText:"Parken kostenlos",source:"https://deuithof.nl/sneeuwbaan/skien-snowboarden/",booking:"https://deuithof.nl/sneeuwbaan/skien-snowboarden/tickets-tarieven-sneeuwbaan/",pistes:[{name:"Hauptpiste",length:211,color:"blue"},{name:"Kinderbereich",length:null,color:"green"}],terrainNote:"Zwei Schlepplifte und zwei Förderbänder. Für den Kinderbereich veröffentlicht der Betreiber hier keine vergleichbare Länge.",detail:"Eine 211-m-Hauptpiste mit separatem Kinderbereich und Freestyle-Angeboten. Als Halle interessant, der aktuell online angebotene Pass passt aber weniger gut zu euren 4–6 Stunden.",warning:"Aktueller Shop: 2 Stunden Eintritt 31,50 € + Ski 8,50 € + Schuhe 6,00 € = 46,00 €. Ein 4- oder 6-Stunden-Ticket und die Kombination mehrerer Pässe wurden nicht bestätigt.",hours:"Am Vergleichstag 09:00–21:00 Uhr",availability:"Ein 2-Stunden-Termin am 13.10. um 10:00 Uhr war im Shop auswählbar."},
-  {id:"terneuzen",name:"SnowWorld Terneuzen",region:"Zeeland · Terneuzen",length:210,lengthLabel:"ca. 210 m",badge:"Kompakte Allround-Halle",badgeType:"neutral",areas:"2 Pisten · ca. 210 m & 160 m",note:"Zwei unterschiedliche Hänge mit Schleppliften und Förderband.",direct:{4:52.95,6:57.95},gear:18.95,parking:0,parkingText:"Parken kostenlos",source:SNOWWORLD+"terneuzen/skien-snowboarden",booking:"https://tickets.snowworld.com",pistes:[{name:"Rot / schwarze Piste",length:210,color:"red"},{name:"Blaue Piste",length:160,color:"blue"}],terrainNote:"Vier Lifte: drei Schlepplifte und ein Förderband. Die längste Piste ist ungefähr halb so lang wie in Landgraaf.",detail:"Zwei gut unterscheidbare Pisten und ein günstigerer regulärer Tagespass als in Landgraaf oder Zoetermeer. Für sechs Stunden wird die Auswahl schneller überschaubar.",warning:"Der sommerliche Funpark wird laut Betreiber ab 13.10.2026 abgebaut. Für euren Vergleichstag ist der Park deshalb nicht zugesichert. Am Wochenende 17./18.10. kostet der Pass 2 € mehr.",hours:"Am Vergleichstag 10:00–21:00 Uhr",availability:"4-Stunden- und Tagespass für den 13.10. im Betreiber-Shop geprüft."},
-  {id:"amsterdam",name:"SnowWorld Amsterdam",region:"Noord-Holland · Velsen-Zuid",length:170,lengthLabel:"170 m",badge:"Umbau bis Mitte Oktober",badgeType:"warn",areas:"2 Pisten · 170 m & 70 m",note:"Trotz des Namens in Velsen-Zuid. Kürzerer Haupthang, aktuell mit Bauarbeiten.",direct:{4:56.95,6:61.95},gear:18.95,parking:0,parkingText:"Parken kostenlos",source:SNOWWORLD+"amsterdam/skien-snowboarden",booking:"https://tickets.snowworld.com",pistes:[{name:"Hauptpiste",length:170,color:"blue"},{name:"Anfängerpiste",length:70,color:"green"}],terrainNote:"Der Betreiber nennt derzeit 170 m und 70 m. Ältere externe Angaben mit 230 m werden für diesen Vergleich nicht verwendet.",detail:"Der Name ist Amsterdam, die Halle liegt in Velsen-Zuid. Für einen langen Skitag sind Landgraaf und Zoetermeer wegen der längeren Abfahrten die bessere Wahl.",warning:"Umbau vom 01.04. bis voraussichtlich Mitte Oktober 2026: rechter Schlepplift außer Betrieb; auch am Förderband und an Teilen des Funparks gibt es Einschränkungen. Vor der Fahrt aktuellen Stand prüfen.",hours:"Am Vergleichstag regulär 09:00–22:00 Uhr",availability:"4-Stunden- und Tagespass für den 13.10. im Shop geprüft; der Umbau kann den Betrieb einschränken."},
-  {id:"rucphen",name:"SnowWorld Rucphen-Breda",region:"Noord-Brabant · Rucphen",length:160,lengthLabel:"ca. 160 m",badge:"Interessant für Freestyle",badgeType:"neutral",areas:"3 Pisten + Kinderbereich · 8 Lifte",note:"Kurze Abfahrten, dafür ein großer Fokus auf Park und Freestyle.",direct:{4:49.95,6:54.95},gear:18.95,parking:0,parkingText:"Parken kostenlos",source:SNOWWORLD+"rucphen-breda/skien-snowboarden",booking:"https://tickets.snowworld.com",pistes:[{name:"Rote Piste (ohne Auslauf)",length:160,color:"red"},{name:"Blaue Piste (mit Auslauf)",length:160,color:"blue"},{name:"Anfängerpiste",length:35,color:"green"},{name:"Kinderbereich",length:null,color:"green"}],terrainNote:"Die beiden ca. 160-m-Angaben verwenden unterschiedliche Auslaufgrenzen. Acht Lifte und wechselnde Freestyle-Lines; die genaue Aufteilung hängt vom Aufbau ab.",detail:"Als Freestyle-Halle reizvoll, für lange normale Skiabfahrten deutlich kürzer als Landgraaf oder Zoetermeer. Regulär einer der günstigeren SnowWorld-Tagespässe.",warning:"Am 11.10. kostet der Pass 2 € mehr, am 17./18.10. 5 € mehr als am Vergleichstag. Der Funpark-Aufbau kann sich ändern.",hours:"Am Vergleichstag 10:00–22:00 Uhr",availability:"4-Stunden- und Tagespass für den 13.10. im Betreiber-Shop geprüft."},
-  {id:"montana",name:"Montana Snowcenter",region:"Noord-Brabant · Westerhoven",length:140,lengthLabel:"ca. 140 m",badge:"Günstigster Skitag",badgeType:"",areas:"2 Pisten · großer Hang + Übungshang",note:"Beim Center Parcs De Kempervennen. Gut fürs Budget, deutlich weniger Piste.",direct:{4:37.50,6:37.50},gear:0,parking:0,parkingText:"Parken kostenlos",source:"https://www.montana-snowcenter.nl/heb-je-al-ervaring/",booking:"https://www.montana-snowcenter.nl/",pistes:[{name:"Großer Hang (ca.)",length:140,color:"blue"},{name:"Unterrichtshang",length:null,color:"green"}],terrainNote:"Die ca. 140 m stammen aus einem Betreiberinterview; die aktuelle Betreiberseite nennt keine genaue Länge. Der kleine Hang ist nur frei nutzbar, wenn dort kein Unterricht stattfindet.",detail:"Ein preiswerter Tagespass inklusive Ski und Schuhen. Die große Piste ist nur etwa ein Drittel so lang wie in Landgraaf – für sechs Stunden bedeutet das viel Wiederholung.",warning:"Montags geschlossen. Am 13.10. waren 12:00 und 12:15 nicht auswählbar, 12:30 war für zwei Erwachsene verfügbar. Mit Start 12:30 könnt ihr vier oder sechs Stunden vor dem Betriebsschluss fahren.",hours:"Am Vergleichstag 12:00–22:30 Uhr",availability:"Tagespass für zwei Erwachsene am 13.10. ab 12:30 geprüft: 75,00 € inklusive Material."}
+  {
+    "id": "zoetermeer",
+    "name": "SnowWorld Zoetermeer",
+    "region": "Zuid-Holland · Zoetermeer",
+    "length": 300,
+    "lengthLabel": "300 m",
+    "badge": "Meine Empfehlung für euch",
+    "badgeType": "",
+    "areas": "4 Pisten · 2 × 140 m zusätzlich",
+    "note": "Langer, steiler Hang plus zwei blaue Pisten.",
+    "direct": {
+      "4": 56.95,
+      "6": 61.95
+    },
+    "gear": 18.95,
+    "parking": 0,
+    "parkingText": "Parken kostenlos",
+    "source": "https://www.snowworld.com/nl/zoetermeer/skien-snowboarden",
+    "booking": "https://shop.snowworld.com/nl",
+    "pistes": [
+      {
+        "name": "Lange rote Piste",
+        "length": 300,
+        "color": "red"
+      },
+      {
+        "name": "Blaue Piste 1",
+        "length": 140,
+        "color": "blue"
+      },
+      {
+        "name": "Blaue Piste 2",
+        "length": 140,
+        "color": "blue"
+      },
+      {
+        "name": "Kinderpiste",
+        "length": 30,
+        "color": "green"
+      }
+    ],
+    "terrainNote": "Die lange Piste ist mit über 20° relativ steil. Die zwei blauen 140-m-Pisten geben euch weitere Möglichkeiten zum Fahren.",
+    "detail": "300-m-Hang und zwei blaue 140-m-Pisten. Elysium liegt nah, Den Haag und Strand sind passende Ausflüge.",
+    "warning": "Die lange Piste ist steil. Den aktuellen Betriebsstand vor dem Ticketkauf beim Betreiber ansehen.",
+    "hours": "Am Vergleichstag 09:00–22:00 Uhr",
+    "availability": "4-Stunden- und 8-Stunden-Pass für den 13.10. im Betreiber-Shop geprüft."
+  },
+  {
+    "id": "landgraaf",
+    "name": "SnowWorld Landgraaf",
+    "region": "Zuid-Limburg · Landgraaf",
+    "length": 400,
+    "lengthLabel": "400 m",
+    "badge": "Für einen langen Skitag",
+    "badgeType": "",
+    "areas": "5 Pistenbereiche · Sessellift",
+    "note": "Zwei lange Varianten auf demselben Haupthang, dazu kurze Übungshänge.",
+    "direct": {
+      "4": 49.95,
+      "6": 61.95
+    },
+    "gear": 18.95,
+    "parking": 8,
+    "parkingText": "Parken 8 € / Auto",
+    "source": "https://www.snowworld.com/nl/landgraaf/skien-snowboarden",
+    "booking": "https://shop.snowworld.com/nl",
+    "pistes": [
+      {
+        "name": "Rote Variante",
+        "length": 400,
+        "color": "red"
+      },
+      {
+        "name": "Blaue Variante",
+        "length": 400,
+        "color": "blue"
+      },
+      {
+        "name": "Übungshang",
+        "length": 60,
+        "color": "green"
+      },
+      {
+        "name": "Kurze blaue Piste",
+        "length": 50,
+        "color": "blue"
+      },
+      {
+        "name": "Kinderpiste",
+        "length": 20,
+        "color": "green"
+      }
+    ],
+    "terrainNote": "Die beiden 400-m-Varianten teilen dieselbe lange Abfahrt. Die Zahl bezeichnet fünf Pistenbereiche, nicht fünf unabhängige lange Pisten.",
+    "detail": "400-m-Abfahrt mit roter und blauer Variante, dazu kurze Hänge und ein 6er-Sessellift. Meine stärkste Wahl für euren langen Skitag.",
+    "warning": "Parken: 8 € vorab online, vor Ort bis zu 9 € pro Tag. Die Rechnung für euch beide nutzt 8 € für ein Auto.",
+    "hours": "Am Vergleichstag 09:00–22:00 Uhr",
+    "availability": "4-Stunden- und Tagespass für den 13.10. im Betreiber-Shop geprüft."
+  },
+  {
+    "id": "amsterdam",
+    "name": "SnowWorld Amsterdam",
+    "region": "Noord-Holland · Velsen-Zuid",
+    "length": 170,
+    "lengthLabel": "170 m",
+    "badge": "Umbau bis Mitte Oktober",
+    "badgeType": "warn",
+    "areas": "2 Pisten · 170 m & 70 m",
+    "note": "Trotz des Namens in Velsen-Zuid. Kürzerer Haupthang, aktuell mit Bauarbeiten.",
+    "direct": {
+      "4": 56.95,
+      "6": 61.95
+    },
+    "gear": 18.95,
+    "parking": 0,
+    "parkingText": "Parken kostenlos",
+    "source": "https://www.snowworld.com/nl/amsterdam/skien-snowboarden",
+    "booking": "https://shop.snowworld.com/nl",
+    "pistes": [
+      {
+        "name": "Hauptpiste",
+        "length": 170,
+        "color": "blue"
+      },
+      {
+        "name": "Anfängerpiste",
+        "length": 70,
+        "color": "green"
+      }
+    ],
+    "terrainNote": "Der Betreiber nennt derzeit 170 m und 70 m. Ältere externe Angaben mit 230 m werden für diesen Vergleich nicht verwendet.",
+    "detail": "Der Name ist Amsterdam, die Halle liegt in Velsen-Zuid. Für einen langen Skitag sind Landgraaf und Zoetermeer wegen der längeren Abfahrten die bessere Wahl.",
+    "warning": "Umbau vom 01.04. bis voraussichtlich Mitte Oktober 2026: rechter Schlepplift außer Betrieb, auch am Förderband Einschränkungen. Eure Reise 12.–15.10. kann noch betroffen sein; Abschluss nicht bestätigt.",
+    "hours": "Am Vergleichstag regulär 09:00–22:00 Uhr",
+    "availability": "4-Stunden- und Tagespass für den 13.10. im Shop geprüft; der Umbau kann den Betrieb einschränken."
+  }
 ];

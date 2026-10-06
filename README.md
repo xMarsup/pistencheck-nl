@@ -1,31 +1,31 @@
-# Pistencheck · Niederlande
+# Pistencheck · Eure drei Favoriten
 
-Statische Web-App zum Vergleichen der sieben niederländischen Skihallen mit echtem Schnee. Die App zeigt Preise für vier und sechs Stunden einschließlich Ski und Schuhen, 27 Pistenfotos mit Swipe-Galerien, fünf Betreiberpläne, sieben geografische Karten und 17 datumsgenaue Unterkunftsvorschläge. Zusätzlich stehen 183 Bilder in 63 Galerien für sämtliche Unterkünfte, Spas, Coffeeshops, Städte, Landschaften, Freizeitparks und weitere Ausflugsziele bereit. Wiederkehrende Orte verwenden dasselbe Album; auf der Seite erscheinen 85 zusätzliche Galerien. Jede hat mindestens zwei verschiedene Bilder. Nahverkehr und Parken stehen direkt beim jeweiligen Gebiet.
+Statische Web-App für einen viertägigen Urlaub zu zweit ab Löningen, 12.–15.10.2026, mit 500 € Budget pro Person. Der Vergleich konzentriert sich auf SnowWorld Zoetermeer, Landgraaf und Velsen bei Amsterdam. Eine offene Entscheidungshilfe stellt Vor- und Nachteile, Stadt, Küste, Landschaft, Spa, Touristen-Zugang zu Coffeeshops und das Reisebudget direkt nebeneinander. Die Empfehlung ist eine eigene Bewertung anhand der Reisewünsche.
 
-Alle Halleninformationen stehen direkt auf der Seite. Preisarten und Fahrdauern werden gleichzeitig angezeigt; Coffeeshop-Adressen, Zugangsregeln, Umgebung, Hotels und Reiseplanung sind ohne aufklappbare Bereiche sichtbar. Jede Galerie hat Pfeile direkt am Bild sowie Wisch- und Tastaturbedienung. Neue Orts- und Hotelgalerien haben außerdem anklickbare Vorschaubilder. Ausschließlich Fotos und Hallenpläne öffnen eine Großansicht mit Bildpfeilen, Zoom, Escape und Fokus-Rückgabe. Die Bilddateien werden lokal ausgeliefert und außerhalb des sichtbaren Bereichs verzögert geladen.
+Zusätzlich werden alpincenter Bottrop, SnowWorld Bispingen und SnowWorld Neuss kurz verglichen: Pistenlänge, Anreise ab Löningen, vier/sechs geplante Skistunden mit Ski und Schuhen, Ticket-Zeitfenster und Parken. Veröffentlichte ab-Preise sind gekennzeichnet. Neuss verwendet den datumsgenauen Eintrittspreis und den separat veröffentlichten Materialtarif; ein kompletter Warenkorb wurde nicht bestätigt.
 
-Unterkünfte: Die bisherigen Preise für 11.–14.10.2026 bleiben unverändert. Zusätzlich stehen separat recherchierte Preise für Abfahrt am Montag, 12.–15.10.2026, direkt daneben. Je drei Nächte, ein Zimmer, zwei Erwachsene; alle 17 Unterkunftsvorschläge wurden für beide Zeiträume gefunden (16 eindeutige Hotels/B&Bs, Rijswijk erscheint bei zwei Hallen). Beide Vier-Tage-Pläne und der Preisunterschied pro Unterkunft sind sichtbar. Skifahren ist in beiden Varianten am Dienstag, 13.10.; die Skipreise bleiben unverändert.
+Alle Textinformationen stehen ohne Aufklappen auf der Seite. Pisten, Unterkünfte, Coffeeshops, Städte, Landschaften und Ausflugsziele haben mehrere Bilder. 11 Pistenfotos und 89 weitere Aufnahmen in 32 Alben sind lokal gespeichert; wiederkehrende Orte verwenden dasselbe Album. Jede Galerie unterstützt Pfeile, Wischen, Tastatur und eine Großansicht mit Zoom. Quellen und gegebenenfalls Lizenzen stehen am Foto. Überflüssige Hallen, doppelte Umgebungsgalerien und ungenutzte Bilddateien wurden entfernt.
 
-Die Reiseplanung pro Hotel verwendet reguläre Skipreise einschließlich Material und Hallenparkplatz, Hotelparkplatz sowie 140 € Spa, 130 € Autofahrt und 160 € Essen für beide. Die letzten drei Beträge sind Schätzungen und in beiden Varianten gleich; nicht aufgeschlüsselte Pflichtabgaben und andere Extras kommen gegebenenfalls hinzu. B&Bs, knappe Restbudgets und Überschreitungen sind gekennzeichnet. Bei De Uithof ist nur der bestätigte 2-Stunden-Pass eingerechnet.
+Die sieben Hotels behalten ihre bisherigen Preise für 11.–14.10. und die zusätzliche Montag-Variante 12.–15.10.2026, jeweils drei Nächte, ein Zimmer, zwei Erwachsene. Die bisherigen niederländischen Skipreise bleiben ebenfalls unverändert. Die Reisebudgets enthalten Hotel, Hotelparken, einen Skitag mit Material und Hallenparkplatz sowie geschätzte 140 € Spa, 130 € Autofahrt und 160 € Essen für beide. Pflichtabgaben, Stadtparken und weitere Eintritte sind gegebenenfalls zusätzlich. Der Vier-Tage-Plan zeigt die gewählte Abfahrt am Montag.
 
-## Ausführen und veröffentlichen
+## Vorschau und Veröffentlichung
 
-Die App besteht aus HTML, CSS und JavaScript und benötigt keinen Build. Für eine lokale Vorschau den Ordner mit einem beliebigen statischen Webserver bereitstellen.
+HTML, CSS und JavaScript ohne Build-Schritt. Für eine lokale Vorschau den Ordner mit einem statischen Webserver bereitstellen.
 
-GitHub Pages veröffentlicht den Stammordner des Branches `main`. Die Datei `.nojekyll` sorgt dafür, dass die Dateien ohne Jekyll-Verarbeitung ausgeliefert werden. Änderungen werden nach einem Push auf `main` veröffentlicht.
+GitHub Pages veröffentlicht den Stammordner von main; .nojekyll deaktiviert die Jekyll-Verarbeitung. Ein Push veröffentlicht Änderungen.
 
 ## Datenstand
 
-- Ski-Direktpreise und reguläre Verfügbarkeit: 5. Oktober 2026.
-- Gutscheinbedingungen, Shopprofile und Regionsrecherche: 6. Oktober 2026.
-- Datumsgenaue Booking-Unterkunftssuche und Hotelrouten: 6. Oktober 2026.
-- Zusätzliche Booking-Suche für Montag–Donnerstag, 12.–15.10.2026: 6. Oktober 2026. Der bisherige Datensatz in `travel.js` wurde beibehalten; die neuen Preise stehen in `monday.js`.
-- Vergleichstag: 13. Oktober 2026.
+- Niederländische Ski-Direktpreise und reguläre Termine: 05.10.2026, Vergleichstag 13.10.2026.
+- Hotels für beide Reisezeiträume, Gutscheinbedingungen, Regions- und Coffeeshop-Recherche: 06.10.2026.
+- Deutscher Preisvergleich, neue Anreise- und Ausflugsrouten: 06.10.2026.
+- Neuss: Eintrittspreise am 13.10. im offiziellen Shop geprüft; Material separat aus der Pisten-Seite.
+- Bottrop und Bispingen: veröffentlichte saisonabhängige ab-Preise; Endpreis und freie Plätze am 13.10. nicht bestätigt. Bottrops aktueller Kalender nennt für 12. und 13.10. jeweils 10–20 Uhr.
 
-Gutscheinbedingungen und die offizielle Eingabemaske wurden geprüft. Eine tatsächliche Einlösung und freie Gutscheinplätze sind ohne gekauften Code nicht bestätigt. Fotos sind keine Live-Aufnahmen; Pistenaufbau und Preise können sich ändern. Die Quellen stehen direkt bei den jeweiligen Angaben und Bildern.
+Gutscheinbedingungen und Eingabemaske wurden geprüft. Tatsächliche Einlösung und Gutscheinplätze bleiben ohne gekauften Code offen. Ein Tickettermin oder Hotel-Suchtreffer ist keine Reservierung.
 
-## Bilder und Schrift
+## Bilder und Karten
 
-Die Bildrechte liegen bei den in der App genannten Urhebern. Metadaten der neuen Galerien einschließlich Quelle, Originaldatei, Bearbeitung und gegebenenfalls freier Lizenz stehen in [`assets/media/credits.json`](assets/media/credits.json). Die frei lizenzierten Umgebungsmotive behalten ihre jeweilige Lizenz. Frühere Umgebungsmotive sind in [`assets/regions/credits.json`](assets/regions/credits.json) dokumentiert. Das Repository erteilt keine zusätzliche Lizenz für fremde Betreiber- und Venue-Fotos oder Pläne. Hotelzimmer sind Beispiele; höhere Kategorien werden ausdrücklich bezeichnet. Die Außenansicht des Spaarnwoude Park Hotels ist eine veröffentlichte Visualisierung und entsprechend beschriftet. Die Schrift Manrope ist mit ihrer Lizenz in [`assets/manrope-OFL.txt`](assets/manrope-OFL.txt) enthalten.
+Bildrechte liegen bei den genannten Urhebern. Metadaten einschließlich Quelle, Originaldatei und freier Lizenz, soweit vorhanden, stehen in assets/media/credits.json. Das Repository erteilt keine zusätzliche Lizenz für fremde Betreiberbilder. Fotos sind Archivaufnahmen; Hotelzimmer sind Beispiele. Die Außenansicht des Spaarnwoude Park Hotels ist eine gekennzeichnete veröffentlichte Visualisierung.
 
-Kartenkonturen: Natural Earth, Public Domain. Hallen- und Spa-Standorte: © OpenStreetMap-Mitwirkende; Unterkunftskoordinaten aus Booking-Suchergebnissen. Hotelwege und Anreise: OSRM, ohne Verkehr und Pausen. Die Karten zeigen Standorte, keine Straßenrouten. Die Quellen und Bildnachweise sind in der App sichtbar.
+Manrope und die zugehörige Lizenz liegen in assets/. Kartenkonturen: Natural Earth, Public Domain. Standorte: © OpenStreetMap-Mitwirkende. Routen: OSRM ohne Verkehr, Pausen und Parkplatzsuche; die Übersichtskarten zeigen Standorte, keine Straßenrouten.

@@ -95,3 +95,105 @@ body.photo-viewer-open{overflow:hidden}.image-viewer{position:fixed;inset:0;marg
  .place-heading .place-time{font-size:.74rem}
 }
 @media print{.gallery-thumbnails,.gallery-hint{display:none}.area-section .place-list{grid-template-columns:repeat(2,minmax(0,1fr))}.place-row{break-inside:avoid}}
+
+/* Three finalists: open comparisons with an image and no hidden panels. */
+.intro{padding-block:30px 23px}
+.intro h1{font-size:clamp(2rem,4vw,3.25rem);max-width:900px}
+.intro-copy{max-width:960px;margin-top:13px;line-height:1.7}
+.intro-copy strong{color:var(--ink)}
+.departure-note{margin-top:15px;max-width:960px;font-size:.83rem;padding-block:7px}
+.comparison-summary{padding-top:34px}
+.decision-intro{max-width:880px;color:var(--muted);font-size:.94rem;margin-top:13px;line-height:1.7}
+.decision-grid,.german-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px;margin-top:28px}
+.decision-option,.german-hall{min-width:0}
+.decision-option+.decision-option,.german-hall+.german-hall{border-left:1px solid var(--line);padding-left:28px}
+.decision-label{font-size:.75rem;font-weight:750;color:var(--accent);margin-bottom:8px}
+.decision-option h3,.german-hall h3{font-size:1.45rem;line-height:1.35;letter-spacing:-.04em}
+.decision-verdict{font-size:.85rem;line-height:1.6;min-height:46px;margin-top:9px}
+.decision-option .item-gallery{margin-block:15px 20px}
+.decision-option .item-gallery .gallery-hint,.german-hall .item-gallery .gallery-hint{font-size:.64rem}
+.decision-option .item-gallery .album-note,.german-hall .item-gallery .album-note{display:none}
+.decision-ski{border-block:1px solid var(--line);padding-block:14px 16px;margin-bottom:20px}
+.decision-ski>strong{font-size:1.8rem;letter-spacing:-.04em;color:var(--ink)}
+.decision-ski>span{font-size:.75rem;color:var(--muted);margin-left:9px}
+.decision-ski>p{font-size:.91rem;margin-top:5px;font-variant-numeric:tabular-nums}
+.decision-ski small{display:block;font-size:.71rem;color:var(--muted);margin-top:3px}
+.decision-pros h4,.decision-cons h4{font-size:.9rem;letter-spacing:0;margin-bottom:8px}
+.decision-pros ul,.decision-cons ul{padding-left:17px;font-size:.83rem;line-height:1.7;margin-bottom:20px}
+.decision-pros li+li,.decision-cons li+li{margin-top:8px}
+.decision-pros li::marker{color:var(--accent)}
+.decision-cons{color:var(--muted)}
+.decision-facts{margin:0;border-top:1px solid var(--line)}
+.decision-facts>div{padding-block:11px;border-bottom:1px solid var(--line)}
+.decision-facts dt{font-size:.69rem;color:var(--muted);margin-bottom:3px;font-weight:650}
+.decision-facts dd{margin:0;font-size:.81rem;line-height:1.7}
+.decision-facts dd>strong{font-size:1.02rem;color:var(--ink)}
+.decision-choice{font-size:.83rem;font-weight:650;line-height:1.75;margin-top:17px;color:var(--ink)}
+.decision-bottom{font-size:.91rem;line-height:1.8;padding-top:24px;border-top:1px solid var(--line);margin-top:30px;max-width:1000px}
+.comparison-summary>.small-note{max-width:1000px;margin-top:9px}
+.german-comparison{padding-block:42px 35px;border-top:1px solid var(--line);scroll-margin-top:85px}
+.german-hall>h3{margin-top:7px;min-height:44px;font-size:1.25rem}
+.german-hall>.place-kind{font-size:.7rem;min-height:35px;line-height:1.7;display:block}
+.german-length{font-size:.77rem;color:var(--muted)}
+.german-length strong{font-size:1.6rem;color:var(--ink);letter-spacing:-.04em;margin-right:7px}
+.german-terrain{font-size:.8rem;line-height:1.7;margin-block:8px 15px}
+.german-price-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:.77rem;font-variant-numeric:tabular-nums}
+.german-price-table th,.german-price-table td{text-align:right;padding:9px 5px;border-bottom:1px solid var(--line);vertical-align:top}
+.german-price-table th:first-child{text-align:left;width:41%;padding-left:0;font-weight:500}
+.german-price-table thead{font-size:.7rem;color:var(--muted)}
+.german-price-table strong{font-size:.86rem;color:var(--ink);white-space:nowrap}
+.german-ticket-notes{font-size:.76rem;line-height:1.75;margin-top:14px}
+.german-ticket-notes p+p{margin-top:8px}
+.german-fit{font-size:.81rem;line-height:1.75;color:var(--ink);margin-top:18px;font-weight:650}
+.german-status{border-top:1px solid var(--line);padding-top:12px;margin-top:14px;font-size:.7rem;line-height:1.7}
+.german-comparison>.small-note{margin-top:25px;max-width:960px}
+.location-layout{display:grid;grid-template-columns:minmax(0,270px) minmax(0,1fr);gap:35px;align-items:center}
+.location-map .country-map{max-height:260px;width:100%;object-fit:contain}
+.location-map .map-legend{font-size:.7rem;line-height:1.7;margin-top:9px}
+.location-copy{max-width:650px}
+.location-copy>p{font-size:.88rem;line-height:1.75}
+.location-copy>.eyebrow{font-size:.71rem;margin-bottom:8px}
+.location-copy>.small-note{font-size:.73rem}
+.hall-section{scroll-margin-top:65px}
+.common-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+#entscheidung{scroll-margin-top:85px}
+@media(max-width:1100px){
+ .decision-grid,.german-grid{gap:22px}
+ .decision-option+.decision-option,.german-hall+.german-hall{padding-left:20px}
+ .decision-ski>p{font-size:.8rem}
+ .decision-option h3{font-size:1.3rem}
+ .german-price-table strong{font-size:.76rem}
+}
+@media(max-width:820px){
+ .decision-grid,.german-grid{grid-template-columns:1fr;gap:32px;margin-top:23px}
+ .decision-option+.decision-option,.german-hall+.german-hall{border-left:0;padding-left:0;border-top:1px solid var(--line);padding-top:28px}
+ .decision-verdict,.german-hall>h3,.german-hall>.place-kind{min-height:0}
+ .decision-option .item-gallery,.german-hall .item-gallery{max-width:540px}
+ .decision-ski>p{font-size:.91rem}
+ .decision-option h3{font-size:1.55rem}
+ .decision-facts{display:grid;grid-template-columns:1fr 1fr;gap:0 25px}
+ .german-price-table strong{font-size:1rem}
+ .common-grid{grid-template-columns:1fr}
+ .german-hall .german-price-table{max-width:540px;font-size:.84rem}
+}
+@media(max-width:600px){
+ .intro{padding-top:25px}
+ .intro-copy{font-size:.9rem}
+ .departure-note{font-size:.77rem}
+ .hall-nav>div{gap:0 22px;min-height:54px;flex-wrap:wrap;overflow:visible;padding-block:5px}
+ .hall-nav a{font-size:.77rem;padding-block:10px;min-height:38px}
+ .comparison-summary{padding-top:27px}
+ .comparison-summary h2,.german-comparison h2{font-size:1.55rem}
+ .decision-intro{font-size:.85rem}
+ .decision-facts{display:block}
+ .decision-pros ul,.decision-cons ul{font-size:.86rem}
+ .decision-option .item-gallery .gallery-hint,.german-hall .item-gallery .gallery-hint{font-size:.69rem}
+ .decision-bottom{font-size:.86rem}
+ .german-comparison{padding-top:30px}
+ .german-terrain,.german-ticket-notes{font-size:.83rem}
+ .german-price-table strong{font-size:.92rem}
+ .location-layout{grid-template-columns:1fr;gap:20px}
+ .location-map{max-width:275px;margin-inline:auto}
+ .location-map .country-map{max-height:250px}
+ .hall-section{scroll-margin-top:54px}
+}
