@@ -2,6 +2,8 @@
 
 Statische Web-App zum Vergleichen der sieben niederländischen Skihallen mit echtem Schnee. Die App zeigt Preise für vier und sechs Stunden einschließlich Ski und Schuhen, 27 echte Fotos mit Swipe-Galerien, fünf Betreiberpläne sowie Informationen zu Spa, Coffeeshops, Ausflügen, Nahverkehr und Parken.
 
+Alle Halleninformationen stehen direkt auf der Seite. Preisarten und Fahrdauern werden gleichzeitig angezeigt; Coffeeshop-Adressen, Zugangsregeln, Umgebung und Reiseplanung sind ohne Dialoge oder aufklappbare Bereiche sichtbar. Jede Fotogalerie hat Pfeile direkt am Bild sowie Wisch- und Tastaturbedienung.
+
 ## Ausführen und veröffentlichen
 
 Die App besteht aus HTML, CSS und JavaScript und benötigt keinen Build. Für eine lokale Vorschau den Ordner mit einem beliebigen statischen Webserver bereitstellen.
