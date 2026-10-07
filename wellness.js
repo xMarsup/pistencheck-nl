@@ -229,8 +229,8 @@ Object.assign(MEDIA_ALBUMS, {
     "note": "Veröffentlichte Bilder genau dieser Unterkunftskategorie. Die Galerie beginnt mit dem privaten Becken; einzelne Häuser und Einrichtungen können variieren.",
     "photos": [
       {
-        "src": "assets/media/wellness-meerssen-1.jpg",
-        "thumb": "assets/media/wellness-meerssen-1-thumb.jpg",
+        "src": "assets/media/wellness-meerssen-v2-1.jpg",
+        "thumb": "assets/media/wellness-meerssen-v2-1-thumb.jpg",
         "width": 1200,
         "height": 750,
         "title": "Privater Hot Tub bei Tageslicht",
@@ -240,8 +240,8 @@ Object.assign(MEDIA_ALBUMS, {
         "subject": "private-basin"
       },
       {
-        "src": "assets/media/wellness-meerssen-2.jpg",
-        "thumb": "assets/media/wellness-meerssen-2-thumb.jpg",
+        "src": "assets/media/wellness-meerssen-v2-2.jpg",
+        "thumb": "assets/media/wellness-meerssen-v2-2-thumb.jpg",
         "width": 1024,
         "height": 640,
         "title": "Privater Hot Tub am Abend",
@@ -250,8 +250,8 @@ Object.assign(MEDIA_ALBUMS, {
         "source": "https://mooidal.nl/tiny-houses/tinyhouse-2-pers-met-hottub"
       },
       {
-        "src": "assets/media/wellness-meerssen-3.jpg",
-        "thumb": "assets/media/wellness-meerssen-3-thumb.jpg",
+        "src": "assets/media/wellness-meerssen-v2-3.jpg",
+        "thumb": "assets/media/wellness-meerssen-v2-3-thumb.jpg",
         "width": 1200,
         "height": 750,
         "title": "Eigenes Tinyhouse & Terrasse",
@@ -260,8 +260,8 @@ Object.assign(MEDIA_ALBUMS, {
         "source": "https://mooidal.nl/tiny-houses/tinyhouse-2-pers-met-hottub"
       },
       {
-        "src": "assets/media/wellness-meerssen-4.jpg",
-        "thumb": "assets/media/wellness-meerssen-4-thumb.jpg",
+        "src": "assets/media/wellness-meerssen-v2-4.jpg",
+        "thumb": "assets/media/wellness-meerssen-v2-4-thumb.jpg",
         "width": 750,
         "height": 600,
         "title": "Schlafzimmer",
@@ -270,8 +270,8 @@ Object.assign(MEDIA_ALBUMS, {
         "source": "https://mooidal.nl/tiny-houses/tinyhouse-2-pers-met-hottub"
       },
       {
-        "src": "assets/media/wellness-meerssen-5.jpg",
-        "thumb": "assets/media/wellness-meerssen-5-thumb.jpg",
+        "src": "assets/media/wellness-meerssen-v2-5.jpg",
+        "thumb": "assets/media/wellness-meerssen-v2-5-thumb.jpg",
         "width": 750,
         "height": 600,
         "title": "Küche & Wohnbereich",
