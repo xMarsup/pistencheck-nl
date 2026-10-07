@@ -89,12 +89,19 @@
 .wellness-summary{padding:12px 14px;background:#edf4eb;border-left:3px solid var(--accent);font-size:.79rem;line-height:1.7;margin-bottom:15px}
 .wellness-table{min-width:1120px}
 .wellness-table th:first-child{width:20%}
-.wellness-table th:nth-child(2){width:13%}
-.wellness-table th:nth-child(3){width:17%}
+.wellness-table th:nth-child(2){width:17%}
+.wellness-table th:nth-child(3){width:15%}
 .wellness-table th:nth-child(4){width:14%}
 .wellness-table th:nth-child(5){width:10%}
 .wellness-table th:nth-child(6){width:13%}
-.wellness-table th:nth-child(7){width:13%}
+.wellness-table th:nth-child(7){width:11%}
+.wellness-photo-label{display:block;font-size:.7rem;font-weight:650;margin-bottom:6px;color:var(--accent)}
+.wellness-table .photo-cell>small{font-size:.6rem;color:var(--muted);margin-top:4px}
+.wellness-table .gallery-image{object-position:center}
+.wellness-confirmation{margin:9px 0;padding-left:8px;border-left:2px solid var(--accent);font-size:.65rem;line-height:1.6}
+.wellness-confirmation strong{display:block;color:var(--accent);font-size:.64rem;margin-bottom:3px}
+.wellness-confirmation q{display:block;font-style:italic}
+.wellness-confirmation a{font-size:.6rem}
 .wellness-table tr[data-wellness-id="meerssen"]>td,.wellness-table tr[data-wellness-id="meerssen"]>th{background:#f1f6ee}
 .city-table{min-width:1000px}
 .city-table th:first-child{width:24%}
