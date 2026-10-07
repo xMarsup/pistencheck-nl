@@ -86,6 +86,16 @@
 .hotel-table th:nth-child(7){width:18%}
 .hotel-table tbody td:nth-child(3),.hotel-table tbody td:nth-child(4){white-space:nowrap;font-variant-numeric:tabular-nums;font-size:.93rem}
 .hotel-table .photo-cell>small{font-size:.61rem;margin-top:3px}
+.wellness-summary{padding:12px 14px;background:#edf4eb;border-left:3px solid var(--accent);font-size:.79rem;line-height:1.7;margin-bottom:15px}
+.wellness-table{min-width:1120px}
+.wellness-table th:first-child{width:20%}
+.wellness-table th:nth-child(2){width:13%}
+.wellness-table th:nth-child(3){width:17%}
+.wellness-table th:nth-child(4){width:14%}
+.wellness-table th:nth-child(5){width:10%}
+.wellness-table th:nth-child(6){width:13%}
+.wellness-table th:nth-child(7){width:13%}
+.wellness-table tr[data-wellness-id="meerssen"]>td,.wellness-table tr[data-wellness-id="meerssen"]>th{background:#f1f6ee}
 .city-table{min-width:1000px}
 .city-table th:first-child{width:24%}
 .city-table th:nth-child(2){width:15%}
@@ -125,12 +135,12 @@
 @media(max-width:820px){.table-hint{display:block;color:var(--muted);font-size:.7rem;text-align:right;margin:4px 0 8px}}
 @media(max-width:500px){.overview-matrix th,.overview-matrix td{font-size:.73rem}.overview-matrix thead th:not(:first-child){font-size:.72rem}.overview-matrix small{font-size:.65rem}.overview-matrix .choice-row td{font-size:.74rem}}
 @media(max-width:820px){
- .hotel-table{min-width:1148px}.city-table{min-width:814px}.shop-table{min-width:981px}
- :is(.hotel-table,.city-table,.shop-table) thead th:nth-child(n){width:167px}
- :is(.hotel-table,.city-table,.shop-table) th:first-child,:is(.hotel-table,.city-table,.shop-table) thead th:first-child{width:146px}
+ .hotel-table,.wellness-table{min-width:1148px}.city-table{min-width:814px}.shop-table{min-width:981px}
+ :is(.hotel-table,.wellness-table,.city-table,.shop-table) thead th:nth-child(n){width:167px}
+ :is(.hotel-table,.wellness-table,.city-table,.shop-table) th:first-child,:is(.hotel-table,.wellness-table,.city-table,.shop-table) thead th:first-child{width:146px}
  .excursion-matrix,.plan-matrix{min-width:713px}
  :is(.excursion-matrix,.plan-matrix) thead th:nth-child(n){width:210px}
  :is(.excursion-matrix,.plan-matrix) thead th:first-child{width:83px}
- .table-scroll :is(.hotel-table,.city-table,.shop-table,.excursion-matrix,.plan-matrix) tr>th:first-child{position:sticky;left:0;z-index:2;background:#f1f4f0;border-right:1px solid var(--line)}
- .table-scroll :is(.hotel-table,.city-table,.shop-table,.excursion-matrix,.plan-matrix) thead th:first-child{z-index:3;background:#e8efea}
+ .table-scroll :is(.hotel-table,.wellness-table,.city-table,.shop-table,.excursion-matrix,.plan-matrix) tr>th:first-child{position:sticky;left:0;z-index:2;background:#f1f4f0;border-right:1px solid var(--line)}
+ .table-scroll :is(.hotel-table,.wellness-table,.city-table,.shop-table,.excursion-matrix,.plan-matrix) thead th:first-child{z-index:3;background:#e8efea}
 }

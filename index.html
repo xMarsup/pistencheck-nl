@@ -9,7 +9,8 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23163e3b'/%3E%3Cpath d='M7 23 15 8l5 10 3-5 4 10' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="assets/leaflet/leaflet.css?v=1.9.4">
   <link rel="stylesheet" href="styles.css?v=compact-1">
-  <link rel="stylesheet" href="compact.css?v=compact-1">
+  <link rel="stylesheet" href="compact.css?v=wellness-1">
+  <link rel="stylesheet" href="map-viewer.css?v=wellness-1">
   <script defer src="halls.js?v=maps-1"></script>
   <script defer src="regions.js?v=maps-1"></script>
   <script defer src="gallery.js?v=maps-1"></script>
@@ -20,10 +21,11 @@
   <script defer src="city-life.js?v=maps-1"></script>
   <script defer src="edibles.js?v=maps-1"></script>
   <script defer src="maps.js?v=maps-1"></script>
+  <script defer src="wellness.js?v=wellness-1"></script>
   <script defer src="assets/leaflet/leaflet.js?v=1.9.4"></script>
-  <script defer src="compact.js?v=compact-1"></script>
-  <script defer src="app.js?v=compact-1"></script>
-  <script defer src="regional-maps.js?v=compact-1"></script>
+  <script defer src="compact.js?v=wellness-1"></script>
+  <script defer src="app.js?v=wellness-1"></script>
+  <script defer src="regional-maps.js?v=wellness-1"></script>
 </head>
 <body>
   <a class="skip-link" href="#vergleich">Zum Vergleich</a>
@@ -43,7 +45,7 @@
       <p class="eyebrow">Preisgrundlage & Quellen</p>
       <h2 id="method-title">Datenstand & Bildquellen</h2>
       <div class="common-grid">
-        <p>Ski: 05.10. · Hotels und Anreise: 06.10. · Orte, Shops, Menükarten, Umgebungskilometer und Betriebsstatus: 07.10.2026. Suchpreise sind keine Reservierung. Ski ohne Helm, Kleidung und Handschuhe. <a href="https://www.cbs.nl/nl-nl/cijfers/detail/70072ned" target="_blank" rel="noopener noreferrer">CBS</a> · <a href="https://www.rijksoverheid.nl/documenten/2025/10/02/tk-bijlage-1-rapport-coffeeshops-in-nederland-2024" target="_blank" rel="noopener noreferrer">WODC</a> · <a href="https://www.zoll.de/SharedDocs/Pressemitteilungen/DE/Rauschgift/2024/z51_kugeln_n.html" target="_blank" rel="noopener noreferrer">Zoll</a></p>
+        <p>Ski: 05.10. · Bisherige Hotels und Anreise: 06.10. · Private Whirlpools/Hot Tubs, Orte, Shops, Menükarten, Umgebungskilometer und Betriebsstatus: 07.10.2026. Suchpreise sind keine Reservierung. Ski ohne Helm, Kleidung und Handschuhe. <a href="https://www.cbs.nl/nl-nl/cijfers/detail/70072ned" target="_blank" rel="noopener noreferrer">CBS</a> · <a href="https://www.rijksoverheid.nl/documenten/2025/10/02/tk-bijlage-1-rapport-coffeeshops-in-nederland-2024" target="_blank" rel="noopener noreferrer">WODC</a> · <a href="https://www.zoll.de/SharedDocs/Pressemitteilungen/DE/Rauschgift/2024/z51_kugeln_n.html" target="_blank" rel="noopener noreferrer">Zoll</a></p>
         <p>Fotoquellen stehen am Bild; Archivaufnahmen und Beispielzimmer. Eine Hotel-Visualisierung ist gekennzeichnet. Landesumriss: <a href="https://www.naturalearthdata.com/about/terms-of-use/" target="_blank" rel="noopener noreferrer">Natural Earth</a> · Karten: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap-Mitwirkende</a> · Fahrten: OSRM, ohne Verkehr, Pausen und Parkplatzsuche.</p>
       </div>
     </section>
@@ -54,6 +56,12 @@
     <div class="viewer-stage" id="viewer-stage"><div class="viewer-canvas"><img id="viewer-image" alt="" draggable="false"></div></div>
     <button type="button" class="viewer-arrow viewer-prev" id="viewer-prev" aria-label="Vorheriges Foto">‹</button><button type="button" class="viewer-arrow viewer-next" id="viewer-next" aria-label="Nächstes Foto">›</button>
     <div class="viewer-bottom"><div class="viewer-caption"><p id="viewer-caption"></p><p id="viewer-credit"></p></div><div class="viewer-zoom" role="group" aria-label="Foto vergrößern"><button type="button" id="viewer-minus" aria-label="Foto verkleinern">−</button><output id="viewer-zoom-label" aria-live="polite">100 %</output><button type="button" id="viewer-plus" aria-label="Foto vergrößern">+</button><button type="button" id="viewer-fit">Einpassen</button></div></div>
+  </dialog>
+  <dialog id="map-viewer" class="map-viewer" aria-labelledby="map-viewer-title">
+    <header class="map-viewer-header"><div><p class="eyebrow">Umgebungskarte · ab Skihalle</p><h2 id="map-viewer-title"></h2></div><button type="button" id="map-viewer-close" aria-label="Große Karte schließen">Schließen ×</button></header>
+    <div class="map-viewer-controls"><button type="button" id="map-viewer-all">Alle Orte</button><button type="button" id="map-viewer-nearby">Bei Halle</button><label>Zeigen <select id="map-viewer-filter"></select></label><label><input type="checkbox" id="map-viewer-names" checked> Ortsnamen</label></div>
+    <div class="map-viewer-workspace"><div id="map-viewer-stage"></div><aside class="map-viewer-sidebar" aria-label="Orte mit Fotos und Entfernungen"><div id="map-viewer-preview" aria-live="polite"></div><div id="map-viewer-places"></div></aside></div>
+    <p class="map-viewer-help">Über einen Pin fahren oder ihn antippen: Foto & Entfernung. Alle Namen stehen in der Fotoliste. H = Halle · C = Coffeeshop · S = Spa · U = Unterkunft. Versetzte Pins sind mit ihrem Standort verbunden. Autofahrten ohne Verkehr; Quellen am Foto.</p>
   </dialog>
   <noscript><p class="page-width">Bitte JavaScript aktivieren, damit die Hallen, Preise und Galerien angezeigt werden.</p></noscript>
 </body>
