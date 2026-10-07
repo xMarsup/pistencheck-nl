@@ -1007,84 +1007,6 @@ const MEDIA_ALBUMS = {
       }
     ]
   },
-  "bottrop": {
-    "label": "Bottrop",
-    "note": "Archivaufnahmen, keine Live-Bilder. Der heutige Betrieb kann abweichen.",
-    "photos": [
-      {
-        "src": "assets/media/bottrop-1.jpg",
-        "thumb": "assets/media/bottrop-1-thumb.jpg",
-        "width": 1100,
-        "height": 578,
-        "title": "Auf der Piste",
-        "caption": "Blick entlang der überdachten Piste im alpincenter Bottrop.",
-        "credit": "alpincenter Bottrop",
-        "source": "https://alpincenter.com/bottrop/skihalle"
-      },
-      {
-        "src": "assets/media/bottrop-2.jpg",
-        "thumb": "assets/media/bottrop-2-thumb.jpg",
-        "width": 1100,
-        "height": 734,
-        "title": "Breite des Hangs",
-        "caption": "Snowboarder im unteren Hallenbereich; Betreiberaufnahme.",
-        "credit": "alpincenter Bottrop",
-        "source": "https://alpincenter.com/bottrop/skihalle"
-      }
-    ]
-  },
-  "neuss": {
-    "label": "Neuss",
-    "note": "Archivaufnahmen, keine Live-Bilder. Der heutige Betrieb kann abweichen.",
-    "photos": [
-      {
-        "src": "assets/media/neuss-1.jpg",
-        "thumb": "assets/media/neuss-1-thumb.jpg",
-        "width": 1100,
-        "height": 619,
-        "title": "Blick auf die Hauptpiste",
-        "caption": "Blick in die breite Skihalle in Neuss.",
-        "credit": "SnowWorld Neuss",
-        "source": "https://neuss.snowworld.com/piste.html"
-      },
-      {
-        "src": "assets/media/neuss-2.jpg",
-        "thumb": "assets/media/neuss-2-thumb.jpg",
-        "width": 1100,
-        "height": 733,
-        "title": "Piste & Skigäste",
-        "caption": "Veröffentlichte Aufnahme auf der Piste mit Skigästen.",
-        "credit": "SnowWorld Neuss",
-        "source": "https://neuss.snowworld.com/piste.html"
-      }
-    ]
-  },
-  "bispingen": {
-    "label": "Bispingen",
-    "note": "Archivaufnahmen, keine Live-Bilder. Der heutige Betrieb kann abweichen.",
-    "photos": [
-      {
-        "src": "assets/media/bispingen-1.jpg",
-        "thumb": "assets/media/bispingen-1-thumb.jpg",
-        "width": 1100,
-        "height": 688,
-        "title": "Breite Hauptabfahrt",
-        "caption": "Blick die breite Hauptpiste von SnowWorld Bispingen hinauf.",
-        "credit": "SnowWorld Bispingen",
-        "source": "https://bispingen.snowworld.com/piste.html"
-      },
-      {
-        "src": "assets/media/bispingen-2.jpg",
-        "thumb": "assets/media/bispingen-2-thumb.jpg",
-        "width": 1100,
-        "height": 688,
-        "title": "Piste & Liftbereich",
-        "caption": "Veröffentlichte Aufnahme im unteren Pisten- und Liftbereich.",
-        "credit": "SnowWorld Bispingen",
-        "source": "https://bispingen.snowworld.com/piste.html"
-      }
-    ]
-  },
   "amsterdam-city": {
     "label": "Amsterdam · Grachten",
     "note": "Archivaufnahmen, keine Live-Bilder. Der heutige Betrieb kann abweichen.",
@@ -1114,6 +1036,122 @@ const MEDIA_ALBUMS = {
         "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
       }
     ]
+  },
+  "zoetermeer-city": {
+    "label": "Zoetermeer · Stadshart",
+    "note": "Archivaufnahmen, keine Live-Bilder. Wetter, Läden und Einrichtung können heute abweichen.",
+    "photos": [
+      {
+        "src": "assets/media/zoetermeer-city-1.jpg",
+        "thumb": "assets/media/zoetermeer-city-1-thumb.jpg",
+        "width": 1100,
+        "height": 827,
+        "title": "Stadhuisplein & Passage",
+        "caption": "Das moderne Stadshart in Zoetermeer; Archivfoto vom 08.05.2008.",
+        "credit": "S.J. de Waard",
+        "source": "https://commons.wikimedia.org/wiki/File:Zoetermeer_Stadhuisplein_met_ingang_Stadshart_Passage.jpg",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      },
+      {
+        "src": "assets/media/zoetermeer-city-2.jpg",
+        "thumb": "assets/media/zoetermeer-city-2-thumb.jpg",
+        "width": 1100,
+        "height": 827,
+        "title": "Spazio im Stadshart",
+        "caption": "Einkaufsgebäude im Zentrum von Zoetermeer; Archivaufnahme.",
+        "credit": "S.J. de Waard",
+        "source": "https://commons.wikimedia.org/wiki/File:Zoetermeer_Stadshart_Spazio.JPG",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
+    ]
+  },
+  "landgraaf-city": {
+    "label": "Landgraaf · Schaesberg",
+    "note": "Archivaufnahmen, keine Live-Bilder. Wetter, Läden und Einrichtung können heute abweichen.",
+    "photos": [
+      {
+        "src": "assets/media/landgraaf-city-1.jpg",
+        "thumb": "assets/media/landgraaf-city-1-thumb.jpg",
+        "width": 1100,
+        "height": 619,
+        "title": "Ortskern Schaesberg",
+        "caption": "Kirche und Straßen im Ortsteil Schaesberg; ein kleiner Ortskern von Landgraaf.",
+        "credit": "Romaine",
+        "source": "https://commons.wikimedia.org/wiki/File:Schaesberg-Sint-Petrus_en_Pauluskerk_(1).jpg",
+        "license": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en"
+      },
+      {
+        "src": "assets/media/landgraaf-city-2.jpg",
+        "thumb": "assets/media/landgraaf-city-2-thumb.jpg",
+        "width": 1100,
+        "height": 619,
+        "title": "Blick durch Schaesberg",
+        "caption": "Zweite Perspektive im selben Ortskern; Archivaufnahme, kein Bild einer Großstadt.",
+        "credit": "Romaine",
+        "source": "https://commons.wikimedia.org/wiki/File:Schaesberg-Sint-Petrus_en_Pauluskerk_(4).jpg",
+        "license": "CC0",
+        "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en"
+      }
+    ]
+  },
+  "maastricht-city": {
+    "label": "Maastricht · Altstadt",
+    "note": "Archivaufnahmen, keine Live-Bilder. Wetter, Läden und Einrichtung können heute abweichen.",
+    "photos": [
+      {
+        "src": "assets/media/maastricht-city-1.jpg",
+        "thumb": "assets/media/maastricht-city-1-thumb.jpg",
+        "width": 1100,
+        "height": 817,
+        "title": "Straße am Vrijthof",
+        "caption": "Altstadtstraße mit Terrassen nahe Vrijthof; Archivfoto vom 19.08.2017.",
+        "credit": "Berthold Werner",
+        "source": "https://commons.wikimedia.org/wiki/File:Maastricht_Vrijthof_15_BW_2017-08-19_12-06-24.jpg",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      },
+      {
+        "src": "assets/media/maastricht-city-2.jpg",
+        "thumb": "assets/media/maastricht-city-2-thumb.jpg",
+        "width": 1100,
+        "height": 277,
+        "title": "Vrijthof als Panorama",
+        "caption": "Weiter Blick über Vrijthof, früh morgens am 18.06.2006 aufgenommen; tagsüber ist der Platz belebter.",
+        "credit": "Arne Hückelheim",
+        "source": "https://commons.wikimedia.org/wiki/File:VrijthofMaastricht.JPG",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0"
+      }
+    ]
+  },
+  "siberie": {
+    "label": "Siberië · Amsterdam",
+    "note": "Archivaufnahmen, keine Live-Bilder. Wetter, Läden und Einrichtung können heute abweichen.",
+    "photos": [
+      {
+        "src": "assets/media/siberie-1.jpg",
+        "thumb": "assets/media/siberie-1-thumb.jpg",
+        "width": 637,
+        "height": 850,
+        "title": "Shop an der Brouwersgracht",
+        "caption": "Veröffentlichte Außenansicht des Siberië an der Brouwersgracht in Amsterdam.",
+        "credit": "Shopprofil Greenmeister",
+        "source": "https://greenmeister.com/coffeeshop/siberie-amsterdam"
+      },
+      {
+        "src": "assets/media/siberie-2.jpg",
+        "thumb": "assets/media/siberie-2-thumb.jpg",
+        "width": 637,
+        "height": 850,
+        "title": "Innenraum & Theke",
+        "caption": "Veröffentlichte Innenaufnahme von Siberië; Einrichtung kann sich ändern.",
+        "credit": "Shopprofil Greenmeister",
+        "source": "https://greenmeister.com/coffeeshop/siberie-amsterdam"
+      }
+    ]
   }
 };
 const MEDIA_PLACES = {
@@ -1134,11 +1172,15 @@ const MEDIA_PLACES = {
   "Spaarnwoude, Velsen-Zuid": "spaarnwoude",
   "Sauna van Egmond, Haarlem": "egmond",
   "Teylers Museum Haarlem": "teylers",
-  "Amsterdam Centraal, Amsterdam": "amsterdam-city"
+  "Amsterdam Centraal, Amsterdam": "amsterdam-city",
+  "Stadshart Zoetermeer": "zoetermeer-city",
+  "Markt, Schaesberg, Landgraaf": "landgraaf-city",
+  "Vrijthof, Maastricht": "maastricht-city"
 };
 const MEDIA_SHOPS = {
   "Down Under|Kerkrade": "downunder",
   "Casa|Zoetermeer": "casa",
   "Cremers|Den Haag": "cremers",
-  "Birdy|Haarlem": "birdy"
+  "Birdy|Haarlem": "birdy",
+  "Siberië|Amsterdam": "siberie"
 };

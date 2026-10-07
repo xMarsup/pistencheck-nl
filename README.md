@@ -1,10 +1,12 @@
 # Pistencheck · Eure drei Favoriten
 
-Statische Web-App für einen viertägigen Urlaub zu zweit ab Löningen, 12.–15.10.2026, mit 500 € Budget pro Person. Der Vergleich konzentriert sich auf SnowWorld Zoetermeer, Landgraaf und Velsen bei Amsterdam. Eine offene Entscheidungshilfe stellt Vor- und Nachteile, Stadt, Küste, Landschaft, Spa, Touristen-Zugang zu Coffeeshops und das Reisebudget direkt nebeneinander. Die Empfehlung ist eine eigene Bewertung anhand der Reisewünsche.
+Statische Web-App für einen viertägigen Urlaub zu zweit ab Löningen, 12.–15.10.2026, mit 500 € Budget pro Person. Der Vergleich konzentriert sich auf SnowWorld Zoetermeer, Landgraaf und Velsen bei Amsterdam. Die offene Entscheidungshilfe vergleicht den ganzen Urlaub: Stadt, Läden, Restaurants, Küste, Landschaft, Spa, Touristen-Zugang zu Coffeeshops und Reisebudget. Die Empfehlung unterscheidet Stadturlaub (Velsen/Haarlem/Amsterdam) und die Mischung mit langem Skitag (Zoetermeer/Den Haag). Sie ist eine eigene Bewertung anhand der Reisewünsche.
 
-Zusätzlich werden alpincenter Bottrop, SnowWorld Bispingen und SnowWorld Neuss kurz verglichen: Pistenlänge, Anreise ab Löningen, vier/sechs geplante Skistunden mit Ski und Schuhen, Ticket-Zeitfenster und Parken. Veröffentlichte ab-Preise sind gekennzeichnet. Neuss verwendet den datumsgenauen Eintrittspreis und den separat veröffentlichten Materialtarif; ein kompletter Warenkorb wurde nicht bestätigt.
+Acht Gemeinden stehen mit Einwohnerzahl, Landfläche, Stadtcharakter, Einkaufsmöglichkeiten, Restaurants, Abendprogramm und Coffeeshop-Anzahl offen auf der Seite. Gemeinde und Skihallenstandort sind getrennt benannt. Populationen stammen vom CBS zum 01.01.2026, Flächen aus 2025. Coffeeshop-Zahlen sind der offizielle WODC-Bestand vom 31.12.2024, keine aktuelle Zählung. Der deutsche Vergleich wurde auf Wunsch entfernt.
 
-Alle Textinformationen stehen ohne Aufklappen auf der Seite. Pisten, Unterkünfte, Coffeeshops, Städte, Landschaften und Ausflugsziele haben mehrere Bilder. 11 Pistenfotos und 89 weitere Aufnahmen in 32 Alben sind lokal gespeichert; wiederkehrende Orte verwenden dasselbe Album. Jede Galerie unterstützt Pfeile, Wischen, Tastatur und eine Großansicht mit Zoom. Quellen und gegebenenfalls Lizenzen stehen am Foto. Überflüssige Hallen, doppelte Umgebungsgalerien und ungenutzte Bilddateien wurden entfernt.
+Alle Textinformationen stehen ohne Aufklappen auf der Seite. Pisten, Unterkünfte, Coffeeshops, Städte, Landschaften und Ausflugsziele haben mehrere Bilder. 11 Pistenfotos und 91 weitere Aufnahmen in 33 Alben sind lokal gespeichert; wiederkehrende Orte verwenden dasselbe Album. Jede Galerie unterstützt Pfeile, Wischen, Tastatur und eine Großansicht mit Zoom. Quellen und gegebenenfalls Lizenzen stehen am Foto. Doppelte Stadtbeschreibungen und ungenutzte Bilddateien wurden entfernt.
+
+Fünf ausgewählte Coffeeshops zeigen Bewertungen samt Anzahl und einen Edibles-Recherchestand. Birdy: undatierte Betreiberkarte, am 07.10.2026 gelesen. Cremers: Original-Menüfoto vom 29.08.2026. Siberië: Original-Menüfoto vom 19.07.2026; fehlerhafte OCR-Werte anderer Verzeichnisse wurden nicht übernommen. Casa und Down Under: keine belastbare Edibles-Karte gefunden. Preise beziehen sich auf die ausgewiesene Einheit; mg im Produktnamen, Hash-Gewicht und THC-oil-Bezeichnungen werden getrennt dokumentiert. Ein aktueller Lagerbestand oder analytisch gemessener THC-Gehalt ist nicht bestätigt.
 
 Die sieben Hotels behalten ihre bisherigen Preise für 11.–14.10. und die zusätzliche Montag-Variante 12.–15.10.2026, jeweils drei Nächte, ein Zimmer, zwei Erwachsene. Die bisherigen niederländischen Skipreise bleiben ebenfalls unverändert. Die Reisebudgets enthalten Hotel, Hotelparken, einen Skitag mit Material und Hallenparkplatz sowie geschätzte 140 € Spa, 130 € Autofahrt und 160 € Essen für beide. Pflichtabgaben, Stadtparken und weitere Eintritte sind gegebenenfalls zusätzlich. Der Vier-Tage-Plan zeigt die gewählte Abfahrt am Montag.
 
@@ -17,10 +19,8 @@ GitHub Pages veröffentlicht den Stammordner von main; .nojekyll deaktiviert die
 ## Datenstand
 
 - Niederländische Ski-Direktpreise und reguläre Termine: 05.10.2026, Vergleichstag 13.10.2026.
-- Hotels für beide Reisezeiträume, Gutscheinbedingungen, Regions- und Coffeeshop-Recherche: 06.10.2026.
-- Deutscher Preisvergleich, neue Anreise- und Ausflugsrouten: 06.10.2026.
-- Neuss: Eintrittspreise am 13.10. im offiziellen Shop geprüft; Material separat aus der Pisten-Seite.
-- Bottrop und Bispingen: veröffentlichte saisonabhängige ab-Preise; Endpreis und freie Plätze am 13.10. nicht bestätigt. Bottrops aktueller Kalender nennt für 12. und 13.10. jeweils 10–20 Uhr.
+- Hotels für beide Reisezeiträume, Gutscheinbedingungen und Anreise-/Ausflugsrouten: 06.10.2026.
+- Stadtstatistik, Einkaufs- und Gastronomiequellen, Coffeeshop-Bewertungen/Zugang und Edibles-Menüs: 07.10.2026. Das Datum der einzelnen Menüquelle ist separat ausgewiesen.
 
 Gutscheinbedingungen und Eingabemaske wurden geprüft. Tatsächliche Einlösung und Gutscheinplätze bleiben ohne gekauften Code offen. Ein Tickettermin oder Hotel-Suchtreffer ist keine Reservierung.
 

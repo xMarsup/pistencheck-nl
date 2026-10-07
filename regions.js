@@ -1,17 +1,17 @@
 "use strict";
-const GREENMEISTER_NOTE = "Greenmeister, am 06.10.2026 im Browser geprüft. Bewertungen stammen von Nutzern; außer Cremers sind die hier genannten Profile nicht vom Betreiber verifiziert. Zugangshinweise sind keine persönliche Einlassgarantie.";
+const GREENMEISTER_NOTE = "Greenmeister, am 07.10.2026 im Browser geprüft. Bewertungen stammen von Nutzern; außer Cremers und Siberië sind die hier genannten Profile nicht vom Betreiber verifiziert. Kleine Bewertungszahlen beachten. Zugangshinweise sind keine persönliche Einlassgarantie.";
 const REGIONS = {
   "zoetermeer": {
     "headline": "Ski, Spa, Stadt & Strand",
     "summary": "300-m-Piste, Elysium ganz nah und Den Haag als Ausflug. Der vielseitigste Kompromiss für euch.",
-    "bestFor": "Unsere Wahl für den ganzen Urlaub",
+    "bestFor": "Ski, Spa und Den Haag",
     "tradeoff": "Die längste Piste ist steiler; Strand und gute Shop-Lounge brauchen eine kurze Autofahrt.",
     "address": "SnowWorld Zoetermeer, Buytenparklaan 30, Zoetermeer",
     "arrival": "Ab Löningen rund 278 km / 3 Std. 37 Min. reine Autofahrt. OSRM-Routencheck 06.10.2026; Verkehr, Pausen und Parkplatzsuche zusätzlich.",
     "coffee": {
       "status": "Touristen werden bedient",
       "tone": "good",
-      "rule": "Zoetermeer sieht seit 2017 von aktiver Durchsetzung des Wohnsitzkriteriums ab. Casa ist die lokale Option. Für eine besser bewertete Shop-Erfahrung könnt ihr Den Haag mit eurem Stadtbesuch verbinden. Dort werden deutsche Touristen ebenfalls bedient.",
+      "rule": "Zoetermeer setzt das Wohnsitzkriterium laut geltender Richtlinie nicht konkret durch (Beschluss vom 07.03.2014). Casa ist die lokale Option. Für den besser bewerteten Cremers könnt ihr Den Haag mit eurem Stadtbesuch verbinden. Deutsche Touristen werden dort laut Shopprofil bedient.",
       "shops": [
         {
           "name": "Casa",
@@ -227,6 +227,18 @@ const REGIONS = {
           "website": "https://coffeeshopbirdy.com/",
           "access": "Touristen laut Shopprofil zugelassen",
           "note": "Mo–Mi und So 10:00–23:00; Do–Sa 10:00–24:00 laut Betreiber. Lounge-Option für einen Haarlem-Ausflug. Bewertung hat eine kleine Stichprobe."
+        },
+        {
+          "name": "Siberië",
+          "city": "Amsterdam",
+          "address": "Brouwersgracht 11, Amsterdam",
+          "time": "ca. 30–45 Min. + Stadtparken / ÖPNV",
+          "rating": "4,8 / 5",
+          "reviews": 39,
+          "profile": "https://greenmeister.com/coffeeshop/siberie-amsterdam",
+          "website": "https://thecoffeeshops.com/pages/siberie",
+          "access": "Betreiber bestätigt ausländische Gäste: 18+ mit Original-Pass oder EU-Ausweis",
+          "note": "Täglich 08:00–01:00 laut Betreiber. Etwa 40 Sitzplätze an der Gracht; von Centraal zu Fuß erreichbar. Bei Aufenthalt ist ein Getränk Pflicht, maximal 2,5 Stunden. Kleine Bewertungsbasis."
         }
       ],
       "sources": [
@@ -239,8 +251,8 @@ const REGIONS = {
           "url": "https://coffeeshopbond.nl/publicaties/factsheet-i-criterium"
         },
         {
-          "label": "Amsterdam: aktuelle Besucherinfo",
-          "url": "https://amsterdam.org/en/coffeeshops.php"
+          "label": "Siberië: ausländische Gäste & Hausregeln",
+          "url": "https://thecoffeeshops.com/pages/siberie"
         },
         {
           "label": "Ministerium: Praxis Amsterdam",
