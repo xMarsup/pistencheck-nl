@@ -56,7 +56,7 @@ function initRegionalMaps() {
       selectedKey=null;readout.textContent=defaultReadout;
       section.querySelectorAll('.map-row-active').forEach(row=>row.classList.remove('map-row-active'));
       for(const marker of markers.values()) {
-        marker.getElement()?.classList.remove('map-marker-active');marker.setZIndexOffset(marker.options.baseZIndex);
+        marker.getElement()?.classList.remove('map-marker-active');marker.setZIndexOffset(marker.options.baseZIndex);marker.closeTooltip();
       }
     }
     for(const point of data.points) {
