@@ -132,6 +132,75 @@ body.photo-viewer-open{overflow:hidden}.image-viewer{position:fixed;inset:0;marg
 .decision-bottom{font-size:.91rem;line-height:1.8;padding-top:24px;border-top:1px solid var(--line);margin-top:30px;max-width:1000px}
 .comparison-summary>.small-note{max-width:1000px;margin-top:9px}
 .location-layout{display:grid;grid-template-columns:minmax(0,270px) minmax(0,1fr);gap:35px;align-items:center}
+.ski-status{padding:16px 20px;background:#f8f2e6;border-left:3px solid #a77636;margin:22px 0;font-size:.85rem;line-height:1.7;color:#674b23}
+.ski-status>strong{display:block;font-size:.94rem;color:#513a1d}
+.ski-status>p{margin-top:5px}
+.ski-status .small-note{font-size:.7rem;margin-top:8px;color:#756347}
+.ski-status .small-note a{color:inherit}
+.ski-status-compact{padding:12px 14px;margin:15px 0;font-size:.76rem}
+.ski-status-compact>strong{font-size:.82rem}
+.regional-map-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:28px;align-items:start}
+.regional-map-column,.map-place-list{min-width:0}
+.map-toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px;font-size:.73rem;line-height:1.5}
+.map-toolbar p{color:var(--muted)}
+.map-toolbar p b{display:inline-grid;place-items:center;width:24px;height:24px;background:var(--ink);color:#fff;margin-right:5px;border-radius:50%}
+.map-toolbar>div{display:flex;gap:5px;flex:none}
+.map-toolbar button{padding:7px 9px;min-height:34px;font-size:.72rem;border:1px solid var(--line);border-radius:3px;background:#fff;color:var(--ink);cursor:pointer}
+.map-toolbar button:hover{background:var(--soft);border-color:var(--accent)}
+.regional-map{height:420px;border:1px solid #cbd5d0;background:#e9efeb;isolation:isolate;z-index:0;font-family:var(--sans);scroll-margin-top:120px}
+.regional-map .leaflet-control-attribution{font-size:10px;line-height:1.5;max-width:95%;text-align:right;color:#33483f}
+.regional-map .leaflet-control-attribution a{color:#214b43}
+.regional-map .leaflet-control-zoom a{font-family:var(--sans);color:var(--ink);width:36px;height:36px;line-height:36px}
+.regional-map .leaflet-control-scale-line{font-family:var(--sans);font-size:10px;background:#ffffffdf}
+.regional-pin{border:0;background:transparent;font-family:var(--sans);cursor:pointer}
+.regional-pin>span{display:flex;align-items:center;justify-content:center;gap:1px;width:32px;height:32px;border:1.5px solid #163e3b;border-radius:50%;background:#fffffff5;color:#163e3b;box-shadow:0 1px 5px #102b272a;font-size:8px;font-weight:700}
+.regional-pin b{font-size:12px;font-weight:800;line-height:1}
+.regional-pin.kind-ski>span{width:36px;height:36px;background:#163e3b;color:#fff;border:2px solid white;transform:translate(-2px,-2px)}
+.regional-pin.kind-ski b{font-size:16px}
+.regional-pin.kind-coffee>span{border-color:#8b572c;color:#74431e;background:#fff7ef}
+.regional-pin.kind-spa>span{border-color:#557287;color:#315265;background:#f1f8fc}
+.regional-pin.kind-hotel>span{border-radius:5px;background:#f5f6ee}
+.regional-pin:focus{outline:3px solid #b5823d;outline-offset:5px;border-radius:50%}
+.regional-pin.map-marker-active>span{box-shadow:0 0 0 4px #ffffff,0 0 0 6px #163e3b}
+.regional-tooltip{font-family:var(--sans);font-size:11px;line-height:1.6;color:var(--ink);background:#fff;border-color:var(--line);max-width:230px;white-space:normal}
+.map-readout{padding:10px 0;border-bottom:1px solid var(--line);font-size:.78rem;font-weight:650;line-height:1.6;min-height:3.7em;color:var(--ink)}
+.map-help{font-size:.71rem;line-height:1.7;color:var(--muted);margin:9px 0 17px}
+.map-load-note{padding:25px;font-size:.85rem;line-height:1.6;color:var(--muted)}
+.map-tile-status{padding:9px 0;color:#855722}
+.regional-location{display:grid;grid-template-columns:160px minmax(0,1fr);gap:20px;align-items:start;padding-top:6px}
+.regional-location .location-map{max-width:none;margin:0}
+.regional-location .country-map{max-height:155px;width:100%;margin:0}
+.regional-location .map-legend{font-size:.63rem;line-height:1.55;margin:6px 0}
+.regional-location .location-copy h4{font-size:.88rem;margin-bottom:5px}
+.regional-location .location-copy>p{font-size:.76rem;line-height:1.7}
+.regional-location .location-copy>.small-note{font-size:.66rem;margin-top:8px}
+.regional-location .inline-links{font-size:.74rem;margin-top:8px}
+.map-list-heading{font-size:.73rem;color:var(--muted);min-height:34px;display:flex;align-items:center;border-bottom:1px solid var(--line);margin-bottom:15px}
+.map-place-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 20px}
+.map-place-group{min-width:0}
+.map-place-group h4{font-size:.68rem;text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px;color:var(--accent)}
+.map-place-group.kind-coffee h4{color:#805128}
+.map-place-group.kind-spa h4{color:#476a7d}
+.map-place-group.kind-hotel,.map-place-group.kind-coffee{grid-column:1/-1}
+.map-place-group ul{list-style:none;margin:0;padding:0}
+.map-place-row{display:grid;grid-template-columns:23px minmax(0,1fr) auto;align-items:start;gap:7px;width:100%;padding:7px 0;border:0;border-bottom:1px solid #e4e9e4;border-radius:0;background:transparent;text-align:left;color:var(--ink);cursor:pointer;font-family:var(--sans);font-size:.78rem;line-height:1.5}
+.map-place-row:hover,.map-place-row.map-row-active{background:var(--soft)}
+.map-list-number{display:grid;place-items:center;width:22px;height:22px;border:1px solid #91a69b;border-radius:50%;font-size:.64rem;font-weight:750}
+.map-list-place{min-width:0}
+.map-list-place strong{display:block;font-weight:650}
+.map-list-place small{display:block;font-size:.64rem;color:var(--muted);margin-top:3px;line-height:1.65}
+.map-list-distance{font-variant-numeric:tabular-nums;text-align:right;font-size:.77rem;white-space:nowrap}
+.map-list-distance b{display:block;font-weight:700}
+.map-list-distance small{display:block;font-size:.59rem;font-weight:400;color:var(--muted);margin-top:3px}
+.map-place-group.kind-coffee .map-list-number{border-color:#a78264;color:#805128;background:#fff7ef}
+.map-place-group.kind-spa .map-list-number{border-color:#7996a7;color:#315265;background:#f1f8fc}
+.map-place-group.kind-hotel .map-list-number{border-radius:3px;background:#f5f6ee}
+.map-distance-note,.map-coast-note{font-size:.69rem;line-height:1.75;color:var(--muted);margin-top:16px}
+.map-coast-note{color:var(--ink);border-left:2px solid #97ad95;padding-left:12px}
+.map-place-list .source-links{font-size:.67rem;margin-top:7px}
+@media(max-width:1100px){.regional-map-layout{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px}.regional-location{grid-template-columns:120px minmax(0,1fr);gap:14px}.regional-map{height:390px}.map-place-groups{gap:15px 12px}.map-toolbar{align-items:start;flex-direction:column;gap:7px}.map-list-heading{min-height:68px}}
+@media(max-width:850px){.regional-map-layout{grid-template-columns:1fr;gap:24px}.regional-map{height:400px}.map-toolbar{flex-direction:row;align-items:center}.map-list-heading{min-height:34px}.map-place-groups{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 24px}.map-place-row{font-size:.8rem}.map-list-distance{font-size:.79rem}.map-list-distance small{font-size:.68rem}.map-list-place small{font-size:.71rem}.regional-location{grid-template-columns:160px minmax(0,1fr)}.regional-location .location-copy>p{font-size:.82rem}}
+@media(max-width:600px){.regional-map{height:355px}.map-toolbar{flex-wrap:wrap;gap:8px}.map-toolbar>div{width:100%}.map-toolbar button{min-height:42px;padding:8px 13px;font-size:.75rem}.map-place-groups{grid-template-columns:1fr;gap:18px}.map-place-group.kind-hotel,.map-place-group.kind-coffee{grid-column:auto}.map-place-group h4{font-size:.73rem}.map-place-row{grid-template-columns:26px minmax(0,1fr) auto;gap:9px;padding:10px 0;font-size:.82rem}.map-list-number{width:25px;height:25px;font-size:.72rem}.map-list-place small{font-size:.7rem}.map-list-distance{font-size:.79rem}.map-list-distance small{font-size:.64rem}.map-readout{font-size:.76rem}.map-help{font-size:.72rem}.regional-location{grid-template-columns:112px minmax(0,1fr);gap:14px}.regional-location .location-copy>p{font-size:.77rem}.regional-location .location-copy h4{font-size:.9rem}.regional-location .map-legend{font-size:.61rem}.map-distance-note,.map-coast-note{font-size:.73rem}.ski-status{padding:14px 16px;font-size:.81rem}.regional-map .leaflet-control-attribution{font-size:9px}}
 .location-map .country-map{max-height:260px;width:100%;object-fit:contain}
 .location-map .map-legend{font-size:.7rem;line-height:1.7;margin-top:9px}
 .location-copy{max-width:650px}

@@ -57,8 +57,8 @@ const REGIONS = {
       {
         "kind": "Spa",
         "title": "Elysium · Bleiswijk",
-        "time": "ca. 10–15 Min.",
-        "description": "Großes Wellnessresort in kurzer Reichweite. Ab Bastion Hotel wurden 9,2 km / 12 Minuten geprüft. Badebekleidungstage und Termin vor dem Kauf im Spa-Kalender wählen.",
+        "time": "ca. 20 Min. ab Halle",
+        "description": "Großes Wellnessresort: ab Halle 15,2 km / ca. 19 Minuten ohne Verkehr, gemessen am 07.10.2026. Ab Bastion Hotel Zoetermeer wurden 9,2 km / 12 Minuten geprüft. Badebekleidungstage und Termin vor dem Kauf im Spa-Kalender wählen.",
         "url": "https://elysium.nl/",
         "destination": "Elysium, Bleiswijk"
       },

@@ -160,8 +160,15 @@ const halls = [
     ],
     "terrainNote": "Der Betreiber nennt derzeit 170 m und 70 m. Ältere externe Angaben mit 230 m werden für diesen Vergleich nicht verwendet.",
     "detail": "Der Name ist Amsterdam, die Halle liegt in Velsen-Zuid. Für einen langen Skitag sind Landgraaf und Zoetermeer wegen der längeren Abfahrten die bessere Wahl.",
-    "warning": "Umbau vom 01.04. bis voraussichtlich Mitte Oktober 2026: rechter Schlepplift außer Betrieb, auch am Förderband Einschränkungen. Eure Reise 12.–15.10. kann noch betroffen sein; Abschluss nicht bestätigt.",
-    "hours": "Am Vergleichstag regulär 09:00–22:00 Uhr",
-    "availability": "4-Stunden- und Tagespass für den 13.10. im Shop geprüft; der Umbau kann den Betrieb einschränken."
+    "warning": "Piste laut Betreiber geöffnet. Der rechte Schlepplift ist während des Umbaus bis etwa Mitte Oktober außer Betrieb; auch der Bandlift ist wegen Wartung aktuell gesperrt. Das Ende beider Einschränkungen ist nicht bestätigt.",
+    "hours": "Für Montag bis Donnerstag regulär 09:00–22:00 Uhr laut Winteröffnungszeiten 2026/27",
+    "availability": "4-Stunden- und Tagespass für den 13.10. im Shop am 05.10. geprüft. Betreiber-Betriebsstand am 07.10. gelesen; keine Bestätigung, dass bis zu eurer Reise alle Lifte wieder laufen.",
+    "operating": {
+      "title": "Piste geöffnet · Lifte eingeschränkt",
+      "short": "Die Halle ist laut Betreiber nicht geschlossen. Rechter Schlepplift und Bandlift außer Betrieb; Umbau bis etwa Mitte Oktober. Eure Reise kann noch betroffen sein.",
+      "note": "SnowWorld Amsterdam liegt in Velsen-Zuid. Laut Betreiber bleibt die Piste während des Umbaus geöffnet. Der rechte Schlepplift ist bis etwa Mitte Oktober außer Betrieb; zusätzlich ist der Bandlift wegen Wartung aktuell gesperrt. Mo.–Do. regulär 09–22 Uhr. Für eure Reise am 12.–15.10. ist das Ende der Einschränkungen noch nicht bestätigt.",
+      "pisteSource": "https://www.snowworld.com/nl/amsterdam/skien-snowboarden",
+      "liftSource": "https://www.snowworld.com/nl/amsterdam"
+    }
   }
 ];
