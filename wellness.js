@@ -129,6 +129,114 @@ const WELLNESS_OFFERS = [
   }
 ];
 
+const AMSTERDAM_PRIVATE_OPTIONS = [
+  {
+    "id": "istanbul",
+    "region": "amsterdam",
+    "name": "Spa Nova Hoofddorp · Istanbul",
+    "category": "Private Jacuzzi-Unit 5 · maximal 2 Personen",
+    "type": "private-access",
+    "photoLabel": "Privater Jacuzzi mit Massagejets",
+    "private": "Jacuzzi mit Massagejets, Sauna, Salzraum und Lounge gehören während eurer Buchung nur euch.",
+    "confirmation": {
+      "quote": "Deze privé-unit in Hoofddorp is volledig voor jou en je gezelschap alleen.",
+      "language": "nl",
+      "source": "https://spanova.nl/unit-hoofddorp-5/"
+    },
+    "source": "https://spanova.nl/unit-hoofddorp-5/",
+    "booking": "https://spanova.nl/reserveren/?suite=hd5&arrangement=basis",
+    "nightBooking": "https://spanova.nl/reserveren/?suite=hd5&arrangement=nachtverblijf",
+    "price": 99.0,
+    "pricePeriod": "2 Stunden · für euch beide",
+    "date": "2026-10-14",
+    "start": "10:30",
+    "end": "12:30",
+    "availability": "available",
+    "rate": "Basis · 119 € online minus 20 € Daltarief = 99 €; Buchungsübersicht geprüft.",
+    "night": {
+      "price": 319.0,
+      "checkin": "2026-10-14",
+      "checkout": "2026-10-15",
+      "start": "23:15",
+      "end": "10:00",
+      "availability": "available"
+    },
+    "conditions": "Separater privater Jacuzzi-Zugang, kein Pool. Übernachtung nur 23:15–10:00, kein durchgehend nutzbares Hotelzimmer für drei Nächte. Zwei Handtuch-/Slipper-Sets optional 20 €. Bis 48 h vorher Stornierung nur gegen Guthaben.",
+    "parking": null,
+    "parkingText": "Parkgebühr vor Ort nicht bestätigt",
+    "album": "wellness-istanbul",
+    "checked": "2026-10-07",
+    "hotelId": 15358076,
+    "mapKey": "amsterdam-16"
+  },
+  {
+    "id": "spanova",
+    "region": "amsterdam",
+    "name": "Spa Nova Hoofddorp · Milano",
+    "category": "Private Wellness-Unit 2 · eigener Pool + Jacuzzi",
+    "type": "private-access",
+    "photoLabel": "Privater Pool + separater Jacuzzi",
+    "private": "Die ganze Unit mit Pool, Jacuzzi, Sauna und Dampfkabine ist nur für euch gebucht.",
+    "confirmation": {
+      "quote": "Deze privé-unit in Hoofddorp is volledig voor jou en je gezelschap alleen.",
+      "language": "nl",
+      "source": "https://spanova.nl/unit-hoofddorp-2/"
+    },
+    "source": "https://spanova.nl/unit-hoofddorp-2/",
+    "booking": "https://spanova.nl/reserveren/?suite=hd2&arrangement=basis",
+    "nightBooking": "https://spanova.nl/reserveren/?suite=hd2&arrangement=nachtverblijf",
+    "price": 149.0,
+    "pricePeriod": "2 Stunden · für euch beide",
+    "date": "2026-10-14",
+    "start": "10:45",
+    "end": "12:45",
+    "availability": "available",
+    "rate": "Basis · Onlinepreis zum Daltarief; 149 € in der Buchungsübersicht bestätigt.",
+    "night": {
+      "price": 399.0,
+      "checkin": "2026-10-14",
+      "checkout": "2026-10-15",
+      "start": "23:15",
+      "end": "10:00",
+      "availability": "available"
+    },
+    "conditions": "Übernachtung ist ausschließlich ein Nacht-Zeitfenster von 23:15 bis 10:00, kein durchgehend nutzbares Hotelzimmer für drei Nächte. Zwei Handtuch-/Slipper-Sets optional zusammen 20 €. Bis 48 h vorher Stornierung nur gegen Guthaben, keine Rückzahlung.",
+    "parking": null,
+    "parkingText": "Parkgebühr vor Ort nicht bestätigt",
+    "album": "wellness-spanova",
+    "checked": "2026-10-07",
+    "hotelId": 15358076,
+    "mapKey": "amsterdam-15"
+  },
+  {
+    "id": "landmark",
+    "region": "amsterdam",
+    "name": "Inntel Amsterdam Landmark",
+    "category": "Spa Room · 26 m² · 2 Personen",
+    "type": "whirlpool-bath",
+    "photoLabel": "Runde Whirlpoolwanne im Zimmer",
+    "private": "Der runde Whirlpool steht direkt im eigenen Zimmer am Fenster.",
+    "confirmation": {
+      "quote": "The Spa Rooms feature the iconic round whirlpool baths",
+      "language": "en",
+      "source": "https://www.inntelhotels.nl/amsterdamlandmark/en/rooms-suites"
+    },
+    "source": "https://www.inntelhotels.nl/amsterdamlandmark/en/rooms-suites",
+    "booking": "https://reservations.inntelhotels.nl/?adult=2&arrive=2026-10-12&chain=10315&child=0&currency=EUR&depart=2026-10-15&hotel=31833&locale=en-US&room=SPA&rooms=1",
+    "price": 750.25,
+    "pricePeriod": "3 Nächte · Zimmer für beide",
+    "availability": "available",
+    "rate": "Direkt · Prepay & Save · 680 € Zimmer + 70,25 € Steuern/Gebühren = 750,25 €; Frühstück extra 20 € p. P. / Tag.",
+    "conditions": "Das ist eine runde Whirlpoolwanne (Bubbelbad), kein Swimmingpool und kein Outdoor-Hot-Tub. Der Hotelpool ist gemeinschaftlich; eine private Sauna gibt es erst im Wellness Room. Vorauszahlung; Stornobedingungen im Angebot prüfen.",
+    "parking": null,
+    "parkingText": "Parken kostenpflichtig: Q-Park Oostenburg / wenige Hotelplätze. Endpreis nicht bestätigt.",
+    "parkingSource": "https://www.inntelhotels.nl/amsterdamlandmark/en/contact-location/",
+    "album": "wellness-landmark",
+    "checked": "2026-10-07",
+    "mapKey": "amsterdam-14"
+  }
+];
+
 const WELLNESS_MAP_POINTS = {
   "amsterdam": [
     {
@@ -164,6 +272,57 @@ const WELLNESS_MAP_POINTS = {
       "source": "https://www.hotelakersloot.nl/kamers-suites/zwembad-suite/",
       "coordinateSource": "https://nominatim.openstreetmap.org/search?q=Van+der+Valk+Hotel+Akersloot&countrycodes=nl&format=jsonv2&limit=3",
       "routeSource": "https://router.project-osrm.org/table/v1/driving/4.6794057,52.4488675;4.721288,52.5476?sources=0&annotations=duration,distance"
+    },
+    {
+      "key": "amsterdam-16",
+      "number": "16",
+      "kind": "spa",
+      "name": "Spa Nova Hoofddorp · Istanbul",
+      "destination": "Paxlaan 10, 2131 PZ Hoofddorp, Netherlands",
+      "lat": 52.3089912,
+      "lon": 4.681882,
+      "km": 23.2,
+      "minutes": 22,
+      "album": "wellness-istanbul",
+      "privateOptionId": "istanbul",
+      "roomNote": "14.10. · 10:30 · 2 h privater Jacuzzi für zwei: 99 €; Nacht 14.–15.10.: 319 €, 23:15–10:00",
+      "source": "https://spanova.nl/unit-hoofddorp-5/",
+      "coordinateSource": "https://nominatim.openstreetmap.org/search?q=Paxlaan+10%2C+2131+PZ+Hoofddorp%2C+Netherlands&format=jsonv2&limit=3&addressdetails=1",
+      "routeSource": "https://router.project-osrm.org/table/v1/driving/4.6794057,52.4488675;4.681882,52.3089912;4.928435,52.37344?sources=0&destinations=1;2&annotations=distance,duration"
+    },
+    {
+      "key": "amsterdam-15",
+      "number": "15",
+      "kind": "spa",
+      "name": "Spa Nova Hoofddorp · Milano",
+      "destination": "Paxlaan 10, 2131 PZ Hoofddorp, Netherlands",
+      "lat": 52.3089912,
+      "lon": 4.681882,
+      "km": 23.2,
+      "minutes": 22,
+      "album": "wellness-spanova",
+      "privateOptionId": "spanova",
+      "roomNote": "14.10. · 10:45 · 2 h privat für zwei: 149 €; Nacht 14.–15.10.: 399 €, 23:15–10:00",
+      "source": "https://spanova.nl/unit-hoofddorp-2/",
+      "coordinateSource": "https://nominatim.openstreetmap.org/search?q=Paxlaan+10%2C+2131+PZ+Hoofddorp%2C+Netherlands&format=jsonv2&limit=3&addressdetails=1",
+      "routeSource": "https://router.project-osrm.org/table/v1/driving/4.6794057,52.4488675;4.681882,52.3089912;4.928435,52.37344?sources=0&destinations=1;2&annotations=distance,duration"
+    },
+    {
+      "key": "amsterdam-14",
+      "number": "14",
+      "kind": "hotel",
+      "name": "Inntel Amsterdam Landmark",
+      "destination": "Inntel Hotels Amsterdam Landmark, VOC-kade 600, Amsterdam",
+      "lat": 52.37344,
+      "lon": 4.928435,
+      "km": 23.4,
+      "minutes": 31,
+      "album": "wellness-landmark",
+      "privateOptionId": "landmark",
+      "roomNote": "12.–15.10. · Spa Room mit privater runder Whirlpoolwanne: 750,25 € für zwei / 3 Nächte inkl. Steuern; Parken extra; Hotelpool gemeinschaftlich",
+      "source": "https://www.inntelhotels.nl/amsterdamlandmark/en/rooms-suites",
+      "coordinateSource": "Booking.com accommodation ID 7060204, retrieved 07.10.2026",
+      "routeSource": "https://router.project-osrm.org/table/v1/driving/4.6794057,52.4488675;4.681882,52.3089912;4.928435,52.37344?sources=0&destinations=1;2&annotations=distance,duration"
     }
   ],
   "zoetermeer": [
@@ -429,6 +588,157 @@ Object.assign(MEDIA_ALBUMS, {
         "caption": "Innenraum mit Sitzecke; Küchenzeile und eigenes Duschbad gehören ebenfalls zur Unterkunft.",
         "credit": "Camping De Bosrand",
         "source": "https://campingdebosrand.nl/bospods/"
+      }
+    ]
+  },
+  "wellness-landmark": {
+    "label": "Amsterdam Landmark · Spa Room mit rundem Whirlpool",
+    "note": "Veröffentlichte Bilder genau dieser Unterkunftskategorie. Die Galerie beginnt mit dem privaten Becken; einzelne Häuser und Einrichtungen können variieren.",
+    "photos": [
+      {
+        "src": "assets/media/wellness-landmark-1.jpg",
+        "thumb": "assets/media/wellness-landmark-1-thumb.jpg",
+        "width": 1500,
+        "height": 1001,
+        "title": "Runder Whirlpool im Spa Room",
+        "caption": "Die private runde Whirlpoolwanne am Fenster des Spa Room; kein Swimmingpool und kein Outdoor-Hot-Tub.",
+        "credit": "Inntel Hotels Amsterdam Landmark",
+        "source": "https://www.inntelhotels.nl/amsterdamlandmark/en/rooms-suites",
+        "subject": "private-basin"
+      },
+      {
+        "src": "assets/media/wellness-landmark-2.jpg",
+        "thumb": "assets/media/wellness-landmark-2-thumb.jpg",
+        "width": 1500,
+        "height": 1001,
+        "title": "Whirlpool & Stadtblick",
+        "caption": "Weitere Betreiberaufnahme des privaten runden Whirlpools in dieser Zimmerkategorie.",
+        "credit": "Inntel Hotels Amsterdam Landmark",
+        "source": "https://www.inntelhotels.nl/amsterdamlandmark/en/rooms-suites"
+      },
+      {
+        "src": "assets/media/wellness-landmark-3.jpg",
+        "thumb": "assets/media/wellness-landmark-3-thumb.jpg",
+        "width": 1500,
+        "height": 1000,
+        "title": "Spa Room · Schlafbereich",
+        "caption": "King-Size-Bett und Einrichtung genau der Spa-Room-Kategorie.",
+        "credit": "Inntel Hotels Amsterdam Landmark",
+        "source": "https://www.inntelhotels.nl/amsterdamlandmark/en/rooms-suites"
+      },
+      {
+        "src": "assets/media/wellness-landmark-4.jpg",
+        "thumb": "assets/media/wellness-landmark-4-thumb.jpg",
+        "width": 1500,
+        "height": 1000,
+        "title": "Ausblick aus dem Spa Room",
+        "caption": "Veröffentlichte Aussicht aus der Galerie des Spa Room; Etage und Blick können variieren.",
+        "credit": "Inntel Hotels Amsterdam Landmark",
+        "source": "https://www.inntelhotels.nl/amsterdamlandmark/en/rooms-suites"
+      }
+    ]
+  },
+  "wellness-spanova": {
+    "label": "Spa Nova Hoofddorp · Milano Unit 2",
+    "note": "Veröffentlichte Bilder genau dieser Unterkunftskategorie. Die Galerie beginnt mit dem privaten Becken; einzelne Häuser und Einrichtungen können variieren.",
+    "photos": [
+      {
+        "src": "assets/media/wellness-spanova-1.jpg",
+        "thumb": "assets/media/wellness-spanova-1-thumb.jpg",
+        "width": 1500,
+        "height": 1000,
+        "title": "Eigener Pool der Milano-Unit",
+        "caption": "Der echte Pool in Milano, Unit 2. Während eurer Buchung gehört die ganze Wellness-Unit nur zu eurem eigenen Kreis.",
+        "credit": "Spa Nova · Hoofddorp",
+        "source": "https://spanova.nl/unit-hoofddorp-2/",
+        "subject": "private-basin"
+      },
+      {
+        "src": "assets/media/wellness-spanova-2.jpg",
+        "thumb": "assets/media/wellness-spanova-2-thumb.jpg",
+        "width": 1500,
+        "height": 1000,
+        "title": "Separater privater Jacuzzi",
+        "caption": "Der Jacuzzi zusätzlich zum Pool in genau dieser Unit; Betreiberfoto.",
+        "credit": "Spa Nova · Hoofddorp",
+        "source": "https://spanova.nl/unit-hoofddorp-2/"
+      },
+      {
+        "src": "assets/media/wellness-spanova-3.jpg",
+        "thumb": "assets/media/wellness-spanova-3-thumb.jpg",
+        "width": 1500,
+        "height": 1000,
+        "title": "Pool & Jacuzzi gemeinsam",
+        "caption": "Beide Becken in derselben privaten Milano-Wellness-Unit.",
+        "credit": "Spa Nova · Hoofddorp",
+        "source": "https://spanova.nl/unit-hoofddorp-2/"
+      },
+      {
+        "src": "assets/media/wellness-spanova-4.jpg",
+        "thumb": "assets/media/wellness-spanova-4-thumb.jpg",
+        "width": 1500,
+        "height": 1000,
+        "title": "Eigene Sauna",
+        "caption": "Sauna im exklusiv gebuchten Wellnessbereich der Milano-Unit.",
+        "credit": "Spa Nova · Hoofddorp",
+        "source": "https://spanova.nl/unit-hoofddorp-2/"
+      },
+      {
+        "src": "assets/media/wellness-spanova-5.jpg",
+        "thumb": "assets/media/wellness-spanova-5-thumb.jpg",
+        "width": 1080,
+        "height": 720,
+        "title": "Private Lounge",
+        "caption": "Lounge auf der zweiten Ebene der Milano-Unit; kein reguläres Hotelzimmer.",
+        "credit": "Spa Nova · Hoofddorp",
+        "source": "https://spanova.nl/unit-hoofddorp-2/"
+      }
+    ]
+  },
+  "wellness-istanbul": {
+    "label": "Spa Nova Hoofddorp · Istanbul Unit 5",
+    "note": "Veröffentlichte Bilder genau dieser Unterkunftskategorie. Die Galerie beginnt mit dem privaten Becken; einzelne Häuser und Einrichtungen können variieren.",
+    "photos": [
+      {
+        "src": "assets/media/wellness-istanbul-1.jpg",
+        "thumb": "assets/media/wellness-istanbul-1-thumb.jpg",
+        "width": 1125,
+        "height": 1500,
+        "title": "Privater Jacuzzi mit Massagejets",
+        "caption": "Der Jacuzzi mit Massagejets in der ausschließlich für zwei Personen gebuchten Istanbul-Unit; Betreiberfoto mit sichtbaren Düsen.",
+        "credit": "Spa Nova · Hoofddorp",
+        "source": "https://spanova.nl/unit-hoofddorp-5/",
+        "subject": "private-basin"
+      },
+      {
+        "src": "assets/media/wellness-istanbul-2.jpg",
+        "thumb": "assets/media/wellness-istanbul-2-thumb.jpg",
+        "width": 844,
+        "height": 1500,
+        "title": "Jacuzzi bei Abendbeleuchtung",
+        "caption": "Der private Jacuzzi in derselben Istanbul-Unit, mit blauer Beleuchtung.",
+        "credit": "Spa Nova · Hoofddorp",
+        "source": "https://spanova.nl/unit-hoofddorp-5/"
+      },
+      {
+        "src": "assets/media/wellness-istanbul-3.jpg",
+        "thumb": "assets/media/wellness-istanbul-3-thumb.jpg",
+        "width": 1500,
+        "height": 844,
+        "title": "Eigene Wellness-Unit",
+        "caption": "Übersicht mit Jacuzzi und exklusivem Innenraum; Sauna und Salzraum gehören ebenfalls zur Unit.",
+        "credit": "Spa Nova · Hoofddorp",
+        "source": "https://spanova.nl/unit-hoofddorp-5/"
+      },
+      {
+        "src": "assets/media/wellness-istanbul-4.jpg",
+        "thumb": "assets/media/wellness-istanbul-4-thumb.jpg",
+        "width": 1125,
+        "height": 1500,
+        "title": "Lounge & Jacuzzi",
+        "caption": "Lounge und Jacuzzi in der Istanbul-Unit; separat gebuchter privater Zugang, kein gewöhnliches Hotelzimmer.",
+        "credit": "Spa Nova · Hoofddorp",
+        "source": "https://spanova.nl/unit-hoofddorp-5/"
       }
     ]
   }
