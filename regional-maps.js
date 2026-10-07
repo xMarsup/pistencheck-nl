@@ -12,18 +12,20 @@ function initRegionalMaps() {
   }
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const loaded = new WeakSet();
+  const instances = new WeakMap();
   function create(container) {
     if (loaded.has(container)) return;
     loaded.add(container);
     const id = container.dataset.regionalMap, data = REGIONAL_MAPS.regions[id];
     const section = container.closest('.region-visuals');
+    const placeRows = [...document.querySelectorAll(`[data-map-for="${id}"][data-map-point]`)];
     const readout = section.querySelector('[data-map-readout]');
     container.replaceChildren();
     const map = L.map(container, {scrollWheelZoom:false, minZoom:8, maxZoom:18, zoomSnap:.5, zoomAnimation:!reducedMotion, fadeAnimation:!reducedMotion});
     const base = L.tileLayer(REGIONAL_MAPS.tileUrl, {
       maxZoom:19, keepBuffer:0,
       attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
-    }).addTo(map);
+    });
     const failedTiles = new Set();
     const tileStatus = section.querySelector('[data-tile-status]');
     base.on('tileerror', event => {
@@ -46,7 +48,7 @@ function initRegionalMaps() {
     function activate(point) {
       selectedKey = point.key;
       readout.textContent = `${point.number} · ${point.name} · ${mapDistance(point)}${point.kind==='ski'?'':` · ${mapMinutes(point)}`}`;
-      section.querySelectorAll('[data-map-point]').forEach(row => row.classList.toggle('map-row-active',row.dataset.mapPoint===point.key));
+      placeRows.forEach(row => row.classList.toggle('map-row-active',row.dataset.mapPoint===point.key));
       for(const [key,marker] of markers) {
         marker.getElement()?.classList.toggle('map-marker-active',key===point.key);
         marker.setZIndexOffset(key===point.key?500:marker.options.baseZIndex);
@@ -54,7 +56,7 @@ function initRegionalMaps() {
     }
     function resetSelection() {
       selectedKey=null;readout.textContent=defaultReadout;
-      section.querySelectorAll('.map-row-active').forEach(row=>row.classList.remove('map-row-active'));
+      placeRows.forEach(row=>row.classList.remove('map-row-active'));
       for(const marker of markers.values()) {
         marker.getElement()?.classList.remove('map-marker-active');marker.setZIndexOffset(marker.options.baseZIndex);marker.closeTooltip();
       }
@@ -114,7 +116,7 @@ function initRegionalMaps() {
       viewMode='detail';
       map.setView([origin.lat,origin.lon],14,{animate:!reducedMotion});activate(origin);
     });
-    section.querySelectorAll('[data-map-point]').forEach(row=>{
+    placeRows.forEach(row=>{
       const point=data.points.find(p=>p.key===row.dataset.mapPoint);
       row.addEventListener('mouseenter',()=>activate(point));
       row.addEventListener('focus',()=>activate(point));
@@ -135,12 +137,13 @@ function initRegionalMaps() {
       spreadPins();
     });
     resize.observe(container);
+    instances.set(container,{map,base});
   }
   // Only visible maps request background tiles; the place lists are always there.
   const observer=new IntersectionObserver(entries=>{
-    entries.filter(entry=>entry.isIntersecting).forEach(entry=>{create(entry.target);observer.unobserve(entry.target);});
+    entries.filter(entry=>entry.isIntersecting).forEach(entry=>{const instance=instances.get(entry.target);instance.base.addTo(instance.map);observer.unobserve(entry.target);});
   });
-  containers.forEach(container=>observer.observe(container));
+  containers.forEach(container=>{create(container);observer.observe(container);});
 }
 
 function mapIcon(point,offset={x:0,y:0}) {

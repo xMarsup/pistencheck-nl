@@ -1,7 +1,6 @@
 "use strict";
 const euro = value => new Intl.NumberFormat("de-DE", {style:"currency", currency:"EUR"}).format(value);
 const escapeHTML = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"}[c]));
-const shortNames = {zoetermeer:"Zoetermeer", landgraaf:"Landgraaf", amsterdam:"Velsen / Amsterdam"};
 function link(url, label) {
   return `<a href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(label)}<span class="sr-only"> (neuer Tab)</span></a>`;
 }
@@ -15,102 +14,8 @@ function quote(hall, mode, duration) {
   const total = Math.round((entry + hall.gear) * 100) / 100;
   return {entry, gear:hall.gear, total, rate:total / duration, pair:Math.round((total * 2 + hall.parking) * 100) / 100, voucher};
 }
-function galleryMarkup(hall) {
-  const photos = GALLERIES[hall.id].photos, p = photos[0];
-  return `<figure class="gallery" data-gallery="${hall.id}">
-    <p class="gallery-hint">${photos.length} echte Pistenfotos · Pfeile / Wischen · zum Vergrößern Bild antippen</p>
-    <div class="gallery-frame" tabindex="0" role="group" aria-label="Pistenbilder ${escapeHTML(hall.name)}. Mit Pfeiltasten blättern.">
-      <img class="gallery-image" src="${escapeHTML(p.src)}" alt="${escapeHTML(p.caption)}" width="${p.width}" height="${p.height}" loading="lazy" decoding="async" draggable="false">
-      <button type="button" class="gallery-arrow prev" data-step="-1" aria-label="${escapeHTML(hall.name)}: vorheriges Bild">‹</button>
-      <button type="button" class="gallery-arrow next" data-step="1" aria-label="${escapeHTML(hall.name)}: nächstes Bild">›</button>
-      <button type="button" class="photo-enlarge gallery-enlarge" aria-label="Pistenfoto von ${escapeHTML(hall.name)} vergrößern">⤢ Vergrößern</button>
-      <span class="gallery-counter" aria-live="polite" aria-atomic="true">1 / ${photos.length}</span>
-    </div>
-    <figcaption><div class="gallery-caption"><div><strong class="gallery-title">${escapeHTML(p.title)}</strong><p class="gallery-description">${escapeHTML(p.caption)}</p></div><div class="gallery-dots" role="group" aria-label="Foto auswählen">${photos.map((photo, i) => `<button type="button" class="gallery-dot" data-photo="${i}" aria-label="Bild ${i + 1}: ${escapeHTML(photo.title)}" aria-pressed="${i === 0}"></button>`).join("")}</div></div><p class="gallery-credit">${escapeHTML(p.credit)} · ${link(p.source, "Bildquelle")}</p></figcaption>
-  </figure>`;
-}
 function photoCreditMarkup(photo) {
   return `${escapeHTML(photo.credit)} · ${link(photo.source, "Bildquelle")}${photo.licenseUrl ? ' · '+link(photo.licenseUrl, 'Lizenz') : ''}`;
-}
-function albumMarkup(key, label, type='Ort') {
-  const photos = MEDIA_ALBUMS[key]?.photos;
-  if (!photos?.length) throw new Error(`Bildergalerie fehlt: ${key || label}`);
-  const p = photos[0];
-  return `<figure class="gallery item-gallery" data-album="${escapeHTML(key)}">
-    <p class="gallery-hint">${photos.length} Bilder · Pfeile / Wischen · antippen zum Vergrößern</p>
-    <div class="gallery-frame" tabindex="0" role="group" aria-label="${escapeHTML(type+' '+label)}: Bilder. Mit Pfeiltasten blättern.">
-      <img class="gallery-image" src="${escapeHTML(p.src)}" alt="${escapeHTML(p.caption)}" width="${p.width}" height="${p.height}" loading="lazy" decoding="async" draggable="false">
-      <button type="button" class="gallery-arrow prev" data-step="-1" aria-label="${escapeHTML(label)}: vorheriges Bild">‹</button>
-      <button type="button" class="gallery-arrow next" data-step="1" aria-label="${escapeHTML(label)}: nächstes Bild">›</button>
-      <button type="button" class="photo-enlarge gallery-enlarge" aria-label="${escapeHTML(label)}: Bild vergrößern">⤢ Vergrößern</button>
-      <span class="gallery-counter" aria-live="polite" aria-atomic="true">1 / ${photos.length}</span>
-    </div>
-    <figcaption><div class="gallery-thumbnails" role="group" aria-label="${escapeHTML(label)}: Foto auswählen">${photos.map((photo,i) => `<button type="button" data-photo="${i}" aria-label="${escapeHTML(label)}: Bild ${i+1}, ${escapeHTML(photo.title)}" aria-pressed="${i === 0}"><img src="${escapeHTML(photo.thumb || photo.src)}" alt="" width="90" height="60" loading="lazy" decoding="async" draggable="false"><span>${i+1}</span></button>`).join('')}</div><div class="gallery-caption"><div><strong class="gallery-title">${escapeHTML(p.title)}</strong><p class="gallery-description">${escapeHTML(p.caption)}</p></div></div><p class="gallery-credit">${photoCreditMarkup(p)}</p></figcaption>
-    ${MEDIA_ALBUMS[key].note ? `<p class="album-note">${escapeHTML(MEDIA_ALBUMS[key].note)}</p>` : ''}
-  </figure>`;
-}
-function pistesMarkup(hall) {
-  const gallery = GALLERIES[hall.id], colors = {red:"var(--red)", blue:"var(--blue)", green:"var(--green)"};
-  return `<section class="pistes-section" aria-labelledby="pistes-${hall.id}"><h3 id="pistes-${hall.id}">Pisten & Platz zum Fahren</h3><p class="small-note">${escapeHTML(hall.areas)} · gemeinsame 400-m-Skala</p><ul class="piste-list">${hall.pistes.map(p => `<li class="piste-item" style="--piste-color:${colors[p.color]}"><div class="piste-label"><span class="piste-dot" aria-hidden="true"></span>${escapeHTML(p.name)}<strong>${p.length === null ? 'Länge offen' : p.length + ' m'}</strong></div>${p.length === null ? '' : `<div class="piste-track"><span style="--length:${p.length / 4}%"></span></div>`}</li>`).join("")}</ul><p class="piste-notes">${escapeHTML(hall.terrainNote)}</p><div class="inline-links">${link(hall.source, "Pisten beim Betreiber")}</div>
-    <section class="piste-map"><h4>Aufteilung in der Halle</h4>${gallery.map ? `<button type="button" class="map-enlarge" data-enlarge-map="${hall.id}" aria-label="Hallenplan von ${escapeHTML(hall.name)} vergrößern"><img src="${escapeHTML(gallery.map.src)}" alt="${escapeHTML(gallery.map.caption)}" width="${gallery.map.width}" height="${gallery.map.height}" loading="lazy"><span class="photo-enlarge">⤢ Plan vergrößern</span></button><p>${escapeHTML(gallery.map.credit)} · ${link(gallery.map.source, "Planquelle")}</p>` : '<p class="piste-notes">Kein belastbarer offizieller Pistenplan gefunden. Die Längenbalken vergleichen die Größe und bilden keinen Grundriss ab.</p>'}</section>
-  </section>`;
-}
-function pricesMarkup(hall) {
-  const voucher = !["montana", "uithof"].includes(hall.id);
-  const direct = [4, 6].map(d => quote(hall, "direct", d));
-  const discounted = [4, 6].map(d => quote(hall, "voucher", d));
-  function priceRow(label, values, key, className="") {
-    return `<tr class="${className}"><th scope="row">${label}</th>${values.map(q => `<td>${key === 'gear' && q[key] === 0 ? 'inklusive' : euro(q[key])}</td>`).join("")}</tr>`;
-  }
-  return `<section class="price-section" aria-labelledby="prices-${hall.id}"><div class="price-heading"><h3 id="prices-${hall.id}">4 oder 6 Stunden Ski</h3><span>inkl. Ski & Schuhe</span></div>
-    ${direct[0] ? `<table class="price-table" aria-label="Alle Skipreise ${escapeHTML(hall.name)}"><thead><tr><th scope="col">Pro Person · 13.10.2026</th><th scope="col">4 Stunden</th><th scope="col">6 Stunden</th></tr></thead><tbody>
-      ${priceRow('Direktpreis', direct, 'total', 'price-total')}
-      ${priceRow('davon Eintritt', direct, 'entry', 'price-sub')}
-      ${priceRow('davon Ski & Schuhe', direct, 'gear', 'price-sub')}
-      ${priceRow('Je geplanter Stunde', direct, 'rate')}
-      ${priceRow('2 Personen + Auto', direct, 'pair')}
-      ${voucher ? priceRow('Mit Parool-Gutschein<small>Einlösung noch nicht bestätigt</small>', discounted, 'total', 'price-total voucher-total') + priceRow('Je geplanter Stunde', discounted, 'rate') + priceRow('2 Personen + Auto', discounted, 'pair') : ''}
-    </tbody></table>` : '<div class="unavailable-price"><h4>4 und 6 Stunden: kein Pass bestätigt</h4><p>Bestätigte Alternative: <strong>2 Stunden für 46 € p. P.</strong> inklusive Ski & Schuhe; 23 € je Stunde und 92 € für zwei + kostenloses Parken.</p><p>31,50 € Eintritt + 8,50 € Ski + 6 € Schuhe. Mehrere Pässe zu kombinieren wurde nicht bestätigt.</p></div>'}
-    <p class="small-note">${hall.id === 'montana' ? 'Beide Spalten nutzen den gleichen Tagespass mit Material. Die Halle ist kleiner; mehr Zeit bedeutet häufigere Wiederholungen.' : hall.id === 'uithof' ? 'Im Betreiber-Shop sind nur 1- und 2-Stunden-Einzelkarten bestätigt.' : '6 Stunden fahren = 8-Stunden-Pass kaufen. Gutschein: 31,95 € / 34,95 € Eintritt + jeweils 18,95 € Material.'}</p>
-    ${voucher ? `<div class="voucher-note"><strong>Gutscheinbedingungen geprüft, tatsächliche Einlösung offen.</strong> Gilt für diese Halle und eure Oktoberwoche. Ohne gekauften Code sind Termin, Materialauswahl und Gutscheinplätze nicht prüfbar. Reguläre Verfügbarkeit ist keine Gutschein-Zusage.</div><div class="inline-links">${link(VOUCHER_URL, "Gutschein & Bedingungen")}${link("https://shop.snowworld.com/nl/voucher", "Offizielle Einlösung")}</div>` : `<p class="small-note"><strong>${hall.id === 'montana' ? 'Kein zusätzlicher aktuell einlösbarer Rabatt bestätigt.' : 'Parool gilt bei De Uithof nicht; anderer passender Gutschein nicht bestätigt.'}</strong>${hall.id === 'montana' ? ' Montanas „Voucher“ ist ein Geschenkgutschein. Der 17,50-€-Anschluss-Skipass gilt nur nach Unterricht am selben Tag und passt nicht zu eurem Plan. ' + link("https://www.montana-snowcenter.nl/vouchers/", "Voucher-Bedingungen") : ''}</p>`}
-    <div class="inline-links">${link(hall.booking, "Reguläre Tickets")}</div>
-    <div class="operating-note"><strong>Betrieb & Verfügbarkeit</strong><p>${escapeHTML(hall.hours)}. ${escapeHTML(hall.warning)}</p><p>${escapeHTML(hall.availability)} Regulärer Ticketcheck: 05.10.2026, keine Platzgarantie.</p></div>
-  </section>`;
-}
-function sourceLinks(sources) {
-  return `<p class="source-links"><strong>Regelquellen · geprüft 07.10.2026:</strong><br>${sources.map(s => link(s.url, s.label)).join(" ")}</p>`;
-}
-function ediblesMarkup(shop) {
-  const e = EDIBLES[shop.name+'|'+shop.city];
-  if (!e) return '';
-  return `<section class="edibles-section" aria-label="Edibles bei ${escapeHTML(shop.name)}"><h5>Edibles · Preise & THC-Angaben</h5><p class="edible-status">${escapeHTML(e.status)}</p>${e.items.length ? `<table class="edible-table"><caption>${escapeHTML(e.menuDate)}</caption><thead><tr><th scope="col">Produkt / Einheit</th><th scope="col">Preis</th><th scope="col">Stärke laut Quelle</th></tr></thead><tbody>${e.items.map(item=>`<tr><th scope="row">${escapeHTML(item.name)}<small>${escapeHTML(item.unit)}</small></th><td>${item.price == null ? 'Unbekannt' : euro(item.price)}</td><td>${escapeHTML(item.strength)}</td></tr>`).join('')}</tbody></table>` : ''}<p class="small-note">${escapeHTML(e.note)}</p><p class="source-links">${e.sources.map(source=>link(source.url,source.label)).join(' · ')} · geprüft 07.10.2026</p></section>`;
-}
-function cityLifeMarkup(hall) {
-  const c = CITY_LIFE[hall.id], address = REGIONS[hall.id].address;
-  return `<section class="city-life" aria-labelledby="city-life-${hall.id}"><div class="section-heading"><div><p class="eyebrow">Der Urlaub rund um die Halle</p><h3 id="city-life-${hall.id}">Städte, Läden, Restaurants & Shops</h3></div></div><div class="city-grid ${c.towns.length===2 ? 'two-towns' : ''}">${c.towns.map(t=>`<article class="city-town" data-city="${escapeHTML(t.name)}"><p class="place-kind">${escapeHTML(t.role)}</p><h4>${escapeHTML(t.name)}</h4><p class="city-time">${escapeHTML(t.time)} ab Halle · ${t.time.startsWith('ca.') ? 'Schätzung' : 'Lage'}</p>${albumMarkup(t.album,t.photoLabel || t.name,'Stadt & Umgebung')}<dl class="city-statistics"><div><dt>Einwohner</dt><dd>${t.population.toLocaleString('de-DE')}</dd></div><div><dt>Landfläche</dt><dd>${t.landArea.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})} km²</dd></div><div><dt>Coffeeshops</dt><dd>${t.coffee.count}<small>Bestand 2024</small></dd></div></dl><p class="city-character">${escapeHTML(t.character)}</p><dl class="city-details"><div><dt>Läden & Shopping</dt><dd>${escapeHTML(t.shopping)}</dd></div><div><dt>Restaurants & Essen</dt><dd>${escapeHTML(t.dining)}</dd></div><div><dt>Abends & für euren Plan</dt><dd>${escapeHTML(t.evening)}</dd></div><div><dt>Coffeeshop-Zugang als Tourist</dt><dd><strong>${escapeHTML(t.coffee.access)}</strong><br>${escapeHTML(t.coffee.note)}</dd></div></dl><div class="inline-links">${link(route(address,t.destination),'Route ab Halle')}</div><p class="source-links">${t.sources.map(source=>link(source.url,source.label)).join(' · ')}</p></article>`).join('')}</div><p class="city-source-note">Einwohner: <strong>01.01.2026</strong>, Landfläche: <strong>2025</strong>, jeweils die ganze Gemeinde nach ${link(CITY_SOURCES.statistics,'CBS')}. Amsterdam umfasst auch Weesp; Velsen umfasst unter anderem IJmuiden. Shop-Anzahl: ${link(CITY_SOURCES.coffeeCounts,'WODC-Monitor, 31.12.2024')}, keine Live-Zählung im Oktober 2026. Zugriff hängt vom Ort und Hausrecht ab. Stadtatmosphäre und die Empfehlung sind meine Einschätzung.</p></section>`;
-}
-function coffeeMarkup(hall) {
-  const r = REGIONS[hall.id], c = r.coffee;
-  return `<section class="coffee-section" aria-labelledby="coffee-${hall.id}"><h3 id="coffee-${hall.id}">Coffeeshops: wo & Zugang für Touristen</h3><span class="access-status ${c.tone}">${escapeHTML(c.status)}</span><p class="coffee-rule">${escapeHTML(c.rule)}</p>
-    ${c.shops.map(s => `<article class="shop-row" data-shop-name="${escapeHTML(s.name)}"><div class="shop-top"><div><p class="shop-city">${escapeHTML(s.city)}</p><h4>${escapeHTML(s.name)}</h4><p class="shop-address">${escapeHTML(s.address)}</p></div>${s.rating ? `<div class="shop-rating"><strong>${escapeHTML(s.rating)}</strong><span>${s.reviews} Bewertungen</span><span>Greenmeister</span></div>` : ''}</div><p class="shop-distance">${escapeHTML(s.time)} ab Skihalle <small>${s.measured ? '· Routencheck 05.10.' : '· Schätzung'}</small></p><p class="shop-access">${escapeHTML(s.access)}</p><p class="shop-note">${escapeHTML(s.note)}</p>${albumMarkup(MEDIA_SHOPS[s.name+'|'+s.city], s.name+' · '+s.city, 'Coffeeshop')}${ediblesMarkup(s)}${s.rating ? '' : '<p class="shop-no-rating">Keine vergleichbare Bewertung in diesem Check erhoben.</p>'}<div class="inline-links">${link(route(r.address, s.address), "Route ab Skihalle")}${s.profile ? link(s.profile, "Shopprofil") : ''}${s.website ? link(s.website, "Betreiber") : ''}</div></article>`).join("")}
-    <p class="small-note">18+ und gültiger Ausweis. ${escapeHTML(GREENMEISTER_NOTE)}</p>${sourceLinks(c.sources)}
-  </section>`;
-}
-function areaMarkup(hall) {
-  const r = REGIONS[hall.id], cityAlbums = new Set(CITY_LIFE[hall.id].towns.map(t=>t.album));
-  const places = [...r.places, ...TRAVEL[hall.id].activities].filter(p=>!p.destination || !cityAlbums.has(MEDIA_PLACES[p.destination]));
-  return `<section class="area-section" aria-labelledby="area-${hall.id}"><h3 id="area-${hall.id}">Spa, Stadt, Meer & Ausflüge</h3><div class="region-intro"><h4>${escapeHTML(r.headline)}</h4><p>${escapeHTML(r.summary)}</p><p class="tradeoff"><strong>Für euch abwägen:</strong> ${escapeHTML(r.tradeoff)}</p></div><p class="small-note">Zeiten ab Skihalle mit dem Auto, ohne Verkehr. Ausflüge sind Vorschläge; Öffnungstage und Eintritt beim jeweiligen Betreiber prüfen.</p>
-    <div class="place-list">${places.map(p => `<article class="place-row ${p.destination ? 'with-photos' : 'place-geography-note'}" ${p.destination ? `data-place-name="${escapeHTML(p.title)}"` : ''}><div class="place-information"><div class="place-heading"><div><span class="place-kind">${escapeHTML(p.kind)}</span><h4>${escapeHTML(p.title)}</h4></div><span class="place-time">${escapeHTML(p.time)}${p.time.startsWith('ca.') ? '<small>Schätzung</small>' : ''}</span></div><p>${escapeHTML(p.description)}</p><div class="inline-links">${p.url ? link(p.url, "Betreiber / Infos") : ''}${p.destination ? link(route(r.address, p.destination), "Route ab Skihalle") : ''}</div></div>${p.destination ? albumMarkup(MEDIA_PLACES[p.destination], p.title, p.kind) : ''}</article>`).join("")}</div>
-  </section>`;
-}
-function travelMarkup(hall) {
-  const r = REGIONS[hall.id], t = r.transport;
-  return `<section class="travel" aria-labelledby="travel-${hall.id}"><h3 id="travel-${hall.id}">Anreise, Parken & Übernachten</h3><div class="travel-intro"><p><strong>Adresse:</strong> ${escapeHTML(r.address)}</p><p>${escapeHTML(r.arrival)}</p><div class="inline-links">${link(route("Löningen, Deutschland", r.address), "Auto ab Löningen")}${link(route("Löningen, Deutschland", r.address, "transit"), "Bahn / Bus ab Löningen")}</div></div>
-    <section class="travel-section"><h4>Parken</h4><p>${escapeHTML(t.parking)}</p>${t.parkingUrl ? `<div class="inline-links">${link(t.parkingUrl, "P+R: Tarif & Bedingungen")}</div>` : ''}</section>
-    <section class="travel-section"><h4>Bus & Bahn vor Ort · ${escapeHTML(t.name)}</h4><p class="transport-price">${escapeHTML(t.price)}</p><p>${escapeHTML(t.description)}</p><p class="small-note">Kein kostenloses allgemeines Touristenticket bestätigt. Für zwei verdoppeln sich die Personentarife. Gästeticket oder Hotel-Shuttle nur einrechnen, wenn die Unterkunft es ausdrücklich anbietet.</p><div class="inline-links">${link(t.url, "Tarif & Gültigkeit")}</div></section>
-    <section class="travel-section"><h4>Übernachten: drei Nächte zu zweit</h4><p>Die ${TRAVEL[hall.id].hotels.length} Unterkunftsvorschläge stehen direkt unten. Bisherige Preise für 11.–14.10. bleiben erhalten; zusätzlich seht ihr 12.–15.10. bei Abfahrt am Montag. Beide Suchen: 06.10.2026.</p><p class="small-note">Euer Gesamtbudget: 1.000 € für zwei. Pflichtgebühren, Tarifbedingungen und Frühstück vor der Buchung im ausgewählten Angebot prüfen.</p></section>
-    ${hall.id === 'montana' ? '<section class="travel-section"><h4>Center Parcs: Ferienpark</h4><p>De Kempervennen ist ein Ferienpark mit Ferienhäusern, Schwimmbad und Freizeitangeboten. Für Montana braucht ihr keine Unterkunft im Park. Aqua Mundo gehört nicht zum Skipass; es ist kein großer Achterbahn-Freizeitpark.</p><div class="inline-links">' + link("https://www.centerparcs.de/de-de/niederlande/fp_KV_ferienpark-de-kempervennen", "De Kempervennen") + '</div>' + albumMarkup('kempervennen', 'De Kempervennen', 'Ferienpark') + '</section>' : ''}
-  </section>`;
 }
 function mapPoint(point) {
   return {x:36 + (point.lon - 2.8) * 112, y:32 + (53.65 - point.lat) * 190};
@@ -118,12 +23,6 @@ function mapPoint(point) {
 function countryMapMarkup(hall) {
   const origin = mapPoint(COUNTRY_MAP.origin);
   return `<svg class="country-map" viewBox="0 0 730 675" role="img" aria-labelledby="map-title-${hall.id} map-description-${hall.id}"><title id="map-title-${hall.id}">Lage von ${escapeHTML(hall.name)} in den Niederlanden</title><desc id="map-description-${hall.id}">${escapeHTML(TRAVEL[hall.id].province)}. Der große grüne Punkt zeigt diese Halle; kleine Punkte zeigen die übrigen Hallen. Löningen liegt östlich in Deutschland.</desc><rect width="730" height="675" fill="#edf3f2"/>${COUNTRY_MAP.paths.map(p => `<path d="${p.path}" class="map-land ${p.country === 'Netherlands' ? 'map-netherlands' : ''}"/>`).join('')}<text x="114" y="210" class="map-water-label">Nordsee</text><text x="327" y="269" class="map-country-label">Niederlande</text><text x="557" y="444" class="map-country-label">Deutschland</text><text x="245" y="625" class="map-country-label">Belgien</text>${halls.map((h, i) => {const p = mapPoint(TRAVEL[h.id].coordinates); return `<g class="map-hall ${h.id === hall.id ? 'map-active' : ''}"><circle cx="${p.x}" cy="${p.y}" r="${h.id === hall.id ? 19 : 11}"/><text x="${p.x}" y="${p.y + 1}">${i + 1}</text></g>`;}).join('')}<circle cx="${origin.x}" cy="${origin.y}" r="7" fill="#a77932"/><text x="${origin.x - 6}" y="${origin.y - 16}" text-anchor="end" class="map-origin">Start: Löningen</text><path d="M655 82v-36m0 0-7 14m7-14 7 14" fill="none" stroke="#66746f" stroke-width="2"/><text x="655" y="37" text-anchor="middle" class="map-north">N</text></svg>`;
-}
-function driveTime(way) {
-  if (!way) return 'Nicht gemessen';
-  if (way.minutes < 5) return 'ca. 5 Min.';
-  const low = Math.floor(way.minutes / 5) * 5, high = low + 5;
-  return `ca. ${low}–${high} Min.`;
 }
 function mapDistance(point) {
   if (point.kind === 'ski') return '0 km';
@@ -136,95 +35,12 @@ function mapMinutes(point) {
   if (point.hotelId === 11947) return 'keine Autofahrt';
   return `ca. ${Math.max(1,point.minutes)} Min.`;
 }
-function mapPlaceRows(hall) {
-  const data = REGIONAL_MAPS.regions[hall.id];
-  return Object.entries(REGIONAL_MAPS.categories).map(([kind,label])=>{
-    const points=data.points.filter(point=>point.kind===kind);
-    if (!points.length) return '';
-    return `<section class="map-place-group kind-${kind}"><h4>${escapeHTML(label)}</h4><ul>${points.map(point=>{
-      let detail = '';
-      if (point.kind==='coffee') detail=point.shop==='Siberië'?'18+ · Touristen: Betreiber bestätigt':'18+ · Touristen: laut Shopprofil';
-      if (point.kind==='hotel') {
-        const hotel=TRAVEL[hall.id].hotels.find(hotel=>hotel.id===point.hotelId);
-        detail=`12.–15.10. · 3 Nächte zu zweit: ${euro(MONDAY.hotels[hotel.id].price)} · ${hotel.parking===0?'Parken frei':`+ ${euro(hotel.parking)} Parken`}`;
-      }
-      if (point.access==='walk') detail='Rundweg im Park direkt neben SnowWorld';
-      return `<li><button type="button" class="map-place-row" data-map-point="${point.key}" aria-label="${escapeHTML(point.name)} auf der Karte zeigen, ${escapeHTML(mapDistance(point))} ab Skihalle"><span class="map-list-number">${escapeHTML(point.number)}</span><span class="map-list-place"><strong>${escapeHTML(point.name)}</strong>${detail?`<small>${escapeHTML(detail)}</small>`:''}</span><span class="map-list-distance"><b>${mapDistance(point)}</b><small>${mapMinutes(point)}</small></span></button></li>`;
-    }).join('')}</ul></section>`;
-  }).join('');
-}
-function operatingStatusMarkup(hall, compact=false) {
-  if (!hall.operating) return '';
-  const status=hall.operating;
-  return `<aside class="ski-status ${compact?'ski-status-compact':''}" aria-label="Aktueller Betrieb"><strong>${escapeHTML(status.title)}</strong><p>${escapeHTML(compact?status.short:status.note)}</p><p class="small-note">Betreiber gelesen: 07.10.2026 · ${link(status.pisteSource,'Piste & Umbau')} · ${link(status.liftSource,'Bandlift-Hinweis')}</p></aside>`;
-}
-function regionVisualsMarkup(hall) {
-  const r = TRAVEL[hall.id], arrival = r.arrival;
-  const hours = Math.floor(arrival.minutes / 60), minutes = arrival.minutes % 60;
-  const map=REGIONAL_MAPS.regions[hall.id];
-  return `<section class="region-visuals" aria-labelledby="location-${hall.id}"><div class="section-heading"><div><p class="eyebrow">${escapeHTML(r.province)} · eure Wege vor Ort</p><h3 id="location-${hall.id}">Alles rund um die Skihalle</h3></div><span>Alle Entfernungen ab Halle · Auto</span></div><div class="regional-map-layout"><div class="regional-map-column"><div class="map-toolbar"><p><b>H</b> Skihalle · Zahlen wie in der Liste</p><div><button type="button" data-map-reset>Alle Orte</button><button type="button" data-map-nearby>Bei der Halle</button></div></div><div class="regional-map" id="region-map-${hall.id}" data-regional-map="${hall.id}" role="region" aria-label="Umgebungskarte ${escapeHTML(shortNames[hall.id])}: Skihalle, Städte, Ausflüge, Spa, Coffeeshops und Hotels"><p class="map-load-note">Umgebungskarte lädt …</p></div><p class="map-readout" data-map-readout aria-live="polite">H · ${escapeHTML(map.points[0].name)} — Ausgangspunkt aller Kilometer</p><p class="map-tile-status small-note" data-tile-status hidden>Der Kartenhintergrund lädt nicht vollständig. Pins und Entfernungen bleiben sichtbar.</p><p class="map-help">C = Coffeeshop · S = Spa · U = Unterkunft. Nahe Pins sind versetzt; dünne Linien zeigen den genauen Standort. Mit +/− zoomen oder die Karte verschieben.</p><div class="regional-location"><div class="location-map">${countryMapMarkup(hall)}<p class="map-legend">Großer Punkt: diese Halle in den Niederlanden</p></div><div class="location-copy"><h4>${escapeHTML(r.province)}</h4><p>${escapeHTML(r.context)}</p><p class="geo-arrival"><strong>Ab Löningen:</strong> rund ${Math.round(arrival.km)} km · ${hours} Std. ${minutes} Min. reine Fahrzeit</p><div class="inline-links">${link(route('Löningen, Deutschland', REGIONS[hall.id].address), 'Anfahrtsroute')}</div><p class="small-note">Anreise gemessen 06.10. · ohne Verkehr und Pausen.</p></div></div></div><div class="map-place-list"><p class="map-list-heading">Orte & Autofahrt ab SnowWorld</p><div class="map-place-groups">${mapPlaceRows(hall)}</div>${map.coastNote?`<p class="map-coast-note">${escapeHTML(map.coastNote)}</p>`:''}<p class="map-distance-note">Kilometer und Minuten: OSRM-Routencheck 07.10.2026 bis zur nächsten erreichbaren Straße am jeweiligen Pin. Ohne Verkehr, Parkplatzsuche und Fußwege; keine Luftlinie. Stadtpins zeigen einen konkreten Ausgangspunkt, Naturpins einen Startpunkt oder Parkbereich. Die Karte zeigt Standorte, keine Straßenrouten.</p><p class="source-links">${link(map.routeSource,'Routenmessung')} · ${link('https://www.openstreetmap.org/copyright','Kartendaten: OpenStreetMap')}</p></div></div></section>`;
-}
 function tripBudget(hall, hotel, roomPrice=hotel.price) {
   const ski = hall.id === 'uithof' ? 92 : quote(hall, 'direct', 6).pair;
   const allowance = TRIP_ALLOWANCES.spa + TRIP_ALLOWANCES.car + TRIP_ALLOWANCES.food;
   const pair = Math.round((roomPrice + hotel.parking + ski + allowance) * 100) / 100;
   const perPerson = Math.round(pair * 50) / 100;
   return {ski, allowance, pair, perPerson, remaining:Math.round((TRIP_ALLOWANCES.budgetPerPerson - perPerson) * 100) / 100};
-}
-function priceDifference(value, reference, unit='für zwei') {
-  const change = Math.round((value - reference) * 100) / 100;
-  return change === 0 ? 'Gleicher Preis wie bisher' : `${change > 0 ? '+' : '−'}${euro(Math.abs(change))} ${unit} gegenüber 11.–14.10.`;
-}
-function hotelBudgetMarkup(hall, hotel, monday=false) {
-  const price = monday ? MONDAY.hotels[hotel.id].price : hotel.price, b = tripBudget(hall, hotel, price);
-  const over = b.remaining < 0, tight = b.remaining >= 0 && b.remaining < 25;
-  const period = monday ? 'monday' : 'sunday';
-  return `<div class="hotel-budget-quote ${monday ? 'monday-comparison' : ''} ${over ? 'over-budget' : tight ? 'tight' : ''}" data-trip-period="${period}"><span class="hotel-label">${monday ? 'Ab Montag · 12.–15.10.' : 'Bisher · 11.–14.10.'}</span><strong class="${monday ? 'monday-trip-price' : 'hotel-trip-price'}">ca. ${euro(b.perPerson)}</strong><p>pro Person · ${euro(b.pair)} für zwei</p><div class="budget-track" aria-hidden="true"><span style="width:${Math.min(100, b.perPerson / 5)}%"></span></div><p class="budget-rest">${over ? `${euro(Math.abs(b.remaining))} p. P. über Budget` : `${tight ? 'Knapp: ' : ''}${euro(b.remaining)} p. P. Restpuffer`}</p>${monday ? `<p class="hotel-price-delta">${priceDifference(b.perPerson, tripBudget(hall, hotel).perPerson, 'p. P.')}</p>` : ''}<p class="budget-formula">${euro(price)} Zimmer + ${euro(hotel.parking)} Parken + ${euro(b.ski)} Ski + ${euro(b.allowance)} Spa/Fahrt/Essen</p></div>`;
-}
-function hotelsMarkup(hall) {
-  const r = TRAVEL[hall.id], spa = REGIONS[hall.id].places.find(p => p.kind === 'Spa');
-  return `<section class="hotel-section" aria-labelledby="hotels-${hall.id}"><div class="section-heading"><div><p class="eyebrow">Je 3 Nächte · 2 Erwachsene · 1 Zimmer</p><h3 id="hotels-${hall.id}">${r.hotels.length} Unterkünfte: Sonntag & Montag im Vergleich</h3></div><span>Budget: 500 € pro Person</span></div><p class="hotel-intro"><strong>Bisher: 11.–14.10. · Eure zusätzliche Montag-Variante: 12.–15.10.2026.</strong> Die bisherigen Preise bleiben unverändert sichtbar. Montagpreise separat in der Booking-Suche am <strong>06.10.2026</strong> geprüft. Keine Reservierung; Preise und freie Zimmer können sich ändern. B&Bs sind als solche benannt; Frühstück nur nach ausgewähltem Tarif.</p>
-    <div class="budget-basis"><strong>Rechnung für euch beide</strong><p>3 Nächte + Hotelparken + ${hall.id === 'uithof' ? 'bestätigter 2-Stunden-Skipass' : 'ein Skitag mit 6 Stunden'} inkl. Ski, Schuhe & Hallenparken + <strong>140 € Spa</strong> + <strong>130 € Fahrt</strong> + <strong>160 € Essen</strong>.</p><p class="small-note">Spa, Fahrt und Essen sind geschätzte Planungsansätze. Fahrbudget für euer eigenes Auto; keine Miete oder Fahrzeugabschreibung. Zusätzliche Pflichtabgaben, Stadtparkplätze und andere Eintritte können den Restpuffer verbrauchen.${hall.id === 'uithof' ? ' Kein bestätigter 4-/6-Stunden-Pass; daher hier nur 2 Stunden in der Budgetrechnung.' : ''}</p></div>
-    <div class="hotel-rows">${r.hotels.map(hotel => {
-      const monday = MONDAY.hotels[hotel.id];
-      return `<article class="hotel-row" id="hotel-${hotel.id}" data-hotel-id="${hotel.id}">
-        <div class="hotel-description"><span class="place-kind">${escapeHTML(hotel.kind)} · ${escapeHTML(hotel.address)}</span><h4>${escapeHTML(hotel.name)}</h4>${albumMarkup('hotel-'+hotel.id, hotel.name, hotel.kind)}${hotel.rating?.review_score ? `<p class="hotel-rating"><strong>${String(hotel.rating.review_score).replace('.', ',')} / 10</strong> · ${hotel.rating.number_of_reviews} Bewertungen bei Booking</p>` : ''}<p>${hotel.id === 11456 ? '<strong>Zur bisherigen Variante 11.–14.10.:</strong> ' : ''}${escapeHTML(hotel.note)}</p><div class="inline-links">${link(hotel.source, 'Angebot 11.–14.10.')}${link(monday.source, 'Ab Montag: 12.–15.10.')}${link('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(hotel.name+' '+hotel.address), 'Hotel auf der Karte')}</div></div>
-        <div class="hotel-costs"><span class="hotel-label">Zimmer für 2 · alle 3 Nächte</span><div class="hotel-date-group" data-room-period="sunday"><span class="hotel-label">Bisher · So. 11.–Mi. 14.10.</span><strong class="hotel-stay-price">${euro(hotel.price)}</strong><p>${euro(hotel.price / 2)} pro Person</p><p>Mit Hotelparken: <strong>${euro(hotel.price + hotel.parking)}</strong></p></div><div class="hotel-date-group monday-comparison" data-room-period="monday"><span class="hotel-label">Ab Montag · Mo. 12.–Do. 15.10.</span><strong class="monday-stay-price">${euro(monday.price)}</strong><p>${euro(monday.price / 2)} pro Person</p><p>Mit Hotelparken: <strong>${euro(monday.price + hotel.parking)}</strong></p><p class="hotel-price-delta">${priceDifference(monday.price, hotel.price)}</p></div><span class="hotel-label">Hotelparkplatz · je 3 Nächte</span><strong>${hotel.parking === 0 ? 'Kostenlos' : euro(hotel.parking)}</strong><p class="small-note">${escapeHTML(hotel.parkingText)} · gleicher Ansatz in beiden Varianten</p></div>
-        <div class="hotel-routes"><span class="hotel-label">Hotel → Skihalle</span><strong>${hotel.id === 11947 ? 'Direkt an der Halle' : driveTime(hotel.skiRoute)}</strong><p class="small-note">${hotel.id === 11947 ? 'Kein täglicher Auto-Skiweg nötig' : (hotel.skiRoute?.km ?? '—')+' km · Auto'}</p><span class="hotel-label">Hotel → ${escapeHTML(spa.title)}</span><strong>${hotel.spaRoute ? driveTime(hotel.spaRoute) : escapeHTML(hotel.spaEstimate)}</strong><p class="small-note">${hotel.spaRoute ? hotel.spaRoute.km+' km · Auto · Routencheck' : 'Nicht als Hotelroute gemessen'}</p></div>
-        <div class="hotel-budget"><span class="hotel-label">Gesamte Reise · Planungswerte</span>${hotelBudgetMarkup(hall, hotel)}${hotelBudgetMarkup(hall, hotel, true)}<p class="small-note">Zzgl. ggf. separat erhobener Pflichtgebühren. Bei knappem Restpuffer kann das Budget dadurch überschritten werden.</p></div>
-      </article>`;
-    }).join('')}</div><p class="small-note hotel-route-note">Hotelwege: OSRM-Schätzung 06.10.2026, auf 5-Minuten-Spannen gerundet, ohne Verkehr. Kostenloses Parken gilt nach Unterkunftsangabe; keine Stellplatzreservierung. Preise sind Momentaufnahmen für die jeweils genannten Daten.</p>
-    ${hall.id === 'terneuzen' ? '<p class="hotel-area-note"><strong>Für euch abwägen:</strong> Beim bisherigen Zeitraum 11.–14.10. kosteten City Hotel 492,90 € und Churchill 594,96 € nur für drei Nächte zu zweit. Die Vorschläge liegen deshalb in Middelburg. <strong>Ab Montag liegt Hotel Middelburg mit der gesamten Reise über 500 € p. P.; Sweet Dreams bleibt im Modell darunter.</strong> Der längere Skiweg ist oben sichtbar.</p>' : ''}
-    ${hall.id === 'montana' ? '<p class="hotel-area-note"><strong>Parken im Preisvergleich:</strong> Bisher kostet de Statie + 36 € Parkreserve 272 €, ab Montag 283 €. Van Dinter kostet in beiden Zeiträumen 390 € mit Gratisparkplatz. Mit Parkgebühr spart de Statie somit 118 € beziehungsweise 107 € für euch beide.</p>' : ''}
-  </section>`;
-}
-function tripPlansMarkup(hall) {
-  const p = REGIONS[hall.id].plan;
-  const dates = ['Mo. 12.10.', 'Di. 13.10.', 'Mi. 14.10.', 'Do. 15.10.'];
-  return `<section class="four-day-plan" aria-labelledby="plan-${hall.id}"><h3 id="plan-${hall.id}">Euer Plan ab Montag · 12.–15.10.</h3><ol class="plan-days" data-plan-period="monday">${p.map((day,i) => `<li><span>Tag ${i + 1} · ${dates[i]}</span>${escapeHTML(day)}</li>`).join('')}</ol><p class="small-note">Ski am Dienstag, Spa am Mittwoch. Weitere Eintritte sind optional und nicht im Grundbudget. Textiltag und freie Spa-Termine im Kalender wählen.</p></section>`;
-}
-function hallMarkup(hall, index) {
-  const r = REGIONS[hall.id], spa = r.places.find(p => p.kind === 'Spa'), shop = r.coffee.shops[0];
-  const spaPoint=REGIONAL_MAPS.regions[hall.id].points.find(point=>point.kind==='spa');
-  const shopPoint=REGIONAL_MAPS.regions[hall.id].points.find(point=>point.kind==='coffee');
-  return `<article class="hall-section" id="${hall.id}" aria-labelledby="title-${hall.id}"><header class="hall-heading"><div><p class="eyebrow">${String(index + 1).padStart(2, '0')} · ${escapeHTML(hall.region)}</p><h2 id="title-${hall.id}">${escapeHTML(hall.name)}</h2><span class="hall-badge ${hall.badgeType}">${escapeHTML(hall.badge)}</span></div><div class="hall-heading-copy"><p>${escapeHTML(hall.detail)}</p></div></header>
-    ${operatingStatusMarkup(hall)}
-    <div class="hall-summary"><div class="summary-fact"><span>Längste Abfahrt</span><strong>${escapeHTML(hall.lengthLabel)}</strong><small>${escapeHTML(hall.areas)}</small></div><div class="summary-fact"><span>Spa in der Nähe</span><strong>${escapeHTML(spa.title)}</strong><small>${mapDistance(spaPoint)} · ${mapMinutes(spaPoint)} ab Halle, ohne Verkehr</small></div><div class="summary-fact"><span>Coffeeshop-Option</span><strong>${escapeHTML(shop.name)} · ${escapeHTML(shop.city)}</strong><small>${escapeHTML(shop.address)}</small><small>${mapDistance(shopPoint)} · ${mapMinutes(shopPoint)} · ${escapeHTML(shop.access)}</small></div><div class="summary-fact"><span>Parken an der Halle</span><strong>${hall.parking ? euro(hall.parking) + ' / Auto' : 'Kostenlos'}</strong><small>${hall.parking ? '8 € online · vor Ort bis 9 €' : 'Hotel / Stadt separat prüfen'}</small></div></div>
-    ${regionVisualsMarkup(hall)}
-    ${cityLifeMarkup(hall)}
-    <div class="hall-main"><div>${galleryMarkup(hall)}${pistesMarkup(hall)}</div><div>${pricesMarkup(hall)}${coffeeMarkup(hall)}</div></div>
-    <div class="hall-lower">${areaMarkup(hall)}${travelMarkup(hall)}</div>
-    ${hotelsMarkup(hall)}
-    ${tripPlansMarkup(hall)}
-  </article>`;
-}
-function renderOverview() {
-  document.querySelector('#overview').innerHTML = `<div class="decision-grid">${['amsterdam','zoetermeer','landgraaf'].map(id => halls.find(h=>h.id===id)).map(h => {
-    const d = DECISIONS[h.id], city = CITY_LIFE[h.id], spa = REGIONS[h.id].places.find(p => p.kind === 'Spa');
-    const hotel = TRAVEL[h.id].hotels.find(x => x.id === d.hotelId), b = tripBudget(h, hotel, MONDAY.hotels[hotel.id].price);
-    const a = TRAVEL[h.id].arrival;
-    return `<article class="decision-option" data-decision="${h.id}"><p class="decision-label">${escapeHTML(d.label)}</p><h3>${escapeHTML(d.title)}</h3><p class="decision-verdict">${escapeHTML(d.verdict)}</p>${operatingStatusMarkup(h,true)}${albumMarkup(d.album,d.photoLabel,'Umgebung')}<div class="decision-ski"><strong>${h.length} m</strong><span>längste Piste</span><p>4 h: <b>${euro(quote(h,'direct',4).total)}</b> · 6 h: <b>${euro(quote(h,'direct',6).total)}</b><small>pro Person inkl. Ski & Schuhe · regulär</small></p></div><div class="decision-pros"><h4>Vorteile</h4><ul>${d.pros.map(p => `<li>${escapeHTML(p)}</li>`).join('')}</ul></div><div class="decision-cons"><h4>Nachteile</h4><ul>${d.cons.map(p => `<li>${escapeHTML(p)}</li>`).join('')}</ul></div><dl class="decision-facts"><div><dt>Einwohner · Gemeinden, 01.01.2026</dt><dd>${escapeHTML(city.population)}</dd></div><div><dt>Läden & Shopping</dt><dd>${escapeHTML(city.shopping)}</dd></div><div><dt>Restaurants & Abends</dt><dd>${escapeHTML(city.dining)}</dd></div><div><dt>Shop-Anzahl · offizieller Bestand 2024</dt><dd>${escapeHTML(city.coffeeCount)}</dd></div><div><dt>Als deutscher Tourist</dt><dd>${escapeHTML(city.tourist)}</dd></div><div><dt>Stadt & Meer</dt><dd>${escapeHTML(d.city)}</dd></div><div><dt>Landschaft</dt><dd>${escapeHTML(d.nature)}</dd></div><div><dt>Spa ab Halle</dt><dd>${escapeHTML(spa.title)} · ${mapDistance(REGIONAL_MAPS.regions[h.id].points.find(p=>p.kind==='spa'))} · ${mapMinutes(REGIONAL_MAPS.regions[h.id].points.find(p=>p.kind==='spa'))} ohne Verkehr</dd></div><div><dt>Coffeeshop</dt><dd>${escapeHTML(d.coffee)}</dd></div><div><dt>Ab Löningen · Auto</dt><dd>ca. ${Math.round(a.km)} km · ${Math.floor(a.minutes/60)} Std. ${a.minutes%60} Min. ohne Verkehr</dd></div><div><dt>Hotel & Reise ab Montag</dt><dd><strong>ca. ${euro(b.perPerson)} p. P.</strong> gesamte Reise mit ${escapeHTML(hotel.name)}, 3 Nächte, 6 h Ski, Spa/Fahrt/Essen als Planungsansatz. Hotelparken ${hotel.parking === 0 ? 'kostenlos' : euro(hotel.parking)}.</dd></div></dl><p class="decision-choice">${escapeHTML(d.choose)}</p><div class="inline-links"><a href="#${h.id}">Pisten, Hotels & Ausflüge ↓</a></div><p class="source-links">${d.sources.map(s => link(s.url,s.label)).join(' · ')}</p></article>`;
-  }).join('')}</div><p class="decision-bottom"><strong>Coffeeshops allein entscheiden die Reise nicht:</strong> Amsterdam und Haarlem bieten euch die größte passende Auswahl. Den Haag ist eine gute Alternative mit längerem Skihang in Zoetermeer. Bei Landgraaf liegt die belegte Touristen-Option in Kerkrade; Maastricht ist ein Stadt-Ausflug, keine Shop-Option ohne niederländischen Wohnsitz. <strong>Für euren Stadturlaub: Velsen → Zoetermeer → Landgraaf. Für gleich viel Ski, Spa und Stadt: Zoetermeer zuerst.</strong></p><p class="small-note">Fahrzeiten sind Planungswerte ab Halle. Reisebudgets enthalten die unveränderten Hotel- und Skiangebote plus Schätzungen; Stadtparken, zusätzliche Eintritte und separat erhobene Pflichtgebühren gehen vom Restpuffer ab. Hotelpreise beider Zeiträume stehen unten.</p>`;
 }
 function bindGallery(gallery) {
   const photos = gallery.dataset.album ? MEDIA_ALBUMS[gallery.dataset.album].photos : GALLERIES[gallery.dataset.gallery].photos, frame = gallery.querySelector('.gallery-frame'), image = gallery.querySelector('.gallery-image');
@@ -357,9 +173,7 @@ function endViewerGesture(event) {
 window.addEventListener('pointerup', endViewerGesture);
 window.addEventListener('pointercancel', endViewerGesture);
 window.addEventListener('resize', () => fitViewerImage());
-renderOverview();
-document.querySelector('#hall-nav').innerHTML = '<a href="#entscheidung">Entscheidung</a>' + halls.map(h => `<a href="#${h.id}">${escapeHTML(shortNames[h.id])}</a>`).join("");
-document.querySelector('#hall-list').innerHTML = halls.map(hallMarkup).join("");
+renderCompactApp();
 document.querySelectorAll('[data-gallery], [data-album]').forEach(bindGallery);
 
 document.querySelectorAll('[data-enlarge-map]').forEach(button => button.addEventListener('click', () => {
